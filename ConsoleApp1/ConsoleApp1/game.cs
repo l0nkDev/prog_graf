@@ -34,15 +34,15 @@ namespace ConsoleApp1
             -0.5f, -0.2f, -0.1f,  0.10f, 0.10f, 0.10f,
             -0.5f,  0.6f, -0.1f,  0.10f, 0.10f, 0.10f,
 
-             0.05f,  0.6f,  0.0f, 0.20f, 0.20f, 0.20f,  // lado izquierdo 
-             0.05f, -0.3f,  0.0f, 0.20f, 0.20f, 0.20f,
-             0.05f,  0.6f, -0.1f, 0.20f, 0.20f, 0.20f,
-             0.05f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f,
+             0.5f,  0.6f,  0.0f, 0.20f, 0.20f, 0.20f,  // lado izquierdo 
+             0.5f, -0.3f,  0.0f, 0.20f, 0.20f, 0.20f,
+             0.5f,  0.6f, -0.1f, 0.20f, 0.20f, 0.20f,
+             0.5f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f,
 
-            -0.05f,  0.6f,  0.0f, 0.20f, 0.20f, 0.20f,  // lado derecho 
-            -0.05f, -0.3f,  0.0f, 0.20f, 0.20f, 0.20f,
-            -0.05f,  0.6f, -0.1f, 0.20f, 0.20f, 0.20f,
-            -0.05f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f
+            -0.5f,  0.6f,  0.0f, 0.20f, 0.20f, 0.20f,  // lado derecho 
+            -0.5f, -0.3f,  0.0f, 0.20f, 0.20f, 0.20f,
+            -0.5f,  0.6f, -0.1f, 0.20f, 0.20f, 0.20f,
+            -0.5f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f
 
             -0.5f, 0.6f,  0.0f, 0.20f, 0.20f, 0.20f,   // lado superior
              0.5f, 0.6f,  0.0f, 0.20f, 0.20f, 0.20f,
@@ -53,8 +53,6 @@ namespace ConsoleApp1
              0.5f, -0.3f,  0.0f, 0.20f, 0.20f, 0.20f,
             -0.5f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f,
              0.5f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f
-
-
         };
 
         uint[] indices = {
@@ -107,7 +105,7 @@ namespace ConsoleApp1
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
 
-            shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
+            shader = new Shader("../../../shader.vert", "../../../shader.frag");
 
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
@@ -133,8 +131,15 @@ namespace ConsoleApp1
 
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            shader.Use();
             GL.BindVertexArray(VertexArrayObject);
+
+            var transform = Matrix4.Identity;
+            transform = transform * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(20f));
+            transform = transform * Matrix4.CreateRotationX(MathHelper.DegreesToRadians(20f));
+
+            shader.Use();
+
+            shader.SetMatrix4("transform", transform);
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
 
             SwapBuffers();

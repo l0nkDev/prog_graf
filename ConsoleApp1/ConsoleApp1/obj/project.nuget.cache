@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yeZCIWOND+EofCb7UjhYJIq8J5Vlx8MBwIbn1BHfootLHYuyi1kmcwNtKcFJGYtioCG90l6l4xskWfwrhVzTpA==",
+  "dgSpecHash": "LrjuXgHQ/BGKwcOnVdFo943JpSudDOfEs8SyCZLL9H+qEQaC0YXcZnUPfa9kZogDfDSt03vTcs+gUfydBBa+5A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\l0nkd\\source\\repos\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+  "projectFilePath": "C:\\Users\\l0nkd\\OneDrive\\Documentos\\prog_graf\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\l0nkd\\.nuget\\packages\\opentk\\4.8.2\\opentk.4.8.2.nupkg.sha512",
     "C:\\Users\\l0nkd\\.nuget\\packages\\opentk.audio.openal\\4.8.2\\opentk.audio.openal.4.8.2.nupkg.sha512",

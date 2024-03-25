@@ -4,12 +4,15 @@ using System.Text;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace ConsoleApp1
 {
     public class Shader
     {
         public int Handle;
+
+        private readonly Dictionary<string, int> uniformLocations;
 
         public Shader(string vertexPath, string fragmentPath)
         {
@@ -61,6 +64,19 @@ namespace ConsoleApp1
             GL.DetachShader(Handle, FragmentShader);
             GL.DeleteShader(FragmentShader);
             GL.DeleteShader(VertexShader);
+
+            GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
+
+            uniformLocations = new Dictionary<string, int>();
+
+            for (var i = 0; i < numberOfUniforms; i++)
+            {
+                var key = GL.GetActiveUniform(Handle, i, out _, out _);
+
+                var location = GL.GetUniformLocation(Handle, key);
+
+                uniformLocations.Add(key, location);
+            }
         }
 
         public void Use()
@@ -88,7 +104,11 @@ namespace ConsoleApp1
             }
         }
 
-
+        public void SetMatrix4(string name, Matrix4 data)
+        {
+            GL.UseProgram(Handle);
+            GL.UniformMatrix4(uniformLocations[name], true, ref data);
+        }
         public void Dispose()
         {
             Dispose(true);
