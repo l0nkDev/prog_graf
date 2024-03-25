@@ -4,6 +4,8 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
 using System.Diagnostics;
+using StbImageSharp;
+using System.IO;
 
 namespace ConsoleApp1
 {
@@ -13,72 +15,22 @@ namespace ConsoleApp1
 
         private readonly float[] vertices =
         {
-              // positions        // colors
-             0.5f,  0.6f, 0.0f,   1.0f, 0.24f, 0.24f,   // pantalla
-             0.5f, -0.2f, 0.0f,  0.24f,  1.0f, 0.24f,   
-            -0.5f, -0.2f, 0.0f,  0.24f, 0.24f,  1.0f,
-            -0.5f,  0.6f, 0.0f,  0.24f, 0.24f, 0.24f,
-
-             0.5f, -0.2f, 0.0f,  0.24f, 0.24f, 0.24f,   // parlantes
-             0.5f, -0.3f, 0.0f,  0.24f, 0.24f, 0.24f,
-            -0.5f, -0.2f, 0.0f,  0.24f, 0.24f, 0.24f,
-            -0.5f, -0.3f, 0.0f,  0.24f, 0.24f, 0.24f,
-
-            -0.05f, -0.3f, 0.0f,  0.10f, 0.10f, 0.10f,  // pata
-             0.05f, -0.3f, 0.0f,  0.10f, 0.10f, 0.10f,
-            -0.05f, -0.6f, 0.0f,  0.10f, 0.10f, 0.10f,
-             0.05f, -0.6f, 0.0f,  0.10f, 0.10f, 0.10f,
-
-             0.5f,  0.6f, -0.1f,  0.10f, 0.10f, 0.10f,  // parte trasera
-             0.5f, -0.2f, -0.1f,  0.10f, 0.10f, 0.10f,
-            -0.5f, -0.2f, -0.1f,  0.10f, 0.10f, 0.10f,
-            -0.5f,  0.6f, -0.1f,  0.10f, 0.10f, 0.10f,
-
-             0.5f,  0.6f,  0.0f, 0.20f, 0.20f, 0.20f,  // lado izquierdo 
-             0.5f, -0.3f,  0.0f, 0.20f, 0.20f, 0.20f,
-             0.5f,  0.6f, -0.1f, 0.20f, 0.20f, 0.20f,
-             0.5f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f,
-
-            -0.5f,  0.6f,  0.0f, 0.20f, 0.20f, 0.20f,  // lado derecho 
-            -0.5f, -0.3f,  0.0f, 0.20f, 0.20f, 0.20f,
-            -0.5f,  0.6f, -0.1f, 0.20f, 0.20f, 0.20f,
-            -0.5f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f
-
-            -0.5f, 0.6f,  0.0f, 0.20f, 0.20f, 0.20f,   // lado superior
-             0.5f, 0.6f,  0.0f, 0.20f, 0.20f, 0.20f,
-            -0.5f, 0.6f, -0.1f, 0.20f, 0.20f, 0.20f,
-             0.5f, 0.6f, -0.1f, 0.20f, 0.20f, 0.20f
-
-            -0.5f, -0.3f,  0.0f, 0.20f, 0.20f, 0.20f,   // lado inferior
-             0.5f, -0.3f,  0.0f, 0.20f, 0.20f, 0.20f,
-            -0.5f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f,
-             0.5f, -0.3f, -0.1f, 0.20f, 0.20f, 0.20f
+              // positions        // texture coords
+             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,   // inferior
+            -0.5f, -0.5f,  0.5f,  1.0f, 0.0f,   // izquierdo
+            -0.5f,  0.5f, -0.5f,  0.0f, 0.0f,   // derecho
+             0.5f, -0.5f, -0.5f,  0.0f, 1.0f    // trasero
         };
 
+        float rotation_x = 0.0f;
+        float rotation_y = 0.0f;
+
         uint[] indices = {
-            12, 13, 14,
-            12, 14, 15,
             
             0, 1, 2,   
             0, 2, 3,    
-
-            4, 5, 6,
-            5, 6, 7,
-
-            8, 9, 10,
-            9, 10, 11,
-
-            16, 17, 18,
-            17, 18, 19,
-
-            20, 21, 22,
-            21, 22, 23,
-
-            24, 25, 26,
-            25, 26, 27,
-
-            28, 29, 30,
-            29, 30, 31
+            0, 1, 3,
+            1, 2, 3
 
         };
 
@@ -86,7 +38,7 @@ namespace ConsoleApp1
         int ElementBufferObject;
         int VertexArrayObject;
         Stopwatch timer;
-
+        Texture texture;
         Shader shader;
 
         protected override void OnUpdateFrame(FrameEventArgs args)
@@ -97,13 +49,29 @@ namespace ConsoleApp1
             {
                 Close();
             }
+
+            if (KeyboardState.IsKeyDown(Keys.A))
+            {
+                rotation_x += 0.1f;
+            }
+            if (KeyboardState.IsKeyDown(Keys.D))
+            {
+                rotation_x += -0.1f;
+            }
+            if (KeyboardState.IsKeyDown(Keys.W))
+            {
+                rotation_y += 0.1f;
+            }
+            if (KeyboardState.IsKeyDown(Keys.S))
+            {
+                rotation_y += -0.1f;
+            }
         }
 
         protected override void OnLoad()
         {
             base.OnLoad();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
 
             shader = new Shader("../../../shader.vert", "../../../shader.frag");
 
@@ -118,11 +86,16 @@ namespace ConsoleApp1
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
 
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
+            int vertexLocation = shader.GetAttribLocation("aPos");
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
-            GL.EnableVertexAttribArray(1);
+            int texCoordLocation = shader.GetAttribLocation("aTexCoord");
+            GL.EnableVertexAttribArray(texCoordLocation);
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+
+            texture = Texture.LoadFromFile("../../../img/container.png");
+            texture.Use(TextureUnit.Texture0);
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -134,12 +107,15 @@ namespace ConsoleApp1
             GL.BindVertexArray(VertexArrayObject);
 
             var transform = Matrix4.Identity;
-            transform = transform * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(20f));
-            transform = transform * Matrix4.CreateRotationX(MathHelper.DegreesToRadians(20f));
+            transform = transform * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotation_x));
+            transform = transform * Matrix4.CreateRotationX(MathHelper.DegreesToRadians(rotation_y));
 
+
+            texture.Use(TextureUnit.Texture0);
             shader.Use();
 
             shader.SetMatrix4("transform", transform);
+
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
 
             SwapBuffers();
