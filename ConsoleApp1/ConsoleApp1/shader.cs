@@ -109,17 +109,6 @@ namespace ConsoleApp1
             GL.UseProgram(Handle);
             GL.UniformMatrix4(uniformLocations[name], true, ref data);
         }
-
-        public void SetTexture(string name, Image data)
-        {
-
-        }
-
-        public int GetAttribLocation(string attribName)
-        {
-            return GL.GetAttribLocation(Handle, attribName);
-        }
-
         public void Dispose()
         {
             Dispose(true);
