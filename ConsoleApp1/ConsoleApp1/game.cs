@@ -3,7 +3,6 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
-using System.Diagnostics;
 namespace ConsoleApp1
 {
     public class Game : GameWindow
@@ -26,6 +25,8 @@ namespace ConsoleApp1
         float pitch = 0f;
         float yaw = 0f;
         float sensitivity = 0.1f;
+
+        bool last_p = false;
 
         object_array pantallas = new object_array();
 
@@ -70,9 +71,13 @@ namespace ConsoleApp1
                     Position -= up * speed * (float)args.Time;
                 }
 
-                if (KeyboardState.IsKeyDown(Keys.P))
+                if (KeyboardState.IsKeyDown(Keys.P) && !last_p)
                 {
+                    last_p = true;
                     pantallas.Add(new pantalla(Position.X, Position.Y, Position.Z));
+                } else if (!KeyboardState.IsKeyDown(Keys.P))
+                {
+                    last_p = false;
                 }
             }
         }
@@ -124,7 +129,8 @@ namespace ConsoleApp1
             base.OnLoad();
             MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
 
-            Console.WriteLine(Matrix4.CreateRotationY(MathHelper.DegreesToRadians(45f)));
+            Console.WriteLine("Current position: {0} \n", Position);
+  
 
             pantallas.Add(new pantalla( 2f, 0f,  0f, -9f));
             pantallas.Add(new pantalla(-2f, 0f,  0f,  90f));
@@ -150,6 +156,12 @@ namespace ConsoleApp1
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             base.OnRenderFrame(args);
+
+            var cursorpos = Console.GetCursorPosition();
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine("Current position: {0} \n", Position);
+            Console.SetCursorPosition(cursorpos.Left, cursorpos.Top);
+
 
             view = Matrix4.LookAt(Position, Position + front, up);
 
