@@ -20,7 +20,7 @@ namespace ConsoleApp1
 		{
 			foreach (piece piece in this.Values)
 			{
-				piece.draw(shader, yaw * Matrix4.CreateTranslation(offset_x, offset_y, offset_z) * model, view, projection, time);
+				piece.draw(shader, roll * pitch * yaw * Matrix4.CreateTranslation(offset_x, offset_y, offset_z) * model, view, projection, time);
 			}
 
 		}
@@ -28,6 +28,16 @@ namespace ConsoleApp1
         public void rotate_Y(float delta)
         {
             yaw = yaw * Matrix4.CreateRotationY(delta);
+        }
+
+        public void rotate_X(float delta)
+        {
+            pitch = pitch * Matrix4.CreateRotationX(delta);
+        }
+
+        public void rotate_Z(float delta)
+        {
+            roll = roll * Matrix4.CreateRotationZ(delta);
         }
     }
 }
