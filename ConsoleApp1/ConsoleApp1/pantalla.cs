@@ -5,132 +5,50 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
 using System.Diagnostics;
 using System.IO;
+using System.Drawing;
 
 namespace ConsoleApp1 { 
-	public class pantalla : world_object
-	{
+	public class pantalla
+    {
+        private Vector3 vert1, vert2, vert3, color1, color2, color3;
 
-        public new int VertexBufferObject;
-        public new int ElementBufferObject;
-        public new int VertexArrayObject;
-        public new Matrix4 model;
+        public int VertexBufferObject;
+        public int ElementBufferObject;
+        public int VertexArrayObject;
+        public Matrix4 model;
         Vector4 pos;
         Vector3 rot;
 
-        public new float[] vertices =
+        private float[] vertices =
 {
               // positions        // colors            //punto de referencia 0, 0 local
              
              50.0f, -20.00f, 0.0f,  0.24f,  1.0f, 0.24f,   // pantalla
              50.0f,  36.25f, 0.0f,  1.00f, 0.24f, 0.24f,
-            -50.0f, -20.00f, 0.0f,  0.24f, 0.24f,  1.0f,
-            -50.0f,  36.25f, 0.0f,  0.24f, 0.24f, 0.24f,
+            -50.0f, -20.00f, 0.0f,  0.24f, 0.24f,  1.0f};
 
-             50.0f, -20.0f, 0.0f,  0.24f, 0.24f, 0.24f,   // parlantes
-             50.0f, -30.0f, 0.0f,  0.24f, 0.24f, 0.24f,
-            -50.0f, -20.0f, 0.0f,  0.24f, 0.24f, 0.24f,
-            -50.0f, -30.0f, 0.0f,  0.24f, 0.24f, 0.24f,
+        private uint[] indices = {0, 1, 2};
 
-            -2.5f, -30.0f, -02.5f,  0.13f, 0.13f, 0.13f,  // pata
-             2.5f, -30.0f, -02.5f,  0.13f, 0.13f, 0.13f,
-            -2.5f, -60.0f, -02.5f,  0.13f, 0.13f, 0.13f,
-             2.5f, -60.0f, -02.5f,  0.13f, 0.13f, 0.13f,
-
-             50.0f, -30.00f, -10.0f,  0.10f, 0.10f, 0.10f,  // parte trasera
-             50.0f,  36.25f, -10.0f,  0.10f, 0.10f, 0.10f,
-            -50.0f, -30.00f, -10.0f,  0.10f, 0.10f, 0.10f,
-            -50.0f,  36.25f, -10.0f,  0.10f, 0.10f, 0.10f,
-
-             50.0f,  36.25f,  0.00f, 0.17f, 0.17f, 0.17f,  // lado izquierdo 
-             50.0f, -30.00f,  0.00f, 0.17f, 0.17f, 0.17f,
-             50.0f,  36.25f, -10.0f, 0.17f, 0.17f, 0.17f,
-             50.0f, -30.00f, -10.0f, 0.17f, 0.17f, 0.17f,
-
-            -50.0f,  36.25f,  0.0f, 0.17f, 0.17f, 0.17f,  // lado derecho 
-            -50.0f, -30.00f,  0.0f, 0.17f, 0.17f, 0.17f,
-            -50.0f,  36.25f, -10.0f, 0.17f, 0.17f, 0.17f,
-            -50.0f, -30.00f, -10.0f, 0.17f, 0.17f, 0.17f,
-
-            -50.0f, 36.25f,  0.00f, 0.20f, 0.20f, 0.20f,   // lado superior
-             50.0f, 36.25f,  0.00f, 0.20f, 0.20f, 0.20f,
-            -50.0f, 36.25f, -10.0f, 0.20f, 0.20f, 0.20f,
-             50.0f, 36.25f, -10.0f, 0.20f, 0.20f, 0.20f,
-
-            -50.0f, -30.0f,  0.00f, 0.13f, 0.13f, 0.13f,   // lado inferior
-             50.0f, -30.0f,  0.00f, 0.13f, 0.13f, 0.13f,
-            -50.0f, -30.0f, -10.0f, 0.13f, 0.13f, 0.13f,
-             50.0f, -30.0f, -10.0f, 0.13f, 0.13f, 0.13f,
-
-            -2.5f, -30.0f, -07.5f,  0.07f, 0.07f, 0.07f,  // pata lado trasero
-             2.5f, -30.0f, -07.5f,  0.07f, 0.07f, 0.07f,
-            -2.5f, -60.0f, -07.5f,  0.07f, 0.07f, 0.07f,
-             2.5f, -60.0f, -07.5f,  0.07f, 0.07f, 0.07f,
-
-            -2.5f, -30.0f, -07.5f,  0.10f, 0.10f, 0.10f,  // pata lado izquierdo
-            -2.5f, -30.0f, -02.5f,  0.10f, 0.10f, 0.10f,
-            -2.5f, -60.0f, -07.5f,  0.10f, 0.10f, 0.10f,
-            -2.5f, -60.0f, -02.5f,  0.10f, 0.10f, 0.10f,
-
-            2.5f, -30.0f, -07.5f,  0.10f, 0.10f, 0.10f,  // pata lado derecho
-            2.5f, -30.0f, -02.5f,  0.10f, 0.10f, 0.10f,
-            2.5f, -60.0f, -07.5f,  0.10f, 0.10f, 0.10f,
-            2.5f, -60.0f, -02.5f,  0.10f, 0.10f, 0.10f,
-
-            -15.0f, -60.0f,  10.0f, 0.23f, 0.23f, 0.23f,   // base lado superior
-             15.0f, -60.0f,  10.0f, 0.23f, 0.23f, 0.23f,
-            -25.0f, -60.0f, -20.0f, 0.23f, 0.23f, 0.23f,
-             25.0f, -60.0f, -20.0f, 0.23f, 0.23f, 0.23f,
-
-            -15.0f, -62.5f,  10.0f, 0.13f, 0.13f, 0.13f,   // base lado inferior
-             15.0f, -62.5f,  10.0f, 0.13f, 0.13f, 0.13f,
-            -25.0f, -62.5f, -20.0f, 0.13f, 0.13f, 0.13f,
-             25.0f, -62.5f, -20.0f, 0.13f, 0.13f, 0.13f,
-
-            -25.0f, -60.0f,  -20.0f, 0.10f, 0.10f, 0.10f,   // base lado trasero
-             25.0f, -60.0f,  -20.0f, 0.10f, 0.10f, 0.10f,
-            -25.0f, -62.5f,  -20.0f, 0.10f, 0.10f, 0.10f,
-             25.0f, -62.5f,  -20.0f, 0.10f, 0.10f, 0.10f,
-
-            -15.0f, -60.0f,  10.0f, 0.20f, 0.20f, 0.20f,   // base lado delantero
-             15.0f, -60.0f,  10.0f, 0.20f, 0.20f, 0.20f,
-            -15.0f, -62.5f,  10.0f, 0.20f, 0.20f, 0.20f,
-             15.0f, -62.5f,  10.0f, 0.20f, 0.20f, 0.20f,
-
-            -25.0f, -60.0f,  -20.0f, 0.17f, 0.17f, 0.17f,   // base lado izquierdo
-            -15.0f, -60.0f,   10.0f, 0.17f, 0.17f, 0.17f,
-            -25.0f, -62.5f,  -20.0f, 0.17f, 0.17f, 0.17f,
-            -15.0f, -62.5f,   10.0f, 0.17f, 0.17f, 0.17f,
-
-             25.0f, -60.0f,  -20.0f, 0.17f, 0.17f, 0.17f,   // base lado derecho
-             15.0f, -60.0f,   10.0f, 0.17f, 0.17f, 0.17f,
-             25.0f, -62.5f,  -20.0f, 0.17f, 0.17f, 0.17f,
-             15.0f, -62.5f,   10.0f, 0.17f, 0.17f, 0.17f,
-
-             01.2f, -23.8f, 0.001f,  1.0f, 1.0f, 1.0f,   // logo
-             01.2f, -26.2f, 0.001f,  1.0f, 1.0f, 1.0f,
-            -01.2f, -23.8f, 0.001f,  1.0f, 1.0f, 1.0f,
-            -01.2f, -26.2f, 0.001f,  1.0f, 1.0f, 1.0f
-        };
-
-        public new uint[] indices;
-
-        public pantalla(float x = 0.0f, float y = 0.0f, float z = 0.0f, float yaw = 0.0f)
+        public pantalla(Vector3 v1, Vector3 c1, Vector3 v2, Vector3 c2, Vector3 v3, Vector3 c3, Vector3 position)
 		{
-            Console.WriteLine("New Screen at: {0}, {1}, {2}", x, y, z);
-            indices = new uint[vertices.Length / 4];
-            uint tmp = 0;
-            uint c = 0;
-            while (c < indices.Length)
-            {
-                indices[c] = tmp;
-                indices[c + 1] = tmp + 1;
-                indices[c + 2] = tmp + 2;
-                indices[c + 3] = tmp + 1;
-                indices[c + 4] = tmp + 2;
-                indices[c + 5] = tmp + 3;
-                tmp += 4;
-                c += 6;
-            }
+            vert1 = v1;
+            vert2 = v2;
+            vert3 = v3;
+            color1 = c1;
+            color2 = c2;
+            color3 = c3;
+
+            int i = 0;
+            while (i < vertices.Length) { Console.WriteLine(vertices[i]); i++; }
+
+            vertices[0] = vert1.X; vertices[1] = vert1.Y; vertices[2] = vert1.Z; vertices[3] = color1.X; vertices[4] = color1.Y; vertices[5] = color1.Z;
+            vertices[6] = vert2.X; vertices[7] = vert2.Y; vertices[8] = vert2.Z; vertices[9] = color2.X; vertices[10] = color2.Y; vertices[11] = color2.Z;
+            vertices[12] = vert3.X; vertices[13] = vert3.Y; vertices[14] = vert3.Z; vertices[15] = color3.X; vertices[16] = color3.Y; vertices[17] = color3.Z;
+
+            Console.WriteLine("");
+
+            i = 0;
+            while (i < vertices.Length) { Console.WriteLine(vertices[i]); i++; }
 
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
@@ -149,15 +67,15 @@ namespace ConsoleApp1 {
             GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
             GL.EnableVertexAttribArray(1);
 
-            pos = new Vector4(x, y, z, 1.0f);
+            pos = new Vector4(position.X, position.Y, position.Z, 1.0f);
             rot = new Vector3(0.0f, 0.0f, 0.0f);
             model = Matrix4.Identity * Matrix4.CreateTranslation(new Vector3(pos.X, pos.Y, pos.Z));
         }
 
-        public override void draw(Shader shader, Matrix4 view, Matrix4 projection, double time)
+        public void draw(Shader shader, Matrix4 view, Matrix4 projection, double time)
         {
 
-            model = Matrix4.CreateScale(0.01f, 0.01f, 0.01f) * Matrix4.CreateTranslation(new Vector3(pos.X, pos.Y, pos.Z));
+            model =Matrix4.CreateTranslation(new Vector3(pos.X, pos.Y, pos.Z));
             GL.BindVertexArray(VertexArrayObject);
             shader.Use();
             shader.SetMatrix4("model", model);
@@ -165,11 +83,5 @@ namespace ConsoleApp1 {
             shader.SetMatrix4("projection", projection);
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
             }
-
-        public void rotate(double time)
-        {
-            rot.Y += 45f * (float)time;
-            pos = pos * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(45f * (float)time));
-        }
     }
 }
