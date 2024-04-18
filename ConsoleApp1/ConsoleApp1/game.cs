@@ -3,6 +3,10 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+
 namespace ConsoleApp1
 {
     public class Game : GameWindow
@@ -26,19 +30,23 @@ namespace ConsoleApp1
         float yaw = 0f;
         float sensitivity = 0.1f;
 
-        bool last_p = false;
         double elapsed_second = 0;
         int current_second_frames = 0;
         int fps = 0;
 
-        scene main_scene;
+        List<string> object_names;
+
+        string selected_object;
+        string selected_piece;
+
+        scene main_scene = new();
+    
+
 
         protected override void OnLoad()
         {
             base.OnLoad();
             MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
-
-            Console.WriteLine("Current position: {0}\n\n", Position);
 
             GL.ClearColor(0.25882353f, 0.72549f, 0.96f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
@@ -48,11 +56,219 @@ namespace ConsoleApp1
             front = new Vector3(0.0f, 0.0f, -1.0f);
             up = Vector3.UnitY;
 
-            main_scene = new scene
+            main_scene.Add("monitor", LoadObject("monitor", 0.0f, 0.75f, 0.0f));
+            main_scene.Add("pot", Pot(-0.55f, 0.75f, 0.0f));
+            main_scene.Add("desk", Desk());
+            object_names = new List<string>(main_scene.Keys);
+
+            shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
+
+            view = Matrix4.LookAt(Position, Position + front, up);
+            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), Size.X / (float)Size.Y, 0.1f, 100.0f);
+        }
+
+
+
+        protected override void OnRenderFrame(FrameEventArgs args)
+        {
+            base.OnRenderFrame(args);
+            current_second_frames += 1;
+            elapsed_second += args.Time;
+            if (elapsed_second > 1)
             {
+                elapsed_second = 0;
+                fps = current_second_frames;
+                current_second_frames = 0;
+            }
+
+            view = Matrix4.LookAt(Position, Position + front, up);
+
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+           main_scene.draw(shader, Matrix4.Identity, view, projection, args.Time);
+
+            SwapBuffers();
+        }
+
+        protected override void OnUpdateFrame(FrameEventArgs args)
+        {
+            base.OnUpdateFrame(args);
+
+            if (IsFocused)
+            {
+                if (KeyboardState.IsKeyDown(Keys.Escape))
                 {
-                    "monitor",
-                    new scene_object(0.0f, 0.75f, 0.0f)
+                    Close();
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.W))
+                {
+                    Position += front * speed * (float)args.Time;
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.S))
+                {
+                    Position -= front * speed * (float)args.Time;
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.D))
+                {
+                    Position += Vector3.Normalize(Vector3.Cross(front, up)) * speed * (float)args.Time;
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.A))
+                {
+                    Position -= Vector3.Normalize(Vector3.Cross(front, up)) * speed * (float)args.Time;
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.Space))
+                {
+                    Position += up * speed * (float)args.Time;
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.LeftShift))
+                {
+                    Position -= up * speed * (float)args.Time;
+                }
+
+                if(KeyboardState.IsKeyPressed(Keys.Tab))
+                {
+                    SerializeObjects();
+                }
+
+
+                if (KeyboardState.IsKeyDown(Keys.K))
+                {
+                    main_scene[selected_object].rotate_X(1f * (float)args.Time);
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.I))
+                {
+                    main_scene[selected_object].rotate_X(-1f * (float)args.Time);
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.L))
+                {
+                    main_scene[selected_object].rotate_Y(1f * (float)args.Time);
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.J))
+                {
+                    main_scene[selected_object].rotate_Y(-1f * (float)args.Time);
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.U))
+                {
+                    main_scene[selected_object].rotate_Z(1f * (float)args.Time);
+                }
+
+                if (KeyboardState.IsKeyDown(Keys.O))
+                {
+                    main_scene[selected_object].rotate_Z(-1f * (float)args.Time);
+                }
+
+                if (KeyboardState.IsKeyPressed(Keys.Q))
+                {
+                    main_scene[selected_object].visible = !main_scene[selected_object].visible;
+                }
+            }
+        }
+
+        protected override void OnMouseMove(MouseMoveEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if (IsFocused)
+            {
+                if (firstMove)
+                {
+                    firstMove = false;
+                    return;
+                }
+
+                Vector2 center = new Vector2(Size.X / 2f, Size.Y / 2f);
+
+                float deltaX = MousePosition.X - center.X;
+                float deltaY = MousePosition.Y - center.Y;
+                yaw += deltaX * sensitivity;
+                pitch -= deltaY * sensitivity;
+
+                if (pitch > 89.0f)
+                {
+                    pitch = 89.0f;
+                }
+                else if (pitch < -89.0f)
+                {
+                    pitch = -89.0f;
+                }
+
+                front.X = (float)Math.Cos(MathHelper.DegreesToRadians(pitch)) * (float)Math.Cos(MathHelper.DegreesToRadians(yaw));
+                front.Y = (float)Math.Sin(MathHelper.DegreesToRadians(pitch));
+                front.Z = (float)Math.Cos(MathHelper.DegreesToRadians(pitch)) * (float)Math.Sin(MathHelper.DegreesToRadians(yaw));
+                front = Vector3.Normalize(front);
+
+                MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
+            }
+        }
+
+        protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
+        {
+            base.OnFramebufferResize(e);
+            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), Size.X / (float)Size.Y, 0.1f, 100.0f);
+            GL.Viewport(0, 0, Size.X, Size.Y);
+        }
+
+        protected override void OnUnload()
+        {
+            shader.Dispose();
+        }
+
+        private void SerializeObjects()
+        {
+            using (StreamWriter sw = File.CreateText("../../../assets/objects/tri.json"))
+            {
+                sw.Write(JsonConvert.SerializeObject(Test(), Formatting.Indented));
+            }
+            using (StreamWriter sw = File.CreateText("../../../assets/objects/monitor.json"))
+            {
+                sw.Write(JsonConvert.SerializeObject(Monitor(0.0f, 0.75f, 0.0f), Formatting.Indented));
+            }
+            using (StreamWriter sw = File.CreateText("../../../assets/objects/pot.json"))
+            {
+                sw.Write(JsonConvert.SerializeObject(Pot(), Formatting.Indented));
+            }
+            using (StreamWriter sw = File.CreateText("../../../assets/objects/desk.json"))
+            {
+                sw.Write(JsonConvert.SerializeObject(Desk(), Formatting.Indented));
+            }
+        }
+
+        private tri Test()
+        {
+            return
+                new tri(0.634f, 0.000f, 0.0f, 0.24f, 1.00f, 0.24f,
+                        0.634f, 0.381f, 0.0f, 1.00f, 0.24f, 0.24f,
+                        0.000f, 0.000f, 0.0f, 0.24f, 0.24f, 1.00f);
+        }
+
+        private scene_object LoadObject(string name, float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        {
+            using (StreamReader sr = File.OpenText("../../../assets/objects/" + name + ".json"))
+            {
+                return JsonConvert.DeserializeObject<scene_object>(sr.ReadToEnd());
+            }
+        }
+
+        private tri JsonTri()
+        {
+            using (StreamReader sr = File.OpenText("../../../assets/objects/tri.json"))
+            {
+                return JsonConvert.DeserializeObject<tri>(sr.ReadToEnd());
+            }
+        }
+
+        private scene_object Monitor(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        {
+            return new scene_object(offset_x, offset_y, offset_z)
                     {
                         {
                             "main monitor",
@@ -309,12 +525,12 @@ namespace ConsoleApp1
                                 }
                             }
                         }
-                    }
-                },
+                    };
+        }
 
-                {
-                    "pot",
-                    new scene_object(-0.55f, 0.75f, 0.0f)
+        private scene_object Pot(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        {
+            return new scene_object(offset_x, offset_y, offset_z)
                     {
                         {
                             "body",
@@ -323,6 +539,36 @@ namespace ConsoleApp1
                                 {
                                     "base",
                                     new face
+                                    {
+                                        new tri( 0.000f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
+                                                -0.100f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
+                                                -0.050f,  0.000f, -0.087f, 0.1216f, 0.4118f, 0.50196f),
+
+                                        new tri( 0.000f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
+                                                -0.050f,  0.000f, -0.087f, 0.1216f, 0.4118f, 0.50196f,
+                                                 0.050f,  0.000f, -0.087f, 0.1216f, 0.4118f, 0.50196f),
+
+                                        new tri( 0.000f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
+                                                 0.050f,  0.000f, -0.087f, 0.1216f, 0.4118f, 0.50196f,
+                                                 0.100f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f),
+
+                                        new tri( 0.000f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
+                                                -0.100f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
+                                                -0.050f,  0.000f,  0.087f, 0.1216f, 0.4118f, 0.50196f),
+
+                                        new tri( 0.000f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
+                                                -0.050f,  0.000f,  0.087f, 0.1216f, 0.4118f, 0.50196f,
+                                                 0.050f,  0.000f,  0.087f, 0.1216f, 0.4118f, 0.50196f),
+
+                                        new tri( 0.000f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
+                                                 0.050f,  0.000f,  0.087f, 0.1216f, 0.4118f, 0.50196f,
+                                                 0.100f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f)
+                                    }
+                                },
+
+                                {
+                                    "base fix",
+                                    new face(0.0f, 0.001f, 0.0f)
                                     {
                                         new tri( 0.000f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
                                                 -0.100f,  0.000f,  0.000f, 0.1216f, 0.4118f, 0.50196f,
@@ -519,12 +765,12 @@ namespace ConsoleApp1
                                 }
                             }
                         }
-                    }
-                },
+                    };
+        }
 
-                {
-                    "desk",
-                    new scene_object
+        private scene_object Desk(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        {
+            return new scene_object()
                     {
                         {
                             "desktop",
@@ -767,168 +1013,7 @@ namespace ConsoleApp1
                                 }
                             }
                         }
-                    }
-                }
-            };
-
-
-            shader = new Shader("../../../shader.vert", "../../../shader.frag");
-
-            view = Matrix4.LookAt(Position, Position + front, up);
-            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), Size.X / (float)Size.Y, 0.1f, 100.0f);
-        }
-        protected override void OnRenderFrame(FrameEventArgs args)
-        {
-            base.OnRenderFrame(args);
-            current_second_frames += 1;
-            elapsed_second += args.Time;
-            if (elapsed_second > 1)
-            {
-                elapsed_second = 0;
-                fps = current_second_frames;
-                current_second_frames = 0;
-            }
-            var cursorpos = Console.GetCursorPosition();
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine("Current position: {0}                                         \nFPS: {1}                                            \n", Position, fps);
-            Console.SetCursorPosition(cursorpos.Left, cursorpos.Top);
-
-            view = Matrix4.LookAt(Position, Position + front, up);
-
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-           main_scene.draw(shader, Matrix4.Identity, view, projection, args.Time);
-
-            SwapBuffers();
-        }
-
-        protected override void OnUpdateFrame(FrameEventArgs args)
-        {
-            base.OnUpdateFrame(args);
-
-            if (IsFocused)
-            {
-                if (KeyboardState.IsKeyDown(Keys.Escape))
-                {
-                    Close();
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.W))
-                {
-                    Position += front * speed * (float)args.Time;
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.S))
-                {
-                    Position -= front * speed * (float)args.Time;
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.D))
-                {
-                    Position += Vector3.Normalize(Vector3.Cross(front, up)) * speed * (float)args.Time;
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.A))
-                {
-                    Position -= Vector3.Normalize(Vector3.Cross(front, up)) * speed * (float)args.Time;
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.Space))
-                {
-                    Position += up * speed * (float)args.Time;
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.LeftShift))
-                {
-                    Position -= up * speed * (float)args.Time;
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.K))
-                {
-                    main_scene["monitor"]["main monitor"].rotate_X(1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.I))
-                {
-                    main_scene["monitor"]["main monitor"].rotate_X(-1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.L))
-                {
-                    main_scene["monitor"]["main monitor"].rotate_Y(1f * (float)args.Time);
-                    main_scene["monitor"]["stand"].rotate_Y(1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.J))
-                {
-                    main_scene["monitor"]["main monitor"].rotate_Y(-1f * (float)args.Time);
-                    main_scene["monitor"]["stand"].rotate_Y(-1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.U))
-                {
-                    main_scene["monitor"]["main monitor"].rotate_Z(1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.O))
-                {
-                    main_scene["monitor"]["main monitor"].rotate_Z(-1f * (float)args.Time);
-                }
-            }
-        }
-
-        protected override void OnMouseMove(MouseMoveEventArgs e)
-        {
-            base.OnMouseMove(e);
-            if (IsFocused)
-            {
-                if (firstMove)
-                {
-                    firstMove = false;
-                    return;
-                }
-
-                Vector2 center = new Vector2(Size.X / 2f, Size.Y / 2f);
-
-                float deltaX = MousePosition.X - center.X;
-                float deltaY = MousePosition.Y - center.Y;
-                yaw += deltaX * sensitivity;
-                pitch -= deltaY * sensitivity;
-
-                if (pitch > 89.0f)
-                {
-                    pitch = 89.0f;
-                }
-                else if (pitch < -89.0f)
-                {
-                    pitch = -89.0f;
-                }
-
-                // Console.Write("(");
-                // Console.Write(yaw);
-                // Console.Write(", ");
-                // Console.Write(pitch);
-                // Console.WriteLine(")");
-
-                front.X = (float)Math.Cos(MathHelper.DegreesToRadians(pitch)) * (float)Math.Cos(MathHelper.DegreesToRadians(yaw));
-                front.Y = (float)Math.Sin(MathHelper.DegreesToRadians(pitch));
-                front.Z = (float)Math.Cos(MathHelper.DegreesToRadians(pitch)) * (float)Math.Sin(MathHelper.DegreesToRadians(yaw));
-                front = Vector3.Normalize(front);
-
-                MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
-            }
-        }
-
-        protected override void OnFramebufferResize(FramebufferResizeEventArgs e)
-        {
-            base.OnFramebufferResize(e);
-            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), Size.X / (float)Size.Y, 0.1f, 100.0f);
-            GL.Viewport(0, 0, Size.X, Size.Y);
-        }
-
-        protected override void OnUnload()
-        {
-            shader.Dispose();
+                    };
         }
     }
 }
