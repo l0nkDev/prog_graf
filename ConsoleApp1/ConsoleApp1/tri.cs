@@ -6,10 +6,11 @@ using OpenTK.Windowing.Desktop;
 using System.Diagnostics;
 using System.IO;
 using System.Drawing;
+using Newtonsoft.Json;
 
 namespace ConsoleApp1 {
 
-
+    [JsonObjectAttribute]
     public class Tri
     {
         private int VertexBufferObject;

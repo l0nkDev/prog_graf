@@ -1,11 +1,13 @@
-﻿using OpenTK.Mathematics;
+﻿using Newtonsoft.Json;
+using OpenTK.Mathematics;
 using System;
 
 namespace ConsoleApp1
 {
-	public class Face
+    [JsonObjectAttribute]
+    public class Face
     {
-        public HashSet<Tri> contents = new();
+        Dictionary<byte, Tri> Tris = new();
 
         public bool visible = true;
 
@@ -29,7 +31,7 @@ namespace ConsoleApp1
 		{
             if (visible)
             {
-                foreach (Tri tri in contents)
+                foreach (Tri tri in Tris.Values)
                 {
                     tri.Draw(shader, roll * pitch * yaw * Matrix4.CreateTranslation(offset_x, offset_y, offset_z) * model, view, projection, time);
                 }
