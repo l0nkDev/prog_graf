@@ -4,10 +4,9 @@ using System;
 
 namespace ConsoleApp1
 {
-    [JsonObjectAttribute]
     public class Face
     {
-        Dictionary<byte, Tri> Tris = new();
+        public Dictionary<byte, Tri> Tris = new();
 
         public bool visible = true;
 

@@ -8,9 +8,8 @@ using System.IO;
 using System.Drawing;
 using Newtonsoft.Json;
 
-namespace ConsoleApp1 {
-
-    [JsonObjectAttribute]
+namespace ConsoleApp1 
+{
     public class Tri
     {
         private int VertexBufferObject;
