@@ -35,9 +35,10 @@ namespace ConsoleApp1
         int fps = 0;
 
         List<string> object_names;
+        List<string> pieces_names;
 
-        string selected_object = "monitor";
-        string selected_piece = "main";
+        string selected_object;
+        string selected_piece;
 
         Scene main_scene = new();
 
@@ -59,9 +60,14 @@ namespace ConsoleApp1
             front = new Vector3(0.0f, 0.0f, -1.0f);
             up = Vector3.UnitY;
 
-            main_scene.Objects.Add("monitor", LoadObject("monitor", 0.0f, 0.75f, 0.0f));
+            main_scene.Objects.Add("monitor", LoadObject("monitor", 0.55f, 0.75f, 0.0f));
             main_scene.Objects.Add("pot", LoadObject("pot", -0.55f, 0.75f, 0.0f));
             main_scene.Objects.Add("desk", LoadObject("desk"));
+
+            object_names = new List<string>(main_scene.Objects.Keys);
+            selected_object = object_names.ElementAtOrDefault(0);
+            pieces_names = new List<string>(main_scene.Objects[selected_object].Pieces.Keys);
+            selected_piece = pieces_names.ElementAtOrDefault(0);
 
             shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
 
@@ -81,6 +87,7 @@ namespace ConsoleApp1
                 elapsed_second = 0;
                 fps = current_second_frames;
                 current_second_frames = 0;
+                updateUI();
             }
 
             view = Matrix4.LookAt(Position, Position + front, up);
@@ -135,38 +142,53 @@ namespace ConsoleApp1
 
                 if (KeyboardState.IsKeyDown(Keys.K))
                 {
-                    main_scene.Objects[selected_object].RotateX(1f * (float)args.Time);
+                    main_scene.Objects[selected_object].Pieces[selected_piece].RotateX(1f * (float)args.Time);
                 }
 
                 if (KeyboardState.IsKeyDown(Keys.I))
                 {
-                    main_scene.Objects[selected_object].RotateX(-1f * (float)args.Time);
+                    main_scene.Objects[selected_object].Pieces[selected_piece].RotateX(-1f * (float)args.Time);
                 }
 
                 if (KeyboardState.IsKeyDown(Keys.L))
                 {
-                    main_scene.Objects[selected_object].RotateY(1f * (float)args.Time);
+                    main_scene.Objects[selected_object].Pieces[selected_piece].RotateY(1f * (float)args.Time);
                 }
 
                 if (KeyboardState.IsKeyDown(Keys.J))
                 {
-                    main_scene.Objects[selected_object].RotateY(-1f * (float)args.Time);
+                    main_scene.Objects[selected_object].Pieces[selected_piece].RotateY(-1f * (float)args.Time);
                 }
 
                 if (KeyboardState.IsKeyDown(Keys.U))
                 {
-                    main_scene.Objects[selected_object].RotateZ(1f * (float)args.Time);
+                    main_scene.Objects[selected_object].Pieces[selected_piece].RotateZ(1f * (float)args.Time);
                 }
 
                 if (KeyboardState.IsKeyDown(Keys.O))
                 {
-                    main_scene.Objects[selected_object].RotateZ(-1f * (float)args.Time);
+                    main_scene.Objects[selected_object].Pieces[selected_piece].RotateZ(-1f * (float)args.Time);
                 }
 
                 if (KeyboardState.IsKeyPressed(Keys.Q))
                 {
                     main_scene.Objects[selected_object].visible = !main_scene.Objects[selected_object].visible;
                 }
+
+                if (KeyboardState.IsKeyPressed(Keys.Tab))
+                {
+                    try
+                    {
+                        selected_object = object_names.ElementAt(object_names.IndexOf(selected_object) + 1);
+                    }
+                    catch
+                    {
+                        selected_object = object_names.ElementAt(0);
+                    }
+                    pieces_names = new List<string>(main_scene.Objects[selected_object].Pieces.Keys);
+                    selected_piece = pieces_names.ElementAt(0);
+                    updateUI();
+                    }
             }
         }
 
@@ -228,6 +250,14 @@ namespace ConsoleApp1
                 objectOut.offset_z = offset_z;
                 return objectOut;
             }
+        }
+
+        private void updateUI()
+        {
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine("FPS: " + fps);
+            Console.WriteLine("Selected Object: " + selected_object);
+            Console.WriteLine("Selected Piece: " + selected_piece);
         }
     }
 }

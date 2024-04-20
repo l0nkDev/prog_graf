@@ -97,3 +97,5 @@ C:\Users\La_PapuLAPTOP\Documents\prog_graf\ConsoleApp1\ConsoleApp1\obj\Debug\net
 C:\Users\La_PapuLAPTOP\Documents\prog_graf\ConsoleApp1\ConsoleApp1\obj\Debug\net6.0\ref\ConsoleApp1.dll
 C:\Users\l0nkd\OneDrive\Documentos\prog_graf\ConsoleApp1\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.csproj.ResolveComReference.cache
 C:\Users\l0nkd\OneDrive\Documentos\prog_graf\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\La_PapuLAPTOP\Documents\prog_graf\ConsoleApp1\ConsoleApp1\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\La_PapuLAPTOP\Documents\prog_graf\ConsoleApp1\ConsoleApp1\obj\Debug\net6.0\ConsoleApp1.csproj.ResolveComReference.cache
