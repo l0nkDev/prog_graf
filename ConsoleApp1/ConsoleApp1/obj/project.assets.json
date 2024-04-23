@@ -2,6 +2,112 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "ImGui.NET/1.89.9.2": {
+        "type": "package",
+        "dependencies": {
+          "System.Buffers": "4.4.0",
+          "System.Numerics.Vectors": "4.4.0",
+          "System.Runtime.CompilerServices.Unsafe": "4.4.0"
+        },
+        "compile": {
+          "lib/net6.0/ImGui.NET.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/ImGui.NET.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libcimgui.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx/native/libcimgui.dylib": {
+            "assetType": "native",
+            "rid": "osx"
+          },
+          "runtimes/win-arm64/native/cimgui.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-x64/native/cimgui.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/cimgui.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "Magick.NET-Q8-AnyCPU/13.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Magick.NET.Core": "13.3.0"
+        },
+        "compile": {
+          "lib/netstandard21/Magick.NET-Q8-AnyCPU.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard21/Magick.NET-Q8-AnyCPU.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/netstandard20/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux-arm64/native/Magick.Native-Q8-arm64.dll.so": {
+            "assetType": "native",
+            "rid": "linux-arm64"
+          },
+          "runtimes/linux-musl-x64/native/Magick.Native-Q8-x64.dll.so": {
+            "assetType": "native",
+            "rid": "linux-musl-x64"
+          },
+          "runtimes/linux-x64/native/Magick.Native-Q8-x64.dll.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-arm64/native/Magick.Native-Q8-arm64.dll.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/osx-x64/native/Magick.Native-Q8-x64.dll.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-arm64/native/Magick.Native-Q8-arm64.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-x64/native/Magick.Native-Q8-x64.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/Magick.Native-Q8-x86.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "Magick.NET.Core/13.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard21/Magick.NET.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard21/Magick.NET.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Newtonsoft.Json/13.0.3": {
         "type": "package",
         "compile": {
@@ -215,6 +321,24 @@
           "lib/netstandard2.0/StbImageSharp.dll": {}
         }
       },
+      "System.Buffers/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      },
+      "System.Numerics.Vectors/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      },
       "System.Runtime.CompilerServices.Unsafe/5.0.0": {
         "type": "package",
         "compile": {
@@ -227,10 +351,137 @@
             "related": ".xml"
           }
         }
+      },
+      "Zenseless.OpenTK/0.1.81": {
+        "type": "package",
+        "dependencies": {
+          "Magick.NET-Q8-AnyCPU": "13.3.0",
+          "OpenTK": "4.8.1",
+          "Zenseless.Patterns": "0.6.35",
+          "Zenseless.Resources": "0.2.15"
+        },
+        "compile": {
+          "lib/net6.0/Zenseless.OpenTK.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Zenseless.OpenTK.dll": {}
+        }
+      },
+      "Zenseless.OpenTK.GUI/0.1.25": {
+        "type": "package",
+        "dependencies": {
+          "ImGui.NET": "1.89.9.2",
+          "Zenseless.OpenTK": "0.1.81"
+        },
+        "compile": {
+          "lib/net6.0/Zenseless.OpenTK.GUI.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Zenseless.OpenTK.GUI.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Zenseless.Patterns/0.6.35": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Zenseless.Patterns.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/Zenseless.Patterns.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Zenseless.Resources/0.2.15": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Zenseless.Resources.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/Zenseless.Resources.dll": {
+            "related": ".xml"
+          }
+        }
       }
     }
   },
   "libraries": {
+    "ImGui.NET/1.89.9.2": {
+      "sha512": "9nBLsib++tvKz8/4/5n7RCqNINbs9sDdEmESglW270VaBPJbjAepWxOuPBFLF7ifDDBfh/Vu+GSY++Pdas8JcQ==",
+      "type": "package",
+      "path": "imgui.net/1.89.9.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/net40/ImGui.NET.targets",
+        "imgui.net.1.89.9.2.nupkg.sha512",
+        "imgui.net.nuspec",
+        "lib/net6.0/ImGui.NET.dll",
+        "lib/net6.0/ImGui.NET.xml",
+        "lib/netstandard2.0/ImGui.NET.dll",
+        "lib/netstandard2.0/ImGui.NET.xml",
+        "runtimes/linux-x64/native/libcimgui.so",
+        "runtimes/osx/native/libcimgui.dylib",
+        "runtimes/win-arm64/native/cimgui.dll",
+        "runtimes/win-x64/native/cimgui.dll",
+        "runtimes/win-x86/native/cimgui.dll"
+      ]
+    },
+    "Magick.NET-Q8-AnyCPU/13.3.0": {
+      "sha512": "QR0/mehbf/hLXiMDE2RXgGOF15tCRai7QysbGAHdVxWLIh2FpiUgxBUDSQ2LV8YoufYFWnxt0quW07dtbCGFgQ==",
+      "type": "package",
+      "path": "magick.net-q8-anycpu/13.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Magick.NET.icon.png",
+        "Notice.linux-musl.txt",
+        "Notice.linux.txt",
+        "Notice.osx.txt",
+        "Notice.win.txt",
+        "build/netstandard20/Magick.NET-Q8-AnyCPU.targets",
+        "docs/Readme.md",
+        "lib/netstandard20/Magick.NET-Q8-AnyCPU.dll",
+        "lib/netstandard20/Magick.NET-Q8-AnyCPU.xml",
+        "lib/netstandard21/Magick.NET-Q8-AnyCPU.dll",
+        "lib/netstandard21/Magick.NET-Q8-AnyCPU.xml",
+        "magick.net-q8-anycpu.13.3.0.nupkg.sha512",
+        "magick.net-q8-anycpu.nuspec",
+        "runtimes/linux-arm64/native/Magick.Native-Q8-arm64.dll.so",
+        "runtimes/linux-musl-x64/native/Magick.Native-Q8-x64.dll.so",
+        "runtimes/linux-x64/native/Magick.Native-Q8-x64.dll.so",
+        "runtimes/osx-arm64/native/Magick.Native-Q8-arm64.dll.dylib",
+        "runtimes/osx-x64/native/Magick.Native-Q8-x64.dll.dylib",
+        "runtimes/win-arm64/native/Magick.Native-Q8-arm64.dll",
+        "runtimes/win-x64/native/Magick.Native-Q8-x64.dll",
+        "runtimes/win-x86/native/Magick.Native-Q8-x86.dll"
+      ]
+    },
+    "Magick.NET.Core/13.3.0": {
+      "sha512": "5d6hy5QusOYBmj4AUoPvPmgg8FWMdsyJPhs/QAiHGhX1XLB9xn8C05JWj63tQO6u+1KdDq3nn1RLchJEJ5GSBQ==",
+      "type": "package",
+      "path": "magick.net.core/13.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Copyright.txt",
+        "Magick.NET.icon.png",
+        "docs/Readme.md",
+        "lib/netstandard20/Magick.NET.Core.dll",
+        "lib/netstandard20/Magick.NET.Core.xml",
+        "lib/netstandard21/Magick.NET.Core.dll",
+        "lib/netstandard21/Magick.NET.Core.xml",
+        "magick.net.core.13.3.0.nupkg.sha512",
+        "magick.net.core.nuspec"
+      ]
+    },
     "Newtonsoft.Json/13.0.3": {
       "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
       "type": "package",
@@ -440,6 +691,74 @@
         "stbimagesharp.nuspec"
       ]
     },
+    "System.Buffers/4.4.0": {
+      "sha512": "AwarXzzoDwX6BgrhjoJsk6tUezZEozOT5Y9QKF94Gl4JK91I4PIIBkBco9068Y9/Dra8Dkbie99kXB8+1BaYKw==",
+      "type": "package",
+      "path": "system.buffers/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.1/System.Buffers.dll",
+        "lib/netstandard1.1/System.Buffers.xml",
+        "lib/netstandard2.0/System.Buffers.dll",
+        "lib/netstandard2.0/System.Buffers.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard1.1/System.Buffers.dll",
+        "ref/netstandard1.1/System.Buffers.xml",
+        "ref/netstandard2.0/System.Buffers.dll",
+        "ref/netstandard2.0/System.Buffers.xml",
+        "system.buffers.4.4.0.nupkg.sha512",
+        "system.buffers.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.Numerics.Vectors/4.4.0": {
+      "sha512": "UiLzLW+Lw6HLed1Hcg+8jSRttrbuXv7DANVj0DkL9g6EnnzbL75EB7EWsw5uRbhxd/4YdG8li5XizGWepmG3PQ==",
+      "type": "package",
+      "path": "system.numerics.vectors/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Numerics.Vectors.dll",
+        "lib/net46/System.Numerics.Vectors.xml",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.Numerics.Vectors.dll",
+        "lib/netstandard1.0/System.Numerics.Vectors.xml",
+        "lib/netstandard2.0/System.Numerics.Vectors.dll",
+        "lib/netstandard2.0/System.Numerics.Vectors.xml",
+        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.dll",
+        "lib/portable-net45+win8+wp8+wpa81/System.Numerics.Vectors.xml",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Numerics.Vectors.dll",
+        "ref/net46/System.Numerics.Vectors.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard1.0/System.Numerics.Vectors.dll",
+        "ref/netstandard1.0/System.Numerics.Vectors.xml",
+        "ref/netstandard2.0/System.Numerics.Vectors.dll",
+        "ref/netstandard2.0/System.Numerics.Vectors.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.numerics.vectors.4.4.0.nupkg.sha512",
+        "system.numerics.vectors.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Runtime.CompilerServices.Unsafe/5.0.0": {
       "sha512": "ZD9TMpsmYJLrxbbmdvhwt9YEgG5WntEnZ/d1eH8JBX9LBp+Ju8BSBhUGbZMNVHHomWo2KVImJhTDl2hIgw/6MA==",
       "type": "package",
@@ -471,29 +790,87 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "Zenseless.OpenTK/0.1.81": {
+      "sha512": "5d2F/Mi1f2oGopbhdqhnNgovRA/z5O/BSelBOzLzAsheY7M1UrGPl49ShnMHgWp51XBqyZ/7TMJnJo6bPsZzzg==",
+      "type": "package",
+      "path": "zenseless.opentk/0.1.81",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/Zenseless.OpenTK.dll",
+        "lib/net6.0/Zenseless.Patterns.xml",
+        "zenseless.opentk.0.1.81.nupkg.sha512",
+        "zenseless.opentk.nuspec"
+      ]
+    },
+    "Zenseless.OpenTK.GUI/0.1.25": {
+      "sha512": "Oq1LKQZhacqssybYsgCWN+2+sDsWVOlCb+J9H7P+rXOOV/gDH8GYYCRZacsAgUWR35cPauEger2VPKc8rAgP0Q==",
+      "type": "package",
+      "path": "zenseless.opentk.gui/0.1.25",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/Zenseless.OpenTK.GUI.dll",
+        "lib/net6.0/Zenseless.OpenTK.GUI.xml",
+        "zenseless.opentk.gui.0.1.25.nupkg.sha512",
+        "zenseless.opentk.gui.nuspec"
+      ]
+    },
+    "Zenseless.Patterns/0.6.35": {
+      "sha512": "g8rITJmDp/ftVMB4cD3xgOAmnvs8uVtCj/5kAP5bFt1/YQ3jmbSTPLjVYD+VJ7eFwQMmXYX6mLHvSeaJe+VXiw==",
+      "type": "package",
+      "path": "zenseless.patterns/0.6.35",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.1/Zenseless.Patterns.dll",
+        "lib/netstandard2.1/Zenseless.Patterns.xml",
+        "zenseless.patterns.0.6.35.nupkg.sha512",
+        "zenseless.patterns.nuspec"
+      ]
+    },
+    "Zenseless.Resources/0.2.15": {
+      "sha512": "4YVSwfhaM4emFnPKa/tuV3tVBvNf/1T/Q2ny5OuDXsUUMLN53jNOC5D+73JbCSLnEVArnNGBiiz0vbCEKa+DRQ==",
+      "type": "package",
+      "path": "zenseless.resources/0.2.15",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.1/Zenseless.Resources.dll",
+        "lib/netstandard2.1/Zenseless.Resources.xml",
+        "zenseless.resources.0.2.15.nupkg.sha512",
+        "zenseless.resources.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "Newtonsoft.Json >= 13.0.3",
       "OpenTK >= 4.8.2",
-      "StbImageSharp >= 2.27.13"
+      "StbImageSharp >= 2.27.13",
+      "Zenseless.OpenTK.GUI >= 0.1.25"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\La_PapuLAPTOP\\.nuget\\packages\\": {}
+    "C:\\Users\\l0nkd\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\La_PapuLAPTOP\\Documents\\prog_graf\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectUniqueName": "C:\\Users\\l0nkd\\OneDrive\\Documentos\\prog_graf\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
       "projectName": "ConsoleApp1",
-      "projectPath": "C:\\Users\\La_PapuLAPTOP\\Documents\\prog_graf\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
-      "packagesPath": "C:\\Users\\La_PapuLAPTOP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\La_PapuLAPTOP\\Documents\\prog_graf\\ConsoleApp1\\ConsoleApp1\\obj\\",
+      "projectPath": "C:\\Users\\l0nkd\\OneDrive\\Documentos\\prog_graf\\ConsoleApp1\\ConsoleApp1\\ConsoleApp1.csproj",
+      "packagesPath": "C:\\Users\\l0nkd\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\l0nkd\\OneDrive\\Documentos\\prog_graf\\ConsoleApp1\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\La_PapuLAPTOP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\l0nkd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -513,11 +890,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -535,6 +907,10 @@
           "StbImageSharp": {
             "target": "Package",
             "version": "[2.27.13, )"
+          },
+          "Zenseless.OpenTK.GUI": {
+            "target": "Package",
+            "version": "[0.1.25, )"
           }
         },
         "imports": [
@@ -553,7 +929,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

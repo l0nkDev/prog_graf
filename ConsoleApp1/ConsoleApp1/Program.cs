@@ -1,7 +1,12 @@
-﻿// This line creates a new instance, and wraps the instance in a using statement so it's automatically disposed once we've exited the block.
-using ConsoleApp1;
+﻿using ConsoleApp1;
 
-using (Game game = new Game(800, 600, "LearnOpenTK"))
+internal class Program
 {
-    game.Run();
+    private static void Main(string[] args)
+    {
+        using (Game game = new Game(800, 600, "LearnOpenTK"))
+        {
+            game.Run();
+        }
+    }
 }

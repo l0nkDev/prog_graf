@@ -31,6 +31,18 @@ namespace ConsoleApp1
             }
         }
 
+        public static Object3D LoadObject(string name, float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        {
+            using (StreamReader sr = File.OpenText("../../../assets/objects/" + name + ".json"))
+            {
+                Object3D objectOut = JsonConvert.DeserializeObject<Object3D>(sr.ReadToEnd());
+                objectOut.offset_x = offset_x;
+                objectOut.offset_y = offset_y;
+                objectOut.offset_z = offset_z;
+                return objectOut;
+            }
+        }
+
         public static Object3D Monitor(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
         {
             Object3D monitor = new Object3D(offset_x, offset_y, offset_z);
