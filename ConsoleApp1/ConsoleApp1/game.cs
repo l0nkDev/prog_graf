@@ -34,11 +34,11 @@ namespace JuegoProgramacionGrafica
         private int current_second_frames = 0;
         private int fps = 0;
 
-        private List<string> object_names;
-        private List<string> pieces_names;
-
-        public string selected_object;
-        public string selected_piece;
+        public string queue_path;
+        public string queue_name;
+        public string queue_scene;
+        public bool queue_is_scene;
+        public bool is_queued = false;
 
         public Dictionary<string, Scene> scenes;
 
@@ -60,10 +60,10 @@ namespace JuegoProgramacionGrafica
             up = Vector3.UnitY;
 
             scenes = new();
-            scenes.Add("main_scene", new Scene());
-            scenes["main_scene"].Objects.Add("monitor", ObjectCreation.LoadObject("../../../assets/objects/monitor.json", 0.55f, 0.75f, 0.0f));
-            scenes["main_scene"].Objects.Add("pot", ObjectCreation.LoadObject("../../../assets/objects/pot.json", -0.55f, 0.75f, 0.0f));
-            scenes["main_scene"].Objects.Add("desk", ObjectCreation.LoadObject("../../../assets/objects/desk.json"));
+            //scenes.Add("main_scene", new Scene());
+            //scenes["main_scene"].Objects.Add("monitor", ObjectCreation.LoadObject("../../../assets/objects/monitor.json", 0.55f, 0.75f, 0.0f));
+            //scenes["main_scene"].Objects.Add("pot", ObjectCreation.LoadObject("../../../assets/objects/pot.json", -0.55f, 0.75f, 0.0f));
+            //scenes["main_scene"].Objects.Add("desk", ObjectCreation.LoadObject("../../../assets/objects/desk.json"));
 
             shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
 
@@ -94,6 +94,14 @@ namespace JuegoProgramacionGrafica
 
         protected override void OnRenderFrame(FrameEventArgs args)
         {
+            if (is_queued)
+            {
+                if (queue_is_scene) scenes.Add(queue_name, ObjectCreation.LoadScene(queue_path)); 
+                else scenes[queue_scene].Objects.Add(queue_name, ObjectCreation.LoadObject(queue_path));
+                form.Invoke(form.myDelegate);
+                is_queued = false;
+            }
+
             base.OnRenderFrame(args);
             current_second_frames += 1;
             elapsed_second += args.Time;
@@ -156,32 +164,6 @@ namespace JuegoProgramacionGrafica
             }
         }
 
-        public void NextObject()
-        {
-            try
-            {
-                selected_object = object_names.ElementAt(object_names.IndexOf(selected_object) + 1);
-            }
-            catch
-            {
-                selected_object = object_names.ElementAt(0);
-            }
-            pieces_names = new List<string>(scenes["main_scene"].Objects[selected_object].Pieces.Keys);
-            selected_piece = pieces_names.ElementAt(0);
-        }
-
-        public void NextPiece()
-        {
-            try
-            {
-                selected_piece = pieces_names.ElementAt(pieces_names.IndexOf(selected_piece) + 1);
-            }
-            catch
-            {
-                selected_piece = pieces_names.ElementAt(0);
-            }
-        }
-
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             base.OnMouseMove(e);
@@ -236,8 +218,6 @@ namespace JuegoProgramacionGrafica
         {
             Console.Clear();
             Console.WriteLine("FPS: " + fps);
-            Console.WriteLine("Selected Object: " + selected_object);
-            Console.WriteLine("Selected Piece: " + selected_piece);
         }
     }
 }

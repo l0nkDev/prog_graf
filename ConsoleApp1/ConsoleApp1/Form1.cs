@@ -4,6 +4,8 @@ namespace JuegoProgramacionGrafica
 {
     public partial class Form1 : Form
     {
+        public delegate void treeUpdate();
+        public treeUpdate myDelegate;
         bool changing_selection = false;
         Game game;
 
@@ -11,6 +13,7 @@ namespace JuegoProgramacionGrafica
         {
             InitializeComponent();
             this.game = game;
+            myDelegate = new treeUpdate(UpdateTreeView);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -37,7 +40,7 @@ namespace JuegoProgramacionGrafica
             scene_tree.SelectedNode.Checked = object_visibility_toggle.Checked;
         }
 
-        private void UpdateTreeView()
+        public void UpdateTreeView()
         {
             scene_tree.Nodes.Clear();
             foreach (KeyValuePair<string, Scene> scene in game.scenes)
@@ -225,8 +228,10 @@ namespace JuegoProgramacionGrafica
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", "new_scene", 0, 0), ObjectCreation.LoadScene(openFileDialog1.FileName));
-                UpdateTreeView();
+                game.queue_is_scene = true;
+                game.queue_name = Interaction.InputBox("Name of the new scene", "New Scene", "new_scene", 0, 0);
+                game.queue_path = openFileDialog1.FileName;
+                game.is_queued = true;
             }
         }
 
@@ -237,8 +242,11 @@ namespace JuegoProgramacionGrafica
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                game.scenes[scene_tree.SelectedNode.Text].Objects.Add(Interaction.InputBox("Name of the new object", "New Object", "new_object", 0, 0), ObjectCreation.LoadObject(openFileDialog1.FileName));
-                UpdateTreeView();
+                game.queue_is_scene = false;
+                game.queue_name = Interaction.InputBox("Name of the new object", "New object", "new_object", 0, 0);
+                game.queue_path = openFileDialog1.FileName;
+                game.queue_scene = scene_tree.SelectedNode.Text;
+                game.is_queued = true;
             }
         }
     }
