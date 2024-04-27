@@ -49,10 +49,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.317,
           "offset_y": -0.1805,
-          "offset_z": 0.01
+          "offset_z": 0.01,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "back": {
           "Tris": {
@@ -101,10 +104,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.317,
           "offset_y": -0.2005,
-          "offset_z": -0.01
+          "offset_z": -0.01,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "speakers": {
           "Tris": {
@@ -153,10 +159,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.317,
           "offset_y": -0.2005,
-          "offset_z": 0.01
+          "offset_z": 0.01,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "left": {
           "Tris": {
@@ -205,10 +214,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.317,
           "offset_y": -0.2005,
-          "offset_z": -0.01
+          "offset_z": -0.01,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "right": {
           "Tris": {
@@ -257,10 +269,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": 0.317,
           "offset_y": -0.2005,
-          "offset_z": -0.01
+          "offset_z": -0.01,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "top": {
           "Tris": {
@@ -309,10 +324,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.317,
           "offset_y": 0.2005,
-          "offset_z": -0.01
+          "offset_z": -0.01,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "bottom": {
           "Tris": {
@@ -361,16 +379,22 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.317,
           "offset_y": -0.2005,
-          "offset_z": -0.01
+          "offset_z": -0.01,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         }
       },
-      "visible": true,
       "offset_x": 0.0,
       "offset_y": 0.3001,
-      "offset_z": 0.015
+      "offset_z": 0.015,
+      "pitch_value": 0.0,
+      "roll_value": 0.0,
+      "yaw_value": 0.0,
+      "visible": true
     },
     "stand": {
       "Faces": {
@@ -421,10 +445,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.025,
           "offset_y": 0.0,
-          "offset_z": 0.005
+          "offset_z": 0.005,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "back": {
           "Tris": {
@@ -473,10 +500,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.025,
           "offset_y": 0.0,
-          "offset_z": -0.005
+          "offset_z": -0.005,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "left": {
           "Tris": {
@@ -525,10 +555,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.025,
           "offset_y": 0.0,
-          "offset_z": -0.005
+          "offset_z": -0.005,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "right": {
           "Tris": {
@@ -577,16 +610,22 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.025,
           "offset_y": 0.0,
-          "offset_z": 0.005
+          "offset_z": 0.005,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         }
       },
-      "visible": true,
       "offset_x": 0.0,
       "offset_y": 0.01,
-      "offset_z": 0.0
+      "offset_z": 0.0,
+      "pitch_value": 0.0,
+      "roll_value": 0.0,
+      "yaw_value": 0.0,
+      "visible": true
     },
     "base": {
       "Faces": {
@@ -637,10 +676,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.135,
           "offset_y": 0.01,
-          "offset_z": -0.075
+          "offset_z": -0.075,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "bottom": {
           "Tris": {
@@ -689,10 +731,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.135,
           "offset_y": 0.0,
-          "offset_z": -0.075
+          "offset_z": -0.075,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "left": {
           "Tris": {
@@ -741,10 +786,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.135,
           "offset_y": 0.0,
-          "offset_z": -0.075
+          "offset_z": -0.075,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "right": {
           "Tris": {
@@ -793,10 +841,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": 0.085,
           "offset_y": 0.0,
-          "offset_z": -0.075
+          "offset_z": -0.075,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "front": {
           "Tris": {
@@ -845,10 +896,13 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.085,
           "offset_y": 0.0,
-          "offset_z": 0.075
+          "offset_z": 0.075,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         },
         "back": {
           "Tris": {
@@ -897,20 +951,29 @@
               ]
             }
           },
-          "visible": true,
           "offset_x": -0.135,
           "offset_y": 0.0,
-          "offset_z": -0.075
+          "offset_z": -0.075,
+          "pitch_value": 0.0,
+          "roll_value": 0.0,
+          "yaw_value": 0.0,
+          "visible": true
         }
       },
-      "visible": true,
       "offset_x": 0.0,
       "offset_y": 0.0,
-      "offset_z": 0.0
+      "offset_z": 0.0,
+      "pitch_value": 0.0,
+      "roll_value": 0.0,
+      "yaw_value": 0.0,
+      "visible": true
     }
   },
-  "visible": true,
   "offset_x": 0.0,
   "offset_y": 0.0,
-  "offset_z": 0.0
+  "offset_z": 0.0,
+  "pitch_value": 0.0,
+  "roll_value": 0.0,
+  "yaw_value": 0.0,
+  "visible": true
 }

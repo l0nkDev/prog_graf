@@ -2,23 +2,17 @@
 using OpenTK.Mathematics;
 using System;
 
-namespace ConsoleApp1
+namespace JuegoProgramacionGrafica
 {
     public class Object3D
     {
         public Dictionary<string, Piece> Pieces = new();
 
-        public bool visible = true;
-
         private Matrix4 pitch, roll, yaw;
-
-        [JsonProperty("offset_x")]
-        public float offset_x = 0.0f;
-        [JsonProperty("offset_y")]
-        public float offset_y = 0.0f;
-        [JsonProperty("offset_z")]
-        public float offset_z = 0.0f;
-		public Object3D(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        public float offset_x, offset_y, offset_z = 0.0f;
+        public float pitch_value, roll_value, yaw_value = 0.0f;
+        public bool visible = true;
+        public Object3D(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
 		{
 			this.offset_x = offset_x;
 			this.offset_y = offset_y;
@@ -43,19 +37,38 @@ namespace ConsoleApp1
             }
         }
 
-        public void RotateY(float delta)
+        public void SetRotation(float pitch, float yaw, float roll)
         {
-            yaw *= Matrix4.CreateRotationY(delta);
+            this.yaw = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(yaw));
+            this.pitch = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(pitch));
+            this.roll = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(roll));
+            yaw_value = yaw;
+            pitch_value = pitch;
+            roll_value = roll;
         }
 
-        public void RotateX(float delta)
+        public void Rotate(float pitch, float yaw, float roll)
         {
-            pitch *= Matrix4.CreateRotationX(delta);
+            this.yaw *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(yaw));
+            this.pitch *= Matrix4.CreateRotationX(MathHelper.DegreesToRadians(pitch));
+            this.roll *= Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(roll));
+            yaw_value += yaw;
+            pitch_value += pitch;
+            roll_value += roll;
         }
 
-        public void RotateZ(float delta)
+        public void SetPosition(float x, float y, float z)
         {
-            roll *= Matrix4.CreateRotationZ(delta);
+            offset_x = x;
+            offset_y = y;
+            offset_z = z;
+        }
+
+        public void Move(float x, float y, float z)
+        {
+            offset_x += x;
+            offset_y += y;
+            offset_z += z;
         }
     }
 }

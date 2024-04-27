@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace ConsoleApp1
+namespace JuegoProgramacionGrafica
 {
     public class ObjectCreation
     {

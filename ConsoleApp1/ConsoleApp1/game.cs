@@ -3,16 +3,20 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
+using System.ComponentModel;
 
-namespace ConsoleApp1
+namespace JuegoProgramacionGrafica
 {
     public class Game : GameWindow
     {
+        BackgroundWorker worker;
+
         public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = (width, height), Title = title }) { }
 
         private readonly float speed = 1.5f;
 
         private bool firstMove = true;
+        private bool mouseEnabled = false;
 
         private Shader shader;
 
@@ -34,10 +38,12 @@ namespace ConsoleApp1
         private List<string> object_names;
         private List<string> pieces_names;
 
-        private string selected_object;
-        private string selected_piece;
+        public string selected_object;
+        public string selected_piece;
 
-        private readonly Scene main_scene = new();
+        public Dictionary<string, Scene> scenes;
+
+        Form1 form;
 
         protected override void OnLoad()
         {
@@ -49,28 +55,41 @@ namespace ConsoleApp1
 
             GL.ClearColor(0.25882353f, 0.72549f, 0.96f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
-            CursorState = CursorState.Grabbed;
 
             Position = new Vector3(0.0f, 0.0f, 3.0f);
             front = new Vector3(0.0f, 0.0f, -1.0f);
             up = Vector3.UnitY;
 
-            main_scene.Objects.Add("monitor", ObjectCreation.LoadObject("monitor", 0.55f, 0.75f, 0.0f));
-            main_scene.Objects.Add("pot", ObjectCreation.LoadObject("pot", -0.55f, 0.75f, 0.0f));
-            main_scene.Objects.Add("desk", ObjectCreation.LoadObject("desk"));
+            scenes = new();
+            scenes.Add("main_scene", new Scene());
+            scenes["main_scene"].Objects.Add("monitor", ObjectCreation.LoadObject("monitor", 0.55f, 0.75f, 0.0f));
+            scenes["main_scene"].Objects.Add("pot", ObjectCreation.LoadObject("pot", -0.55f, 0.75f, 0.0f));
+            scenes["main_scene"].Objects.Add("desk", ObjectCreation.LoadObject("desk"));
 
-            object_names = new List<string>(main_scene.Objects.Keys);
+            object_names = new List<string>(scenes["main_scene"].Objects.Keys);
             selected_object = object_names.ElementAtOrDefault(0);
-            pieces_names = new List<string>(main_scene.Objects[selected_object].Pieces.Keys);
-            pieces_names.Insert(0, "self");
+            pieces_names = new List<string>(scenes["main_scene"].Objects[selected_object].Pieces.Keys);
             selected_piece = pieces_names.ElementAtOrDefault(0);
 
             shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
 
             view = Matrix4.LookAt(Position, Position + front, up);
             projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), Size.X / (float)Size.Y, 0.1f, 100.0f);
+
+            form = new(this);
+            worker = new();
+            worker.DoWork += backgroundWorker1_DoWork;
+            worker.RunWorkerAsync();
         }
 
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(form);
+            Close();
+        }
 
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -90,7 +109,7 @@ namespace ConsoleApp1
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            main_scene.draw(shader, Matrix4.Identity, view, projection, args.Time);
+            scenes["main_scene"].draw(shader, Matrix4.Identity, view, projection, args.Time);
 
             SwapBuffers();
 
@@ -102,118 +121,63 @@ namespace ConsoleApp1
 
             if (IsFocused)
             {
-                if (KeyboardState.IsKeyDown(Keys.Escape))
+                if (MouseState[MouseButton.Right])
                 {
-                    Close();
+                    MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
+                    CursorState = CursorState.Grabbed;
+                }
+                else
+                {
+                    CursorState = CursorState.Normal;
+                    return;
                 }
 
-                if (KeyboardState.IsKeyDown(Keys.W))
-                {
-                    Position += front * speed * (float)args.Time;
-                }
+                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.Escape)) Close();
 
-                if (KeyboardState.IsKeyDown(Keys.S))
-                {
-                    Position -= front * speed * (float)args.Time;
-                }
+                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.W)) Position += front * speed * (float)args.Time;
 
-                if (KeyboardState.IsKeyDown(Keys.D))
-                {
-                    Position += Vector3.Normalize(Vector3.Cross(front, up)) * speed * (float)args.Time;
-                }
+                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.A)) Position -= Vector3.Normalize(Vector3.Cross(front, up)) * speed * (float)args.Time;
 
-                if (KeyboardState.IsKeyDown(Keys.A))
-                {
-                    Position -= Vector3.Normalize(Vector3.Cross(front, up)) * speed * (float)args.Time;
-                }
+                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.S)) Position -= front * speed * (float)args.Time;
 
-                if (KeyboardState.IsKeyDown(Keys.Space))
-                {
-                    Position += up * speed * (float)args.Time;
-                }
+                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.D)) Position += Vector3.Normalize(Vector3.Cross(front, up)) * speed * (float)args.Time;
 
-                if (KeyboardState.IsKeyDown(Keys.LeftShift))
-                {
-                    Position -= up * speed * (float)args.Time;
-                }
+                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.Space)) Position += up * speed * (float)args.Time;
+           
+                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift)) Position -= up * speed * (float)args.Time;
+            }
+        }
 
-                if (KeyboardState.IsKeyDown(Keys.K))
-                {
-                    if (selected_piece == "self") main_scene.Objects[selected_object].RotateX(1f * (float)args.Time);
-                    else main_scene.Objects[selected_object].Pieces[selected_piece].RotateX(1f * (float)args.Time);
-                }
+        public void NextObject()
+        {
+            try
+            {
+                selected_object = object_names.ElementAt(object_names.IndexOf(selected_object) + 1);
+            }
+            catch
+            {
+                selected_object = object_names.ElementAt(0);
+            }
+            pieces_names = new List<string>(scenes["main_scene"].Objects[selected_object].Pieces.Keys);
+            selected_piece = pieces_names.ElementAt(0);
+        }
 
-                if (KeyboardState.IsKeyDown(Keys.I))
-                {
-                    if (selected_piece == "self") main_scene.Objects[selected_object].RotateX(-1f * (float)args.Time);
-                    else main_scene.Objects[selected_object].Pieces[selected_piece].RotateX(-1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.L))
-                {
-                    if (selected_piece == "self") main_scene.Objects[selected_object].RotateY(1f * (float)args.Time);
-                    else main_scene.Objects[selected_object].Pieces[selected_piece].RotateY(1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.J))
-                {
-                    if (selected_piece == "self") main_scene.Objects[selected_object].RotateY(-1f * (float)args.Time);
-                    else main_scene.Objects[selected_object].Pieces[selected_piece].RotateY(-1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.U))
-                {
-                    if (selected_piece == "self") main_scene.Objects[selected_object].RotateZ(1f * (float)args.Time);
-                    else main_scene.Objects[selected_object].Pieces[selected_piece].RotateZ(1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyDown(Keys.O))
-                {
-                    if (selected_piece == "self") main_scene.Objects[selected_object].RotateZ(-1f * (float)args.Time);
-                    else main_scene.Objects[selected_object].Pieces[selected_piece].RotateZ(-1f * (float)args.Time);
-                }
-
-                if (KeyboardState.IsKeyPressed(Keys.Q))
-                {
-                    if (selected_piece == "self") main_scene.Objects[selected_object].visible = !main_scene.Objects[selected_object].visible;
-                    else main_scene.Objects[selected_object].Pieces[selected_piece].visible = !main_scene.Objects[selected_object].Pieces[selected_piece].visible;
-                }
-
-                if (KeyboardState.IsKeyPressed(Keys.Tab))
-                {
-                    try
-                    {
-                        selected_object = object_names.ElementAt(object_names.IndexOf(selected_object) + 1);
-                    }
-                    catch
-                    {
-                        selected_object = object_names.ElementAt(0);
-                    }
-                    pieces_names = new List<string>(main_scene.Objects[selected_object].Pieces.Keys);
-                    pieces_names.Insert(0, "self");
-                    selected_piece = pieces_names.ElementAt(0);
-                    UpdateUI();
-                }
-
-                if (KeyboardState.IsKeyPressed(Keys.CapsLock))
-                {
-                    try
-                    {
-                        selected_piece = pieces_names.ElementAt(pieces_names.IndexOf(selected_piece) + 1);
-                    }
-                    catch
-                    {
-                        selected_piece = pieces_names.ElementAt(0);
-                    }
-                    UpdateUI();
-                }
+        public void NextPiece()
+        {
+            try
+            {
+                selected_piece = pieces_names.ElementAt(pieces_names.IndexOf(selected_piece) + 1);
+            }
+            catch
+            {
+                selected_piece = pieces_names.ElementAt(0);
             }
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             base.OnMouseMove(e);
-            if (IsFocused)
+            if (IsFocused && CursorState == CursorState.Grabbed)
             {
                 if (firstMove)
                 {
@@ -242,7 +206,7 @@ namespace ConsoleApp1
                 front.Z = (float)Math.Cos(MathHelper.DegreesToRadians(pitch)) * (float)Math.Sin(MathHelper.DegreesToRadians(yaw));
                 front = Vector3.Normalize(front);
 
-                MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
+                MousePosition = center;
             }
         }
 

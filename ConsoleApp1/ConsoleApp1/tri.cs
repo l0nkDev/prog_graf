@@ -8,7 +8,7 @@ using System.IO;
 using System.Drawing;
 using Newtonsoft.Json;
 
-namespace ConsoleApp1 
+namespace JuegoProgramacionGrafica
 {
     public class Tri
     {

@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace ConsoleApp1
+namespace JuegoProgramacionGrafica
 {
     public class Shader
     {
