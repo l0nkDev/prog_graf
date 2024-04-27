@@ -1,13 +1,10 @@
-using System;
-using System.Windows.Forms;
-using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
-using System.Windows.Forms;
+using Microsoft.VisualBasic;
 
 namespace JuegoProgramacionGrafica
 {
     public partial class Form1 : Form
     {
+        bool changing_selection = false;
         Game game;
 
         public Form1(Game game)
@@ -37,6 +34,7 @@ namespace JuegoProgramacionGrafica
                     game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].visible = object_visibility_toggle.Checked;
                     break;
             }
+            scene_tree.SelectedNode.Checked = object_visibility_toggle.Checked;
         }
 
         private void UpdateTreeView()
@@ -65,17 +63,48 @@ namespace JuegoProgramacionGrafica
 
         private void scene_tree_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            changing_selection = true;
             switch (scene_tree.SelectedNode.Level)
             {
                 case 0:
                     object_visibility_toggle.Checked = game.scenes[scene_tree.SelectedNode.Text].visible;
+                    position_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].offset_x;
+                    position_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].offset_y;
+                    position_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].offset_z;
+                    rotation_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].pitch_value;
+                    rotation_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].yaw_value;
+                    rotation_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].roll_value;
+                    scale_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].scale_x;
+                    scale_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].scale_y;
+                    scale_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].scale_z;
+                    openObjectToolStripMenuItem.Enabled = true;
                     break;
 
                 case 1:
                     object_visibility_toggle.Checked = game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].visible;
+                    position_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_x;
+                    position_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_y;
+                    position_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_z;
+                    rotation_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].pitch_value;
+                    rotation_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].yaw_value;
+                    rotation_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].roll_value;
+                    scale_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_x;
+                    scale_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_y;
+                    scale_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_z;
+                    openObjectToolStripMenuItem.Enabled = false;
                     break;
                 case 2:
                     object_visibility_toggle.Checked = game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].visible;
+                    position_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_x;
+                    position_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_y;
+                    position_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_z;
+                    rotation_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].pitch_value;
+                    rotation_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].yaw_value;
+                    rotation_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].roll_value;
+                    scale_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_x;
+                    scale_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_y;
+                    scale_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_z;
+                    openObjectToolStripMenuItem.Enabled = false;
                     break;
             }
             object_visibility_toggle.Enabled = true;
@@ -83,19 +112,15 @@ namespace JuegoProgramacionGrafica
             rotation_label.Enabled = true;
             scale_label.Enabled = true;
             position_input_x.Enabled = true;
-            rotation_input_x.Enabled = true;
-            scale_input_x.Enabled = true;
             position_input_y.Enabled = true;
-            rotation_input_y.Enabled = true;
-            scale_input_y.Enabled = true;
             position_input_z.Enabled = true;
+            rotation_input_x.Enabled = true;
+            rotation_input_y.Enabled = true;
             rotation_input_z.Enabled = true;
+            scale_input_x.Enabled = true;
+            scale_input_y.Enabled = true;
             scale_input_z.Enabled = true;
-        }
-
-        private void object_visibility_toggle_CheckedChanged(object sender, EventArgs e)
-        {
-
+            changing_selection = false;
         }
 
         private void scene_tree_AfterCheck(object sender, TreeViewEventArgs e)
@@ -115,9 +140,106 @@ namespace JuegoProgramacionGrafica
             if (e.Node.IsSelected) object_visibility_toggle.Checked = e.Node.Checked;
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void UpdatePosition(object sender, EventArgs e)
         {
+            if (changing_selection) return;
+            switch (scene_tree.SelectedNode.Level)
+            {
+                case 0:
+                    game.scenes[scene_tree.SelectedNode.Text].offset_x = (float)position_input_x.Value;
+                    game.scenes[scene_tree.SelectedNode.Text].offset_y = (float)position_input_y.Value;
+                    game.scenes[scene_tree.SelectedNode.Text].offset_z = (float)position_input_z.Value;
+                    break;
+                case 1:
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_x = (float)position_input_x.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_y = (float)position_input_y.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_z = (float)position_input_z.Value;
+                    break;
+                case 2:
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_x = (float)position_input_x.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_y = (float)position_input_y.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_z = (float)position_input_z.Value;
+                    break;
+            }
+        }
 
+        private void UpdateRotation(object sender, EventArgs e)
+        {
+            if (changing_selection) return;
+            if (rotation_input_x.Value >= 360) rotation_input_x.Value -= 360;
+            if (rotation_input_y.Value >= 360) rotation_input_y.Value -= 360;
+            if (rotation_input_z.Value >= 360) rotation_input_z.Value -= 360;
+            if (rotation_input_x.Value < 0) rotation_input_x.Value += 360;
+            if (rotation_input_y.Value < 0) rotation_input_y.Value += 360;
+            if (rotation_input_z.Value < 0) rotation_input_z.Value += 360;
+            switch (scene_tree.SelectedNode.Level)
+            {
+                case 0:
+                    game.scenes[scene_tree.SelectedNode.Text].SetRotation((float)rotation_input_x.Value, (float)rotation_input_y.Value, (float)rotation_input_z.Value);
+                    break;
+                case 1:
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].SetRotation((float)rotation_input_x.Value, (float)rotation_input_y.Value, (float)rotation_input_z.Value);
+                    break;
+                case 2:
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].SetRotation((float)rotation_input_x.Value, (float)rotation_input_y.Value, (float)rotation_input_z.Value);
+                    break;
+            }
+        }
+
+        private void UpdateScale(object sender, EventArgs e)
+        {
+            if (changing_selection) return;
+            switch (scene_tree.SelectedNode.Level)
+            {
+                case 0:
+                    game.scenes[scene_tree.SelectedNode.Text].scale_x = (float)scale_input_x.Value;
+                    game.scenes[scene_tree.SelectedNode.Text].scale_y = (float)scale_input_y.Value;
+                    game.scenes[scene_tree.SelectedNode.Text].scale_z = (float)scale_input_z.Value;
+                    break;
+                case 1:
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_x = (float)scale_input_x.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_y = (float)scale_input_y.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_z = (float)scale_input_z.Value;
+                    break;
+                case 2:
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_x = (float)scale_input_x.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_y = (float)scale_input_y.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_z = (float)scale_input_z.Value;
+                    break;
+            }
+
+        }
+
+        private void newSceneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", "new_scene", 0, 0), new());
+            UpdateTreeView();
+        }
+
+        private void openSceneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.InitialDirectory = "c:\\";
+            openFileDialog1.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 2;
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", "new_scene", 0, 0), ObjectCreation.LoadScene(openFileDialog1.FileName));
+                UpdateTreeView();
+            }
+        }
+
+        private void openOnjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                game.scenes[scene_tree.SelectedNode.Text].Objects.Add(Interaction.InputBox("Name of the new object", "New Object", "new_object", 0, 0), ObjectCreation.LoadObject(openFileDialog1.FileName));
+                UpdateTreeView();
+            }
         }
     }
 }

@@ -9,7 +9,6 @@ namespace JuegoProgramacionGrafica
 {
     public class Game : GameWindow
     {
-        BackgroundWorker worker;
 
         public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = (width, height), Title = title }) { }
 
@@ -62,31 +61,32 @@ namespace JuegoProgramacionGrafica
 
             scenes = new();
             scenes.Add("main_scene", new Scene());
-            scenes["main_scene"].Objects.Add("monitor", ObjectCreation.LoadObject("monitor", 0.55f, 0.75f, 0.0f));
-            scenes["main_scene"].Objects.Add("pot", ObjectCreation.LoadObject("pot", -0.55f, 0.75f, 0.0f));
-            scenes["main_scene"].Objects.Add("desk", ObjectCreation.LoadObject("desk"));
-
-            object_names = new List<string>(scenes["main_scene"].Objects.Keys);
-            selected_object = object_names.ElementAtOrDefault(0);
-            pieces_names = new List<string>(scenes["main_scene"].Objects[selected_object].Pieces.Keys);
-            selected_piece = pieces_names.ElementAtOrDefault(0);
+            scenes["main_scene"].Objects.Add("monitor", ObjectCreation.LoadObject("../../../assets/objects/monitor.json", 0.55f, 0.75f, 0.0f));
+            scenes["main_scene"].Objects.Add("pot", ObjectCreation.LoadObject("../../../assets/objects/pot.json", -0.55f, 0.75f, 0.0f));
+            scenes["main_scene"].Objects.Add("desk", ObjectCreation.LoadObject("../../../assets/objects/desk.json"));
 
             shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
 
             view = Matrix4.LookAt(Position, Position + front, up);
             projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), Size.X / (float)Size.Y, 0.1f, 100.0f);
 
+            //ObjectCreation.Serialize(scenes["main_scene"]);
+
             form = new(this);
-            worker = new();
-            worker.DoWork += backgroundWorker1_DoWork;
-            worker.RunWorkerAsync();
+            Thread thread = new Thread(() =>
+            {
+                UIThread();
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
         }
 
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        [STAThread]
+        private void UIThread()
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(form);
             Close();
         }
@@ -109,7 +109,10 @@ namespace JuegoProgramacionGrafica
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            scenes["main_scene"].draw(shader, Matrix4.Identity, view, projection, args.Time);
+            foreach (Scene scene in scenes.Values)
+            {
+                scene.draw(shader, Matrix4.Identity, view, projection, args.Time);
+            }
 
             SwapBuffers();
 
@@ -132,7 +135,10 @@ namespace JuegoProgramacionGrafica
                     return;
                 }
 
-                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.Escape)) Close();
+                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.Escape))
+                {
+                    //Close();
+                }
 
                 if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.W)) Position += front * speed * (float)args.Time;
 
@@ -145,6 +151,8 @@ namespace JuegoProgramacionGrafica
                 if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.Space)) Position += up * speed * (float)args.Time;
            
                 if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift)) Position -= up * speed * (float)args.Time;
+
+                if (KeyboardState.IsKeyPressed(OpenTK.Windowing.GraphicsLibraryFramework.Keys.P)) scenes["main_scene"].Objects.Add("new_object", ObjectCreation.LoadObject("../../../assets/objects/monitor.json"));
             }
         }
 

@@ -31,15 +31,39 @@ namespace JuegoProgramacionGrafica
             }
         }
 
-        public static Object3D LoadObject(string name, float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        public static Object3D LoadObject(string path, float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
         {
-            using (StreamReader sr = File.OpenText("../../../assets/objects/" + name + ".json"))
+            using (StreamReader sr = File.OpenText(path))
             {
                 Object3D objectOut = JsonConvert.DeserializeObject<Object3D>(sr.ReadToEnd());
                 objectOut.offset_x = offset_x;
                 objectOut.offset_y = offset_y;
                 objectOut.offset_z = offset_z;
                 return objectOut;
+            }
+        }
+
+        public static Scene LoadScene(string path, float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        {
+            using (StreamReader sr = File.OpenText(path))
+            {
+                Scene objectOut = JsonConvert.DeserializeObject<Scene>(sr.ReadToEnd());
+                objectOut.offset_x = offset_x;
+                objectOut.offset_y = offset_y;
+                objectOut.offset_z = offset_z;
+                return objectOut;
+            }
+        }
+
+        public static void Serialize(Scene scene)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Serialize
+            };
+            using (StreamWriter sw = File.CreateText("../../../assets/objects/main_scene.json"))
+            {
+                sw.Write(JsonConvert.SerializeObject(scene, Formatting.Indented, settings));
             }
         }
 
@@ -142,7 +166,7 @@ namespace JuegoProgramacionGrafica
                                       0.00f, 0.0f, 0.01f, 0.10f, 0.10f, 0.10f));
             stand.Faces.Add("left", sleft);
 
-            Face sright = new Face(-0.025f, 0.0f, 0.005f);
+            Face sright = new Face(0.025f, 0.0f, -0.005f);
             sright.Tris.Add(0, new Tri(0.00f, 0.3f, 0.00f, 0.10f, 0.10f, 0.10f,
                                        0.00f, 0.3f, 0.01f, 0.10f, 0.10f, 0.10f,
                                        0.00f, 0.0f, 0.00f, 0.10f, 0.10f, 0.10f));
@@ -150,6 +174,15 @@ namespace JuegoProgramacionGrafica
                                        0.00f, 0.0f, 0.00f, 0.10f, 0.10f, 0.10f,
                                        0.00f, 0.0f, 0.01f, 0.10f, 0.10f, 0.10f));
             stand.Faces.Add("right", sright);
+
+            Face stop = new Face(0.0f, 0.3f, 0.0f);
+            stop.Tris.Add(0, new Tri(-0.25f, 0.0f, -0.005f, 0.23f, 0.23f, 0.23f,
+                                      0.25f, 0.0f, -0.005f, 0.23f, 0.23f, 0.23f,
+                                     -0.25f, 0.0f,  0.005f, 0.23f, 0.23f, 0.23f));
+            stop.Tris.Add(1, new Tri( 0.25f, 0.0f, -0.005f, 0.23f, 0.23f, 0.23f,
+                                     -0.25f, 0.0f,  0.005f, 0.23f, 0.23f, 0.23f,
+                                      0.25f, 0.0f,  0.005f, 0.23f, 0.23f, 0.23f));
+            stand.Faces.Add("top", stop);
 
             monitor.Pieces.Add("stand", stand);
 
