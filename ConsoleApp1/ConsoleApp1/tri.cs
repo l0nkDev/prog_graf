@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Drawing;
 using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace JuegoProgramacionGrafica
 {
@@ -15,14 +16,7 @@ namespace JuegoProgramacionGrafica
         private int VertexBufferObject;
         private int ElementBufferObject;
         private int VertexArrayObject;
-
-        private float[] _Vertices = new float[18];
-
-        public float[] Vertices
-        {
-            set { _Vertices = value; InitGL(); }
-            get { return _Vertices; }
-        }
+        public float[] Vertices;
 
         private uint[] Indices = { 0, 1, 2 };
 
@@ -35,14 +29,16 @@ namespace JuegoProgramacionGrafica
             Vertices[6]  = v2_x; Vertices[7]  = v2_y; Vertices[8]  = v2_z; Vertices[9]  = c2_r; Vertices[10] = c2_g; Vertices[11] = c2_b;
             Vertices[12] = v3_x; Vertices[13] = v3_y; Vertices[14] = v3_z; Vertices[15] = c3_r; Vertices[16] = c3_g; Vertices[17] = c3_b;
 
-            InitGL();
+            StreamingContext tmp = new();
+            InitGL(tmp);
         }
 
         public Tri()
         {
         }
 
-        public void InitGL()
+        [OnDeserialized]
+        public void InitGL(StreamingContext context)
         {
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);

@@ -145,69 +145,68 @@ namespace JuegoProgramacionGrafica
 
         private void UpdatePosition(object sender, EventArgs e)
         {
+            float x = (float)position_input_x.Value;
+            float y = (float)position_input_y.Value;
+            float z = (float)position_input_z.Value;
             if (changing_selection) return;
             switch (scene_tree.SelectedNode.Level)
             {
                 case 0:
-                    game.scenes[scene_tree.SelectedNode.Text].offset_x = (float)position_input_x.Value;
-                    game.scenes[scene_tree.SelectedNode.Text].offset_y = (float)position_input_y.Value;
-                    game.scenes[scene_tree.SelectedNode.Text].offset_z = (float)position_input_z.Value;
+                    game.scenes[scene_tree.SelectedNode.Text].SetPosition(x, y, z);
                     break;
                 case 1:
-                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_x = (float)position_input_x.Value;
-                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_y = (float)position_input_y.Value;
-                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_z = (float)position_input_z.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].SetPosition(x, y, z);
                     break;
                 case 2:
-                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_x = (float)position_input_x.Value;
-                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_y = (float)position_input_y.Value;
-                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_z = (float)position_input_z.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].SetPosition(x, y, z);
                     break;
             }
         }
 
         private void UpdateRotation(object sender, EventArgs e)
         {
+            decimal x = rotation_input_x.Value;
+            decimal y = rotation_input_y.Value;
+            decimal z = rotation_input_z.Value;
+
             if (changing_selection) return;
-            if (rotation_input_x.Value >= 360) rotation_input_x.Value -= 360;
-            if (rotation_input_y.Value >= 360) rotation_input_y.Value -= 360;
-            if (rotation_input_z.Value >= 360) rotation_input_z.Value -= 360;
-            if (rotation_input_x.Value < 0) rotation_input_x.Value += 360;
-            if (rotation_input_y.Value < 0) rotation_input_y.Value += 360;
-            if (rotation_input_z.Value < 0) rotation_input_z.Value += 360;
+            if      (x >= 360) rotation_input_x.Value -= 360;
+            else if (y >= 360) rotation_input_y.Value -= 360;
+            else if (z >= 360) rotation_input_z.Value -= 360;
+            else if (x <    0) rotation_input_x.Value += 360;
+            else if (y <    0) rotation_input_y.Value += 360;
+            else if (z <    0) rotation_input_z.Value += 360;
+
             switch (scene_tree.SelectedNode.Level)
             {
                 case 0:
-                    game.scenes[scene_tree.SelectedNode.Text].SetRotation((float)rotation_input_x.Value, (float)rotation_input_y.Value, (float)rotation_input_z.Value);
+                    game.scenes[scene_tree.SelectedNode.Text].SetRotation((float)x, (float)y, (float)z);
                     break;
                 case 1:
-                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].SetRotation((float)rotation_input_x.Value, (float)rotation_input_y.Value, (float)rotation_input_z.Value);
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].SetRotation((float)x, (float)y, (float)z);
                     break;
                 case 2:
-                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].SetRotation((float)rotation_input_x.Value, (float)rotation_input_y.Value, (float)rotation_input_z.Value);
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].SetRotation((float)x, (float)y, (float)z);
                     break;
             }
         }
 
         private void UpdateScale(object sender, EventArgs e)
         {
+            float x = (float)scale_input_x.Value;
+            float y = (float)scale_input_y.Value;
+            float z = (float)scale_input_z.Value;
             if (changing_selection) return;
             switch (scene_tree.SelectedNode.Level)
             {
                 case 0:
-                    game.scenes[scene_tree.SelectedNode.Text].scale_x = (float)scale_input_x.Value;
-                    game.scenes[scene_tree.SelectedNode.Text].scale_y = (float)scale_input_y.Value;
-                    game.scenes[scene_tree.SelectedNode.Text].scale_z = (float)scale_input_z.Value;
+                    game.scenes[scene_tree.SelectedNode.Text].SetScale(x, y, z);
                     break;
                 case 1:
-                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_x = (float)scale_input_x.Value;
-                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_y = (float)scale_input_y.Value;
-                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_z = (float)scale_input_z.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].SetScale(x, y, z);
                     break;
                 case 2:
-                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_x = (float)scale_input_x.Value;
-                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_y = (float)scale_input_y.Value;
-                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_z = (float)scale_input_z.Value;
+                    game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].SetScale(x, y, z);
                     break;
             }
 

@@ -8,62 +8,19 @@ namespace JuegoProgramacionGrafica
         public ObjectCreation()
         {
         }
-        public static void Serialize()
+        public static void Serialize(Scene scene, string path)
         {
-            JsonSerializerSettings settings = new JsonSerializerSettings
+            using (StreamWriter sw = File.CreateText(path))
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize
-            };
-
-            using (StreamWriter sw = File.CreateText("../../../assets/objects/monitor.json"))
-            {
-                sw.Write(JsonConvert.SerializeObject(Monitor(), Formatting.Indented, settings));
-            }
-
-            using (StreamWriter sw = File.CreateText("../../../assets/objects/pot.json"))
-            {
-                sw.Write(JsonConvert.SerializeObject(Pot(), Formatting.Indented, settings));
-            }
-
-            using (StreamWriter sw = File.CreateText("../../../assets/objects/desk.json"))
-            {
-                sw.Write(JsonConvert.SerializeObject(Desk(), Formatting.Indented, settings));
+                sw.Write(JsonConvert.SerializeObject(scene, Formatting.Indented));
             }
         }
 
-        public static Object3D LoadObject(string path, float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        public static T Deserialize<T>(string path)
         {
             using (StreamReader sr = File.OpenText(path))
             {
-                Object3D objectOut = JsonConvert.DeserializeObject<Object3D>(sr.ReadToEnd());
-                objectOut.offset_x = offset_x;
-                objectOut.offset_y = offset_y;
-                objectOut.offset_z = offset_z;
-                return objectOut;
-            }
-        }
-
-        public static Scene LoadScene(string path, float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
-        {
-            using (StreamReader sr = File.OpenText(path))
-            {
-                Scene objectOut = JsonConvert.DeserializeObject<Scene>(sr.ReadToEnd());
-                objectOut.offset_x = offset_x;
-                objectOut.offset_y = offset_y;
-                objectOut.offset_z = offset_z;
-                return objectOut;
-            }
-        }
-
-        public static void Serialize(Scene scene)
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize
-            };
-            using (StreamWriter sw = File.CreateText("../../../assets/objects/main_scene.json"))
-            {
-                sw.Write(JsonConvert.SerializeObject(scene, Formatting.Indented, settings));
+                return (T)JsonConvert.DeserializeObject(sr.ReadToEnd(), typeof(T));
             }
         }
 

@@ -96,8 +96,8 @@ namespace JuegoProgramacionGrafica
         {
             if (is_queued)
             {
-                if (queue_is_scene) scenes.Add(queue_name, ObjectCreation.LoadScene(queue_path)); 
-                else scenes[queue_scene].Objects.Add(queue_name, ObjectCreation.LoadObject(queue_path));
+                if (queue_is_scene) scenes.Add(queue_name, ObjectCreation.Deserialize<Scene>(queue_path)); 
+                else scenes[queue_scene].Objects.Add(queue_name, ObjectCreation.Deserialize<Object3D>(queue_path));
                 form.Invoke(form.myDelegate);
                 is_queued = false;
             }
@@ -160,7 +160,7 @@ namespace JuegoProgramacionGrafica
            
                 if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift)) Position -= up * speed * (float)args.Time;
 
-                if (KeyboardState.IsKeyPressed(OpenTK.Windowing.GraphicsLibraryFramework.Keys.P)) scenes["main_scene"].Objects.Add("new_object", ObjectCreation.LoadObject("../../../assets/objects/monitor.json"));
+                if (KeyboardState.IsKeyPressed(OpenTK.Windowing.GraphicsLibraryFramework.Keys.P)) scenes["main_scene"].Objects.Add("new_object", ObjectCreation.Deserialize<Object3D>("../../../assets/objects/monitor.json"));
             }
         }
 
