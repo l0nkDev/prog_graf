@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.Serialization;
 using OpenTK.Mathematics;
-using System;
-using System.Runtime.Serialization;
 
 namespace JuegoProgramacionGrafica
 {
@@ -20,10 +18,13 @@ namespace JuegoProgramacionGrafica
             this.offset_x = offset_x;
             this.offset_y = offset_y;
             this.offset_z = offset_z;
+
+            GenMatrixes(new StreamingContext());
         }
 
         public Face()
         {
+            position = pitch = yaw = roll = scale = Matrix4.Identity;
         }
 
 		public void Draw(Shader shader, Matrix4 model, Matrix4 view, Matrix4 projection, double time)

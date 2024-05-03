@@ -3,19 +3,21 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
-using System.ComponentModel;
+using ImGuiNET;
+using Zenseless.OpenTK.GUI;
+using Microsoft.VisualBasic;
 
 namespace JuegoProgramacionGrafica
 {
     public class Game : GameWindow
     {
-
+        ImGuiFacade gui;
+        OpenFileDialog openFileDialog;
         public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = (width, height), Title = title }) { }
 
         private readonly float speed = 1.5f;
 
         private bool firstMove = true;
-        private bool mouseEnabled = false;
 
         private Shader shader;
 
@@ -48,38 +50,34 @@ namespace JuegoProgramacionGrafica
         {
             base.OnLoad();
 
-            //ObjectCreation.Serialize();
-
             MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
 
             GL.ClearColor(0.25882353f, 0.72549f, 0.96f, 1.0f);
-            GL.Enable(EnableCap.DepthTest);
 
             Position = new Vector3(0.0f, 0.0f, 3.0f);
             front = new Vector3(0.0f, 0.0f, -1.0f);
             up = Vector3.UnitY;
 
             scenes = new();
-            //scenes.Add("main_scene", new Scene());
-            //scenes["main_scene"].Objects.Add("monitor", ObjectCreation.LoadObject("../../../assets/objects/monitor.json", 0.55f, 0.75f, 0.0f));
-            //scenes["main_scene"].Objects.Add("pot", ObjectCreation.LoadObject("../../../assets/objects/pot.json", -0.55f, 0.75f, 0.0f));
-            //scenes["main_scene"].Objects.Add("desk", ObjectCreation.LoadObject("../../../assets/objects/desk.json"));
 
             shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
 
             view = Matrix4.LookAt(Position, Position + front, up);
             projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), Size.X / (float)Size.Y, 0.1f, 100.0f);
 
-            //ObjectCreation.Serialize(scenes["main_scene"]);
-
             form = new(this);
             Thread thread = new Thread(() =>
             {
-                UIThread();
+                //UIThread();
             });
 
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
+
+
+            gui = new(this);
+            openFileDialog = new();
+            //gui.LoadFontDroidSans(12);
         }
 
         [STAThread]
@@ -94,9 +92,11 @@ namespace JuegoProgramacionGrafica
 
         protected override void OnRenderFrame(FrameEventArgs args)
         {
+
             if (is_queued)
             {
-                if (queue_is_scene) scenes.Add(queue_name, ObjectCreation.Deserialize<Scene>(queue_path)); 
+                if (queue_is_scene && queue_path == "") scenes.Add(queue_name, new Scene());
+                else if (queue_is_scene) scenes.Add(queue_name, ObjectCreation.Deserialize<Scene>(queue_path)); 
                 else scenes[queue_scene].Objects.Add(queue_name, ObjectCreation.Deserialize<Object3D>(queue_path));
                 form.Invoke(form.myDelegate);
                 is_queued = false;
@@ -110,20 +110,20 @@ namespace JuegoProgramacionGrafica
                 elapsed_second = 0;
                 fps = current_second_frames;
                 current_second_frames = 0;
-                UpdateUI();
             }
 
             view = Matrix4.LookAt(Position, Position + front, up);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+
             foreach (Scene scene in scenes.Values)
             {
                 scene.draw(shader, Matrix4.Identity, view, projection, args.Time);
             }
 
+            RenderGUI();
             SwapBuffers();
-
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
@@ -143,10 +143,7 @@ namespace JuegoProgramacionGrafica
                     return;
                 }
 
-                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.Escape))
-                {
-                    //Close();
-                }
+                if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.Escape)) Close();
 
                 if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.W)) Position += front * speed * (float)args.Time;
 
@@ -160,7 +157,13 @@ namespace JuegoProgramacionGrafica
            
                 if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift)) Position -= up * speed * (float)args.Time;
 
-                if (KeyboardState.IsKeyPressed(OpenTK.Windowing.GraphicsLibraryFramework.Keys.P)) scenes["main_scene"].Objects.Add("new_object", ObjectCreation.Deserialize<Object3D>("../../../assets/objects/monitor.json"));
+                if (KeyboardState.IsKeyPressed(OpenTK.Windowing.GraphicsLibraryFramework.Keys.P)) 
+                {
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Scene>(openFileDialog.FileName));
+                    }
+                }
             }
         }
 
@@ -212,12 +215,47 @@ namespace JuegoProgramacionGrafica
             shader.Dispose();
         }
 
-        
-
-        private void UpdateUI()
+        private void RenderGUI()
         {
-            Console.Clear();
-            Console.WriteLine("FPS: " + fps);
+            ImGui.NewFrame();
+            ImGui.Begin("Menu", ImGuiWindowFlags.MenuBar);
+            if (ImGui.BeginMenuBar())
+            {
+                if (ImGui.BeginMenu("File"))
+                {
+                    if (ImGui.MenuItem("New scene")) scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", "New Scene", 0, 0), new());
+                    if (ImGui.MenuItem("Load scene"))
+                    {
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Scene>(openFileDialog.FileName));
+                        }
+                    }
+                    ImGui.EndMenu();
+                }
+                ImGui.EndMenuBar();
+            }
+            foreach (string scene in scenes.Keys) 
+            {
+                if (ImGui.TreeNodeEx(scene))
+                {
+                    foreach (string object3d in scenes[scene].Objects.Keys)
+                    {
+                        if (ImGui.TreeNodeEx(object3d)) 
+                        {
+                            foreach (string piece in scenes[scene].Objects[object3d].Pieces.Keys)
+                            {
+                                ImGui.BulletText(piece);
+                            }
+                            ImGui.TreePop();
+                        }
+                    }
+                    ImGui.TreePop();
+                }
+            }
+            ImGui.End();
+            gui.Render(ClientSize);
+            GL.Enable(EnableCap.DepthTest);
         }
     }
 }

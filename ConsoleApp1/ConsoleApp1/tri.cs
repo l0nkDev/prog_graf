@@ -1,13 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using System.Runtime.Serialization;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using OpenTK.Windowing.Desktop;
-using System.Diagnostics;
-using System.IO;
-using System.Drawing;
-using Newtonsoft.Json;
-using System.Runtime.Serialization;
 
 namespace JuegoProgramacionGrafica
 {

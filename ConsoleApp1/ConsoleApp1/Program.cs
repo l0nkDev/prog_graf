@@ -1,5 +1,4 @@
 ﻿using JuegoProgramacionGrafica;
-using System.Windows.Forms;
 
 internal class Program
 {

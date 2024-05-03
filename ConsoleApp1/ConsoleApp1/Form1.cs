@@ -214,8 +214,10 @@ namespace JuegoProgramacionGrafica
 
         private void newSceneToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", "new_scene", 0, 0), new());
-            UpdateTreeView();
+            game.queue_is_scene = true;
+            game.queue_name = Interaction.InputBox("Name of the new scene", "New Scene", "new_scene", 0, 0);
+            game.queue_path = "";
+            game.is_queued = true;
         }
 
         private void openSceneToolStripMenuItem_Click(object sender, EventArgs e)

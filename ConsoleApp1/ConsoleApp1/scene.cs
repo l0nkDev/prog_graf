@@ -18,10 +18,13 @@ namespace JuegoProgramacionGrafica
 			this.offset_x = offset_x;
 			this.offset_y = offset_y;
 			this.offset_z = offset_z;
+
+            GenMatrixes(new StreamingContext());
         }
 
         public Scene()
         {
+            position = pitch = yaw = roll = scale = Matrix4.Identity;
         }
 
         public void draw(Shader shader, Matrix4 model, Matrix4 view, Matrix4 projection, double time)
