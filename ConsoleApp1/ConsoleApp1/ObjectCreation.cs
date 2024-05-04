@@ -16,6 +16,14 @@ namespace JuegoProgramacionGrafica
             }
         }
 
+        public static void Serialize(Object3D object3d, string path)
+        {
+            using (StreamWriter sw = File.CreateText(path))
+            {
+                sw.Write(JsonConvert.SerializeObject(object3d, Formatting.Indented));
+            }
+        }
+
         public static T Deserialize<T>(string path)
         {
             using (StreamReader sr = File.OpenText(path))

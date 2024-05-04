@@ -8,16 +8,15 @@ namespace JuegoProgramacionGrafica
 		public Dictionary<string, Object3D> Objects = new();
 
 
-        public float offset_x    = 0.0f, offset_y   = 0.0f, offset_z  = 0.0f;
-        public float pitch_value = 0.0f, roll_value = 0.0f, yaw_value = 0.0f;
-        public float scale_x     = 1.0f, scale_y    = 1.0f, scale_z   = 1.0f;
+        public float[] _position = { 0.0f, 0.0f, 0.0f };
+        public float[] _rotation = { 0.0f, 0.0f, 0.0f };
+        public float[] _scale    = { 1.0f, 1.0f, 1.0f };
         private Matrix4 pitch, roll, yaw, position, scale;
         public bool visible = true;
+
         public Scene(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
 		{
-			this.offset_x = offset_x;
-			this.offset_y = offset_y;
-			this.offset_z = offset_z;
+			_position = new float[] { offset_x, offset_y, offset_z };
 
             GenMatrixes(new StreamingContext());
         }
@@ -41,11 +40,11 @@ namespace JuegoProgramacionGrafica
         [OnDeserialized]
         private void GenMatrixes(StreamingContext context)
         {
-            position = Matrix4.CreateTranslation(offset_x, offset_y, offset_z);
-            pitch = Matrix4.CreateRotationX(pitch_value);
-            yaw = Matrix4.CreateRotationX(yaw_value);
-            roll = Matrix4.CreateRotationX(roll_value);
-            scale = Matrix4.CreateScale(scale_x, scale_y, scale_z);
+            position = Matrix4.CreateTranslation(_position[0], _position[1], _position[2]);
+            pitch = Matrix4.CreateRotationX(_rotation[0]);
+            yaw = Matrix4.CreateRotationY(_rotation[1]);
+            roll = Matrix4.CreateRotationZ(_rotation[2]);
+            scale = Matrix4.CreateScale(_scale[0], _scale[1], _scale[2]);
         }
 
         public void SetRotation(float pitch, float yaw, float roll)
@@ -53,9 +52,7 @@ namespace JuegoProgramacionGrafica
             this.yaw = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(yaw));
             this.pitch = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(pitch));
             this.roll = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(roll));
-            yaw_value = yaw;
-            pitch_value = pitch;
-            roll_value = roll;
+            _rotation = new float[] { pitch, yaw, roll };
         }
 
         public void Rotate(float pitch, float yaw, float roll)
@@ -63,41 +60,31 @@ namespace JuegoProgramacionGrafica
             this.yaw *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(yaw));
             this.pitch *= Matrix4.CreateRotationX(MathHelper.DegreesToRadians(pitch));
             this.roll *= Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(roll));
-            yaw_value += yaw;
-            pitch_value += pitch;
-            roll_value += roll;
+            _rotation = new float[] { _rotation[0] + pitch, _rotation[1] + yaw, _rotation[2] + roll };
         }
 
         public void SetPosition(float x, float y, float z)
         {
             position = Matrix4.CreateTranslation(x, y, z);
-            offset_x = x;
-            offset_y = y;
-            offset_z = z;
+            _position = new float[] { x, y, z };
         }
 
         public void Move(float x, float y, float z)
         {
             position *= Matrix4.CreateTranslation(x, y, z);
-            offset_x += x;
-            offset_y += y;
-            offset_z += z;
+            _position = new float[] { _position[0] + x, _position[1] + y, _position[2] + z };
         }
 
         public void SetScale(float x, float y, float z)
         {
             scale = Matrix4.CreateScale(x, y, z);
-            scale_x = x;
-            scale_y = y;
-            scale_z = z;
+            _scale = new float[] { x, y, z };
         }
 
         public void Scale(float x, float y, float z)
         {
             scale *= Matrix4.CreateScale(x, y, z);
-            scale_x += x;
-            scale_y += y;
-            scale_z += z;
+            _scale = new float[] { _scale[0] + x, _scale[1] + y, _scale[2] + z };
         }
     }
 }

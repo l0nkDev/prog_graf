@@ -3,7 +3,6 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
-using ImGuiNET;
 using Zenseless.OpenTK.GUI;
 using Microsoft.VisualBasic;
 
@@ -11,8 +10,9 @@ namespace JuegoProgramacionGrafica
 {
     public class Game : GameWindow
     {
-        ImGuiFacade gui;
-        OpenFileDialog openFileDialog;
+        public ImGuiFacade gui;
+        public GameUI ui_handler;
+
         public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = (width, height), Title = title }) { }
 
         private readonly float speed = 1.5f;
@@ -76,7 +76,12 @@ namespace JuegoProgramacionGrafica
 
 
             gui = new(this);
-            openFileDialog = new();
+            ui_handler = new(this);
+
+
+            //ObjectCreation.Serialize(ObjectCreation.Monitor(), "../../../assets/objects/monitor.json");
+            //ObjectCreation.Serialize(ObjectCreation.Pot(), "../../../assets/objects/pot.json");
+            //ObjectCreation.Serialize(ObjectCreation.Desk(), "../../../assets/objects/desk.json");
             //gui.LoadFontDroidSans(12);
         }
 
@@ -122,7 +127,7 @@ namespace JuegoProgramacionGrafica
                 scene.draw(shader, Matrix4.Identity, view, projection, args.Time);
             }
 
-            RenderGUI();
+            ui_handler.Render();
             SwapBuffers();
         }
 
@@ -156,14 +161,6 @@ namespace JuegoProgramacionGrafica
                 if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.Space)) Position += up * speed * (float)args.Time;
            
                 if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.LeftShift)) Position -= up * speed * (float)args.Time;
-
-                if (KeyboardState.IsKeyPressed(OpenTK.Windowing.GraphicsLibraryFramework.Keys.P)) 
-                {
-                    if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Scene>(openFileDialog.FileName));
-                    }
-                }
             }
         }
 
@@ -213,49 +210,6 @@ namespace JuegoProgramacionGrafica
         protected override void OnUnload()
         {
             shader.Dispose();
-        }
-
-        private void RenderGUI()
-        {
-            ImGui.NewFrame();
-            ImGui.Begin("Menu", ImGuiWindowFlags.MenuBar);
-            if (ImGui.BeginMenuBar())
-            {
-                if (ImGui.BeginMenu("File"))
-                {
-                    if (ImGui.MenuItem("New scene")) scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", "New Scene", 0, 0), new());
-                    if (ImGui.MenuItem("Load scene"))
-                    {
-                        if (openFileDialog.ShowDialog() == DialogResult.OK)
-                        {
-                            scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Scene>(openFileDialog.FileName));
-                        }
-                    }
-                    ImGui.EndMenu();
-                }
-                ImGui.EndMenuBar();
-            }
-            foreach (string scene in scenes.Keys) 
-            {
-                if (ImGui.TreeNodeEx(scene))
-                {
-                    foreach (string object3d in scenes[scene].Objects.Keys)
-                    {
-                        if (ImGui.TreeNodeEx(object3d)) 
-                        {
-                            foreach (string piece in scenes[scene].Objects[object3d].Pieces.Keys)
-                            {
-                                ImGui.BulletText(piece);
-                            }
-                            ImGui.TreePop();
-                        }
-                    }
-                    ImGui.TreePop();
-                }
-            }
-            ImGui.End();
-            gui.Render(ClientSize);
-            GL.Enable(EnableCap.DepthTest);
         }
     }
 }

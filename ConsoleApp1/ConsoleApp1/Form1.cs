@@ -71,42 +71,42 @@ namespace JuegoProgramacionGrafica
             {
                 case 0:
                     object_visibility_toggle.Checked = game.scenes[scene_tree.SelectedNode.Text].visible;
-                    position_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].offset_x;
-                    position_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].offset_y;
-                    position_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].offset_z;
-                    rotation_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].pitch_value;
-                    rotation_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].yaw_value;
-                    rotation_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].roll_value;
-                    scale_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].scale_x;
-                    scale_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].scale_y;
-                    scale_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text].scale_z;
+                    position_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text]._position[0];
+                    position_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text]._position[1];
+                    position_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text]._position[2];
+                    rotation_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text]._rotation[0];
+                    rotation_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text]._rotation[1];
+                    rotation_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text]._rotation[2];
+                    scale_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text]._scale[0];
+                    scale_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text]._scale[1];
+                    scale_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Text]._scale[2];
                     openObjectToolStripMenuItem.Enabled = true;
                     break;
 
                 case 1:
                     object_visibility_toggle.Checked = game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].visible;
-                    position_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_x;
-                    position_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_y;
-                    position_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].offset_z;
-                    rotation_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].pitch_value;
-                    rotation_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].yaw_value;
-                    rotation_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].roll_value;
-                    scale_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_x;
-                    scale_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_y;
-                    scale_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text].scale_z;
+                    position_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text]._position[0];
+                    position_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text]._position[1];
+                    position_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text]._position[2];
+                    rotation_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text]._rotation[0];
+                    rotation_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text]._rotation[1];
+                    rotation_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text]._rotation[2];
+                    scale_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text]._scale[0];
+                    scale_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text]._scale[1];
+                    scale_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Text].Objects[scene_tree.SelectedNode.Text]._scale[2];
                     openObjectToolStripMenuItem.Enabled = false;
                     break;
                 case 2:
                     object_visibility_toggle.Checked = game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].visible;
-                    position_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_x;
-                    position_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_y;
-                    position_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].offset_z;
-                    rotation_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].pitch_value;
-                    rotation_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].yaw_value;
-                    rotation_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].roll_value;
-                    scale_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_x;
-                    scale_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_y;
-                    scale_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text].scale_z;
+                    position_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text]._position[0];
+                    position_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text]._position[1];
+                    position_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text]._position[2];
+                    rotation_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text]._rotation[0];
+                    rotation_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text]._rotation[1];
+                    rotation_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text]._rotation[2];
+                    scale_input_x.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text]._scale[0];
+                    scale_input_y.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text]._scale[1];
+                    scale_input_z.Value = (decimal)game.scenes[scene_tree.SelectedNode.Parent.Parent.Text].Objects[scene_tree.SelectedNode.Parent.Text].Pieces[scene_tree.SelectedNode.Text]._scale[2];
                     openObjectToolStripMenuItem.Enabled = false;
                     break;
             }

@@ -137,12 +137,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "baseFix": {
@@ -280,12 +289,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.001,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.001,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "lf": {
@@ -335,12 +353,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "lfl": {
@@ -390,12 +417,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "lfr": {
@@ -445,12 +481,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "lb": {
@@ -500,12 +545,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "lbl": {
@@ -555,12 +609,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "lbr": {
@@ -610,12 +673,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "uf": {
@@ -665,12 +737,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "ufl": {
@@ -720,12 +801,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "ufr": {
@@ -775,12 +865,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "ub": {
@@ -830,12 +929,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "ubl": {
@@ -885,12 +993,21 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         },
         "ubr": {
@@ -940,29 +1057,56 @@
               ]
             }
           },
-          "offset_x": 0.0,
-          "offset_y": 0.0,
-          "offset_z": 0.0,
-          "pitch_value": 0.0,
-          "roll_value": 0.0,
-          "yaw_value": 0.0,
+          "_position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "_scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
           "visible": true
         }
       },
-      "offset_x": 0.0,
-      "offset_y": 0.0,
-      "offset_z": 0.0,
-      "pitch_value": 0.0,
-      "roll_value": 0.0,
-      "yaw_value": 0.0,
+      "_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "_scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
       "visible": true
     }
   },
-  "offset_x": 0.0,
-  "offset_y": 0.0,
-  "offset_z": 0.0,
-  "pitch_value": 0.0,
-  "roll_value": 0.0,
-  "yaw_value": 0.0,
+  "_position": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "_rotation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "_scale": [
+    1.0,
+    1.0,
+    1.0
+  ],
   "visible": true
 }
