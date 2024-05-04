@@ -137,16 +137,16 @@ namespace JuegoProgramacionGrafica
 
             if (IsFocused)
             {
-                if (MouseState[MouseButton.Right])
+                if (MouseState[MouseButton.Right] && CursorState == CursorState.Normal)
                 {
                     MousePosition = new Vector2(Size.X / 2f, Size.Y / 2f);
                     CursorState = CursorState.Grabbed;
                 }
-                else
+                else if (MouseState[MouseButton.Left] && CursorState == CursorState.Grabbed)
                 {
                     CursorState = CursorState.Normal;
-                    return;
                 }
+                if (CursorState == CursorState.Normal) return;
 
                 if (KeyboardState.IsKeyDown(OpenTK.Windowing.GraphicsLibraryFramework.Keys.Escape)) Close();
 
@@ -204,7 +204,7 @@ namespace JuegoProgramacionGrafica
         {
             base.OnFramebufferResize(e);
             projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), Size.X / (float)Size.Y, 0.1f, 100.0f);
-            GL.Viewport(0, 0, Size.X, Size.Y);
+            GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
         }
 
         protected override void OnUnload()

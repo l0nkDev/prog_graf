@@ -141,12 +141,12 @@ namespace JuegoProgramacionGrafica
             stand.Faces.Add("right", sright);
 
             Face stop = new Face(0.0f, 0.3f, 0.0f);
-            stop.Tris.Add(0, new Tri(-0.25f, 0.0f, -0.005f, 0.23f, 0.23f, 0.23f,
-                                      0.25f, 0.0f, -0.005f, 0.23f, 0.23f, 0.23f,
-                                     -0.25f, 0.0f,  0.005f, 0.23f, 0.23f, 0.23f));
-            stop.Tris.Add(1, new Tri( 0.25f, 0.0f, -0.005f, 0.23f, 0.23f, 0.23f,
-                                     -0.25f, 0.0f,  0.005f, 0.23f, 0.23f, 0.23f,
-                                      0.25f, 0.0f,  0.005f, 0.23f, 0.23f, 0.23f));
+            stop.Tris.Add(0, new Tri(-0.025f, 0.0f, -0.005f, 0.23f, 0.23f, 0.23f,
+                                      0.025f, 0.0f, -0.005f, 0.23f, 0.23f, 0.23f,
+                                     -0.025f, 0.0f,  0.005f, 0.23f, 0.23f, 0.23f));
+            stop.Tris.Add(1, new Tri( 0.025f, 0.0f, -0.005f, 0.23f, 0.23f, 0.23f,
+                                     -0.025f, 0.0f,  0.005f, 0.23f, 0.23f, 0.23f,
+                                      0.025f, 0.0f,  0.005f, 0.23f, 0.23f, 0.23f));
             stand.Faces.Add("top", stop);
 
             monitor.Pieces.Add("stand", stand);

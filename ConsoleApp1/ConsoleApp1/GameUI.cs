@@ -39,11 +39,11 @@ namespace JuegoProgramacionGrafica
                             game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Scene>(openFileDialog.FileName));
                         }
                     }
-                    if (ImGui.MenuItem("Load object"))
+                    if (ImGui.MenuItem("Load object", selected_node_depth == 0))
                     {
                         if (openFileDialog.ShowDialog() == DialogResult.OK)
                         {
-                            game.scenes["main_scene"].Objects.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Object3D>(openFileDialog.FileName));
+                            game.scenes[selected_node[0]].Objects.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Object3D>(openFileDialog.FileName));
                         }
                     }
                     ImGui.EndMenu();
@@ -104,11 +104,21 @@ namespace JuegoProgramacionGrafica
                     break;
             }
 
+            ImGui.Separator();
+
             ImGui.Text(selected_node[0]);
             ImGui.Checkbox("Visible", ref _vis);
-            ImGui.DragFloat3("Position", ref _pos);
-            ImGui.DragFloat3("Rotation", ref _rot);
-            ImGui.DragFloat3("Scale", ref _scl);
+            ImGui.DragFloat3("Position", ref _pos, 0.01f);
+            ImGui.DragFloat3("Rotation", ref _rot, 1.0f);
+            ImGui.DragFloat3("Scale", ref _scl, 0.01f);
+
+            if (_rot.X > 360f) _rot.X -= 360f;
+            if (_rot.Y > 360f) _rot.Y -= 360f;
+            if (_rot.Z > 360f) _rot.Z -= 360f;
+            if (_rot.X < 0f) _rot.X += 360f;
+            if (_rot.Y < 0f) _rot.Y += 360f;
+            if (_rot.Z < 0f) _rot.Z += 360f;
+
             switch (selected_node_depth)
             {
                 case 0:
