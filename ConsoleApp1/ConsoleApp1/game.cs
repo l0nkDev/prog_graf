@@ -34,17 +34,9 @@ namespace JuegoProgramacionGrafica
 
         private double elapsed_second = 0;
         private int current_second_frames = 0;
-        private int fps = 0;
-
-        public string queue_path;
-        public string queue_name;
-        public string queue_scene;
-        public bool queue_is_scene;
-        public bool is_queued = false;
+        public int fps = 0;
 
         public Dictionary<string, Scene> scenes;
-
-        Form1 form;
 
         protected override void OnLoad()
         {
@@ -65,19 +57,8 @@ namespace JuegoProgramacionGrafica
             view = Matrix4.LookAt(Position, Position + front, up);
             projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), Size.X / (float)Size.Y, 0.1f, 100.0f);
 
-            form = new(this);
-            Thread thread = new Thread(() =>
-            {
-                //UIThread();
-            });
-
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-
-
             gui = new(this);
             ui_handler = new(this);
-
 
             //ObjectCreation.Serialize(ObjectCreation.Monitor(), "../../../assets/objects/monitor.json");
             //ObjectCreation.Serialize(ObjectCreation.Pot(), "../../../assets/objects/pot.json");
@@ -85,28 +66,8 @@ namespace JuegoProgramacionGrafica
             //gui.LoadFontDroidSans(12);
         }
 
-        [STAThread]
-        private void UIThread()
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.Run(form);
-            Close();
-        }
-
-
         protected override void OnRenderFrame(FrameEventArgs args)
         {
-
-            if (is_queued)
-            {
-                if (queue_is_scene && queue_path == "") scenes.Add(queue_name, new Scene());
-                else if (queue_is_scene) scenes.Add(queue_name, ObjectCreation.Deserialize<Scene>(queue_path)); 
-                else scenes[queue_scene].Objects.Add(queue_name, ObjectCreation.Deserialize<Object3D>(queue_path));
-                form.Invoke(form.myDelegate);
-                is_queued = false;
-            }
-
             base.OnRenderFrame(args);
             current_second_frames += 1;
             elapsed_second += args.Time;

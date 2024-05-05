@@ -1,7 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using Microsoft.VisualBasic;
 using ImGuiNET;
-using Zenseless.OpenTK.GUI;
 
 namespace JuegoProgramacionGrafica
 {
@@ -15,6 +14,7 @@ namespace JuegoProgramacionGrafica
         System.Numerics.Vector3 _rot = new();
         System.Numerics.Vector3 _scl = new();
         bool _vis = false;
+        bool open = false;
         OpenFileDialog openFileDialog;
 
         public GameUI(Game game)
@@ -26,7 +26,17 @@ namespace JuegoProgramacionGrafica
         public void Render()
         {
             ImGui.NewFrame();
-            ImGui.Begin("Menu", ImGuiWindowFlags.MenuBar);
+            ImGui.Begin("sub",  ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar);
+            ImGui.SetWindowSize(new System.Numerics.Vector2(20f, game.ClientSize.Y));
+            ImGui.SetWindowPos(new System.Numerics.Vector2(game.ClientSize.X - 284f, 0f));
+            if (ImGui.Button("collapse"))
+            {
+
+            }
+            ImGui.End();
+            ImGui.Begin("", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar);
+            ImGui.SetWindowSize(new System.Numerics.Vector2(264f, game.ClientSize.Y));
+            ImGui.SetWindowPos(new System.Numerics.Vector2(game.ClientSize.X - 264f, 0f));
             if (ImGui.BeginMenuBar())
             {
                 if (ImGui.BeginMenu("File"))
@@ -51,36 +61,44 @@ namespace JuegoProgramacionGrafica
                 ImGui.EndMenuBar();
             }
 
-            ImGuiTreeNodeFlags scene_f = ImGuiTreeNodeFlags.DefaultOpen;
-            ImGuiTreeNodeFlags objct_f = ImGuiTreeNodeFlags.DefaultOpen;
-            ImGuiTreeNodeFlags piece_f = ImGuiTreeNodeFlags.DefaultOpen;
-            scene_f |= ImGuiTreeNodeFlags.OpenOnArrow;
-            objct_f |= ImGuiTreeNodeFlags.OpenOnArrow;
-            piece_f |= ImGuiTreeNodeFlags.OpenOnArrow;
+            ImGui.Text(game.fps.ToString() + " FPS");
 
-            foreach (string scene in game.scenes.Keys)
+            ImGui.Separator();
+
+            if (ImGui.BeginChild("node_tree", new System.Numerics.Vector2(250f, 250f), true, ImGuiWindowFlags.AlwaysVerticalScrollbar))
             {
-                if (ImGui.TreeNodeEx(scene, scene_f))
+                ImGuiTreeNodeFlags scene_f = ImGuiTreeNodeFlags.DefaultOpen;
+                ImGuiTreeNodeFlags objct_f = ImGuiTreeNodeFlags.DefaultOpen;
+                ImGuiTreeNodeFlags piece_f = ImGuiTreeNodeFlags.DefaultOpen;
+                scene_f |= ImGuiTreeNodeFlags.OpenOnArrow;
+                objct_f |= ImGuiTreeNodeFlags.OpenOnArrow;
+                piece_f |= ImGuiTreeNodeFlags.OpenOnArrow;
+
+                foreach (string scene in game.scenes.Keys)
                 {
-                    if (ImGui.IsItemClicked()) { selected_node = new string[] { scene, "", "" }; selected_node_depth = 0; }
-                    foreach (string object3d in game.scenes[scene].Objects.Keys)
+                    if (ImGui.TreeNodeEx(scene, scene_f))
                     {
-                        if (ImGui.TreeNodeEx(object3d, objct_f))
+                        if (ImGui.IsItemClicked()) { selected_node = new string[] { scene, "", "" }; selected_node_depth = 0; }
+                        foreach (string object3d in game.scenes[scene].Objects.Keys)
                         {
-                            if (ImGui.IsItemClicked()) { selected_node = new string[] { object3d, scene, "" }; selected_node_depth = 1; }
-                            foreach (string piece in game.scenes[scene].Objects[object3d].Pieces.Keys)
+                            if (ImGui.TreeNodeEx(object3d, objct_f))
                             {
-                                if (ImGui.TreeNodeEx(piece, piece_f))
+                                if (ImGui.IsItemClicked()) { selected_node = new string[] { object3d, scene, "" }; selected_node_depth = 1; }
+                                foreach (string piece in game.scenes[scene].Objects[object3d].Pieces.Keys)
                                 {
-                                    if (ImGui.IsItemClicked()) { selected_node = new string[] { piece, object3d, scene }; selected_node_depth = 2; }
-                                    ImGui.TreePop();
+                                    if (ImGui.TreeNodeEx(piece, piece_f))
+                                    {
+                                        if (ImGui.IsItemClicked()) { selected_node = new string[] { piece, object3d, scene }; selected_node_depth = 2; }
+                                        ImGui.TreePop();
+                                    }
                                 }
+                                ImGui.TreePop();
                             }
-                            ImGui.TreePop();
                         }
+                        ImGui.TreePop();
                     }
-                    ImGui.TreePop();
                 }
+                ImGui.EndChild();
             }
             switch (selected_node_depth)
             {
