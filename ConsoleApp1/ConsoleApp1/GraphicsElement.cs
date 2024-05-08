@@ -3,10 +3,9 @@ using System.Runtime.Serialization;
 
 namespace JuegoProgramacionGrafica
 {
-    public class Scene
+    public class GraphicsElement
     {
-		public Dictionary<string, Object3D> Objects = new();
-
+        public Dictionary<string, Object> children = new();
 
         public float[] _position = { 0.0f, 0.0f, 0.0f };
         public float[] _rotation = { 0.0f, 0.0f, 0.0f };
@@ -14,24 +13,24 @@ namespace JuegoProgramacionGrafica
         private Matrix4 pitch, roll, yaw, position, scale;
         public bool visible = true;
 
-        public Scene(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
-		{
-			_position = new float[] { offset_x, offset_y, offset_z };
+        public GraphicsElement(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        {
+            _position = new float[] { offset_x, offset_y, offset_z };
 
             GenMatrixes(new StreamingContext());
         }
 
-        public Scene() { position = pitch = yaw = roll = scale = Matrix4.Identity; }
+        public GraphicsElement() { position = pitch = yaw = roll = scale = Matrix4.Identity; }
 
-        public void draw(Shader shader, Matrix4 model, Matrix4 view, Matrix4 projection, double time)
-		{
-			if (visible)
-			{
-				foreach (Object3D object3d in Objects.Values)
-				{
-					object3d.Draw(shader, scale * roll * pitch * yaw * position * model, view, projection, time);
-				}
-			}
+        public void Draw(Shader shader, Matrix4 model, Matrix4 view, Matrix4 projection, double time)
+        {
+            if (visible)
+            {
+                foreach (GraphicsElement elem in children.Values)
+                {
+                    elem.Draw(shader, scale * roll * pitch * yaw * position * model, view, projection, time);
+                }
+            }
         }
 
         [OnDeserialized]

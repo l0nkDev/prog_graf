@@ -36,7 +36,8 @@ namespace JuegoProgramacionGrafica
         private int current_second_frames = 0;
         public int fps = 0;
 
-        public Dictionary<string, Scene> scenes;
+        public Dictionary<string, Scene> scenes = new();
+        public Dictionary<string, GraphicsElement> elem = new();
 
         protected override void OnLoad()
         {
@@ -50,8 +51,6 @@ namespace JuegoProgramacionGrafica
             front = new Vector3(0.0f, 0.0f, -1.0f);
             up = Vector3.UnitY;
 
-            scenes = new();
-
             shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
 
             view = Matrix4.LookAt(Position, Position + front, up);
@@ -59,6 +58,9 @@ namespace JuegoProgramacionGrafica
 
             gui = new(this);
             ui_handler = new(this);
+
+            elem.Add("main scene", new());
+            elem["main scene"].children.Add("pot", ObjectCreation.Pot());
 
             //ObjectCreation.Serialize(ObjectCreation.Monitor(), "../../../assets/objects/monitor.json");
             //ObjectCreation.Serialize(ObjectCreation.Pot(), "../../../assets/objects/pot.json");
@@ -86,6 +88,11 @@ namespace JuegoProgramacionGrafica
             foreach (Scene scene in scenes.Values)
             {
                 scene.draw(shader, Matrix4.Identity, view, projection, args.Time);
+            }
+
+            foreach (GraphicsElement elm in elem.Values)
+            {
+                elm.Draw(shader, Matrix4.Identity, view, projection, args.Time);
             }
 
             ui_handler.Render();

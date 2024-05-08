@@ -8,13 +8,15 @@ namespace JuegoProgramacionGrafica
     public class GameUI
     {
         Game game;
-        string[] selected_node = { "", "", "" };
-        int selected_node_depth = -1;
+        GraphicsElement current;
+        int current_depth = -1;
+        string current_name = "";
         System.Numerics.Vector3 _pos = new();
         System.Numerics.Vector3 _rot = new();
         System.Numerics.Vector3 _scl = new();
         bool _vis = false;
         bool open = false;
+        bool collapsed = false;
         OpenFileDialog openFileDialog;
 
         public GameUI(Game game)
@@ -26,141 +28,104 @@ namespace JuegoProgramacionGrafica
         public void Render()
         {
             ImGui.NewFrame();
-            ImGui.Begin("sub",  ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar);
-            ImGui.SetWindowSize(new System.Numerics.Vector2(20f, game.ClientSize.Y));
-            ImGui.SetWindowPos(new System.Numerics.Vector2(game.ClientSize.X - 284f, 0f));
-            if (ImGui.Button("collapse"))
-            {
-
-            }
+            ImGui.Begin("sub", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar);
+            ImGui.SetWindowSize(new System.Numerics.Vector2(40f, game.ClientSize.Y));
+            ImGui.SetWindowPos(new System.Numerics.Vector2(game.ClientSize.X - 304f + (collapsed ? 264 : 0), 0f));
+            if (ImGui.Button("collapse")) collapsed = !collapsed;
             ImGui.End();
-            ImGui.Begin("", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar);
-            ImGui.SetWindowSize(new System.Numerics.Vector2(264f, game.ClientSize.Y));
-            ImGui.SetWindowPos(new System.Numerics.Vector2(game.ClientSize.X - 264f, 0f));
-            if (ImGui.BeginMenuBar())
+            if (!collapsed)
             {
-                if (ImGui.BeginMenu("File"))
+                ImGui.Begin("", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar);
+                ImGui.SetWindowSize(new System.Numerics.Vector2(264f, game.ClientSize.Y));
+                ImGui.SetWindowPos(new System.Numerics.Vector2(game.ClientSize.X - 264f, 0f));
+                if (ImGui.BeginMenuBar())
                 {
-                    if (ImGui.MenuItem("New scene")) game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", "New Scene", 0, 0), new());
-                    if (ImGui.MenuItem("Load scene"))
+                    if (ImGui.BeginMenu("File"))
                     {
-                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        if (ImGui.MenuItem("New scene")) game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", "New Scene", 0, 0), new());
+                        if (ImGui.MenuItem("Load scene"))
                         {
-                            game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Scene>(openFileDialog.FileName));
-                        }
-                    }
-                    if (ImGui.MenuItem("Load object", selected_node_depth == 0))
-                    {
-                        if (openFileDialog.ShowDialog() == DialogResult.OK)
-                        {
-                            game.scenes[selected_node[0]].Objects.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Object3D>(openFileDialog.FileName));
-                        }
-                    }
-                    ImGui.EndMenu();
-                }
-                ImGui.EndMenuBar();
-            }
-
-            ImGui.Text(game.fps.ToString() + " FPS");
-
-            ImGui.Separator();
-
-            if (ImGui.BeginChild("node_tree", new System.Numerics.Vector2(250f, 250f), true, ImGuiWindowFlags.AlwaysVerticalScrollbar))
-            {
-                ImGuiTreeNodeFlags scene_f = ImGuiTreeNodeFlags.DefaultOpen;
-                ImGuiTreeNodeFlags objct_f = ImGuiTreeNodeFlags.DefaultOpen;
-                ImGuiTreeNodeFlags piece_f = ImGuiTreeNodeFlags.DefaultOpen;
-                scene_f |= ImGuiTreeNodeFlags.OpenOnArrow;
-                objct_f |= ImGuiTreeNodeFlags.OpenOnArrow;
-                piece_f |= ImGuiTreeNodeFlags.OpenOnArrow;
-
-                foreach (string scene in game.scenes.Keys)
-                {
-                    if (ImGui.TreeNodeEx(scene, scene_f))
-                    {
-                        if (ImGui.IsItemClicked()) { selected_node = new string[] { scene, "", "" }; selected_node_depth = 0; }
-                        foreach (string object3d in game.scenes[scene].Objects.Keys)
-                        {
-                            if (ImGui.TreeNodeEx(object3d, objct_f))
+                            if (openFileDialog.ShowDialog() == DialogResult.OK)
                             {
-                                if (ImGui.IsItemClicked()) { selected_node = new string[] { object3d, scene, "" }; selected_node_depth = 1; }
-                                foreach (string piece in game.scenes[scene].Objects[object3d].Pieces.Keys)
-                                {
-                                    if (ImGui.TreeNodeEx(piece, piece_f))
-                                    {
-                                        if (ImGui.IsItemClicked()) { selected_node = new string[] { piece, object3d, scene }; selected_node_depth = 2; }
-                                        ImGui.TreePop();
-                                    }
-                                }
-                                ImGui.TreePop();
+                                game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Scene>(openFileDialog.FileName));
                             }
                         }
-                        ImGui.TreePop();
+                        if (ImGui.MenuItem("Load object", current_depth == 0))
+                        {
+                            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                            {
+                                current.children.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<GraphicsElement>(openFileDialog.FileName));
+                            }
+                        }
+                        ImGui.EndMenu();
                     }
+                    ImGui.EndMenuBar();
                 }
-                ImGui.EndChild();
+
+                ImGui.Text(game.fps.ToString() + " FPS");
+
+                ImGui.Separator();
+
+                if (ImGui.BeginChild("node_tree", new System.Numerics.Vector2(250f, 250f), true, ImGuiWindowFlags.AlwaysVerticalScrollbar))
+                {
+                    foreach (GraphicsElement elem in game.elem.Values)
+                    {
+                        GenTree(elem, 0);
+                    }
+                    ImGui.EndChild();
+                }
+
+                if (current != null)
+                {
+                    _pos = new(current._position[0], current._position[1], current._position[2]);
+                    _rot = new(current._rotation[0], current._rotation[1], current._rotation[2]);
+                    _scl = new(current._scale[0], current._scale[1], current._scale[2]);
+                    _vis = current.visible;
+      
+
+                    ImGui.Separator();
+
+                    ImGui.Text(current_name);
+                    ImGui.Checkbox("Visible", ref _vis);
+                    ImGui.DragFloat3("Position", ref _pos, 0.01f);
+                    ImGui.DragFloat3("Rotation", ref _rot, 1.0f);
+                    ImGui.DragFloat3("Scale", ref _scl, 0.01f);
+
+                    if (_rot.X > 360f) _rot.X -= 360f;
+                    if (_rot.Y > 360f) _rot.Y -= 360f;
+                    if (_rot.Z > 360f) _rot.Z -= 360f;
+                    if (_rot.X < 0f) _rot.X += 360f;
+                    if (_rot.Y < 0f) _rot.Y += 360f;
+                    if (_rot.Z < 0f) _rot.Z += 360f;
+
+                    current.SetPosition(_pos.X, _pos.Y, _pos.Z);
+                    current.SetRotation(_rot.X, _rot.Y, _rot.Z);
+                    current.SetScale(_scl.X, _scl.Y, _scl.Z);
+                    current.visible = _vis;
+                }
+                ImGui.End();
             }
-            switch (selected_node_depth)
-            {
-                case 0:
-                    _pos = new(game.scenes[selected_node[0]]._position[0], game.scenes[selected_node[0]]._position[1], game.scenes[selected_node[0]]._position[2]);
-                    _rot = new(game.scenes[selected_node[0]]._rotation[0], game.scenes[selected_node[0]]._rotation[1], game.scenes[selected_node[0]]._rotation[2]);
-                    _scl = new(game.scenes[selected_node[0]]._scale[0], game.scenes[selected_node[0]]._scale[1], game.scenes[selected_node[0]]._scale[2]);
-                    _vis = game.scenes[selected_node[0]].visible;
-                    break;
-                case 1:
-                    _pos = new(game.scenes[selected_node[1]].Objects[selected_node[0]]._position[0], game.scenes[selected_node[1]].Objects[selected_node[0]]._position[1], game.scenes[selected_node[1]].Objects[selected_node[0]]._position[2]);
-                    _rot = new(game.scenes[selected_node[1]].Objects[selected_node[0]]._rotation[0], game.scenes[selected_node[1]].Objects[selected_node[0]]._rotation[1], game.scenes[selected_node[1]].Objects[selected_node[0]]._rotation[2]);
-                    _scl = new(game.scenes[selected_node[1]].Objects[selected_node[0]]._scale[0], game.scenes[selected_node[1]].Objects[selected_node[0]]._scale[1], game.scenes[selected_node[1]].Objects[selected_node[0]]._scale[2]);
-                    _vis = game.scenes[selected_node[1]].Objects[selected_node[0]].visible;
-                    break;
-                case 2:
-                    _pos = new(game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]]._position[0], game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]]._position[1], game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]]._position[2]);
-                    _rot = new(game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]]._rotation[0], game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]]._rotation[1], game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]]._rotation[2]);
-                    _scl = new(game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]]._scale[0], game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]]._scale[1], game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]]._scale[2]);
-                    _vis = game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]].visible;
-                    break;
-            }
-
-            ImGui.Separator();
-
-            ImGui.Text(selected_node[0]);
-            ImGui.Checkbox("Visible", ref _vis);
-            ImGui.DragFloat3("Position", ref _pos, 0.01f);
-            ImGui.DragFloat3("Rotation", ref _rot, 1.0f);
-            ImGui.DragFloat3("Scale", ref _scl, 0.01f);
-
-            if (_rot.X > 360f) _rot.X -= 360f;
-            if (_rot.Y > 360f) _rot.Y -= 360f;
-            if (_rot.Z > 360f) _rot.Z -= 360f;
-            if (_rot.X < 0f) _rot.X += 360f;
-            if (_rot.Y < 0f) _rot.Y += 360f;
-            if (_rot.Z < 0f) _rot.Z += 360f;
-
-            switch (selected_node_depth)
-            {
-                case 0:
-                    game.scenes[selected_node[0]].SetPosition(_pos.X, _pos.Y, _pos.Z);
-                    game.scenes[selected_node[0]].SetRotation(_rot.X, _rot.Y, _rot.Z);
-                    game.scenes[selected_node[0]].SetScale(_scl.X, _scl.Y, _scl.Z);
-                    game.scenes[selected_node[0]].visible = _vis;
-                    break;
-                case 1:
-                    game.scenes[selected_node[1]].Objects[selected_node[0]].SetPosition(_pos.X, _pos.Y, _pos.Z);
-                    game.scenes[selected_node[1]].Objects[selected_node[0]].SetRotation(_rot.X, _rot.Y, _rot.Z);
-                    game.scenes[selected_node[1]].Objects[selected_node[0]].SetScale(_scl.X, _scl.Y, _scl.Z);
-                    game.scenes[selected_node[1]].Objects[selected_node[0]].visible = _vis;
-                    break;
-                case 2:
-                    game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]].SetPosition(_pos.X, _pos.Y, _pos.Z);
-                    game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]].SetRotation(_rot.X, _rot.Y, _rot.Z);
-                    game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]].SetScale(_scl.X, _scl.Y, _scl.Z);
-                    game.scenes[selected_node[2]].Objects[selected_node[1]].Pieces[selected_node[0]].visible = _vis;
-                    break;
-            }
-            ImGui.End();
             game.gui.Render(game.ClientSize);
             GL.Enable(EnableCap.DepthTest);
         }
+
+        private void GenTree(GraphicsElement elem, int depth)
+        {
+            foreach (string key in elem.children.Keys)
+            {
+                if (ImGui.TreeNodeEx(key, ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    if (ImGui.IsItemClicked()) 
+                    { 
+                        current = elem.children[key]; 
+                        current_name = key; 
+                        current_depth = depth; 
+                    }
+                    GenTree(elem.children[key], depth++);
+                    ImGui.TreePop();
+                }
+            }
+        }
+
     }
 }

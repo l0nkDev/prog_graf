@@ -212,13 +212,13 @@ namespace JuegoProgramacionGrafica
             return monitor;
         }
 
-        public static Object3D Pot(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        public static GraphicsElement Pot(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
         {
-            Object3D pot = new Object3D(offset_x, offset_y, offset_z);
+            GraphicsElement pot = new(offset_x, offset_y, offset_z);
 
-            Piece body = new Piece();
+            GraphicsElement body = new();
 
-            Face _base = new Face();
+            GraphicsElement _base = new();
             _base.Tris.Add(0, new Tri( 0.000f, 0.000f, 0.000f, 0.1216f, 0.4118f, 0.50196f,
                                       -0.100f, 0.000f, 0.000f, 0.1216f, 0.4118f, 0.50196f,
                                       -0.050f, 0.000f, -0.087f, 0.1216f, 0.4118f, 0.50196f));
@@ -237,9 +237,9 @@ namespace JuegoProgramacionGrafica
             _base.Tris.Add(5, new Tri( 0.000f, 0.000f, 0.000f, 0.1216f, 0.4118f, 0.50196f,
                                        0.050f, 0.000f, 0.087f, 0.1216f, 0.4118f, 0.50196f,
                                        0.100f, 0.000f, 0.000f, 0.1216f, 0.4118f, 0.50196f));
-            body.Faces.Add("base", _base);
+            body.children.Add("base", _base);
 
-            Face _baseF = new Face(0.0f, 0.001f, 0.0f);
+            GraphicsElement _baseF = new(0.0f, 0.001f, 0.0f);
             _baseF.Tris.Add(0, new Tri( 0.000f, 0.000f, 0.000f, 0.1216f, 0.4118f, 0.50196f,
                                        -0.100f, 0.000f, 0.000f, 0.1216f, 0.4118f, 0.50196f,
                                        -0.050f, 0.000f, -0.087f, 0.1216f, 0.4118f, 0.50196f));
@@ -258,117 +258,117 @@ namespace JuegoProgramacionGrafica
             _baseF.Tris.Add(5, new Tri( 0.000f, 0.000f, 0.000f, 0.1216f, 0.4118f, 0.50196f,
                                         0.050f, 0.000f, 0.087f, 0.1216f, 0.4118f, 0.50196f,
                                         0.100f, 0.000f, 0.000f, 0.1216f, 0.4118f, 0.50196f));
-            body.Faces.Add("baseFix", _baseF);
+            body.children.Add("baseFix", _baseF);
 
-            Face lf = new Face();
+            GraphicsElement lf = new();
             lf.Tris.Add(0, new Tri(-0.05f, 0.000f, 0.087f, 0.2416f, 0.5318f, 0.63196f,
                                     0.05f, 0.000f, 0.087f, 0.2416f, 0.5318f, 0.63196f,
                                     0.10f, 0.173f, 0.173f, 0.2416f, 0.5318f, 0.63196f));
             lf.Tris.Add(1, new Tri(-0.05f, 0.000f, 0.087f, 0.2416f, 0.5318f, 0.63196f,
                                     0.10f, 0.173f, 0.173f, 0.2416f, 0.5318f, 0.63196f,
                                    -0.10f, 0.173f, 0.173f, 0.2416f, 0.5318f, 0.63196f));
-            body.Faces.Add("lf", lf);
+            body.children.Add("lf", lf);
 
-            Face lfl = new Face();
+            GraphicsElement lfl = new();
             lfl.Tris.Add(0, new Tri(-0.10f, 0.000f, 0.000f, 0.2116f, 0.5018f, 0.60196f,
                                     -0.05f, 0.000f, 0.087f, 0.2116f, 0.5018f, 0.60196f,
                                     -0.10f, 0.173f, 0.173f, 0.2116f, 0.5018f, 0.60196f));
             lfl.Tris.Add(1, new Tri(-0.10f, 0.000f, 0.000f, 0.2116f, 0.5018f, 0.60196f,
                                     -0.20f, 0.173f, 0.000f, 0.2116f, 0.5018f, 0.60196f,
                                     -0.10f, 0.173f, 0.173f, 0.2116f, 0.5018f, 0.60196f));
-            body.Faces.Add("lfl", lfl);
+            body.children.Add("lfl", lfl);
 
-            Face lfr = new Face();
+            GraphicsElement lfr = new();
             lfr.Tris.Add(0, new Tri( 0.10f, 0.000f, 0.000f, 0.2116f, 0.5018f, 0.60196f,
                                      0.05f, 0.000f, 0.087f, 0.2116f, 0.5018f, 0.60196f,
                                      0.10f, 0.173f, 0.173f, 0.2116f, 0.5018f, 0.60196f));
             lfr.Tris.Add(1, new Tri( 0.10f, 0.000f, 0.000f, 0.2116f, 0.5018f, 0.60196f,
                                      0.20f, 0.173f, 0.000f, 0.2116f, 0.5018f, 0.60196f,
                                      0.10f, 0.173f, 0.173f, 0.2116f, 0.5018f, 0.60196f));
-            body.Faces.Add("lfr", lfr);
+            body.children.Add("lfr", lfr);
 
-            Face lb = new Face();
+            GraphicsElement lb = new();
             lb.Tris.Add(0, new Tri(-0.05f, 0.000f, -0.087f, 0.1516f, 0.4418f, 0.53196f,
                                     0.05f, 0.000f, -0.087f, 0.1516f, 0.4418f, 0.53196f,
                                     0.10f, 0.173f, -0.173f, 0.1516f, 0.4418f, 0.53196f));
             lb.Tris.Add(1, new Tri(-0.05f, 0.000f, -0.087f, 0.1516f, 0.4418f, 0.53196f,
                                     0.10f, 0.173f, -0.173f, 0.1516f, 0.4418f, 0.53196f,
                                    -0.10f, 0.173f, -0.173f, 0.1516f, 0.4418f, 0.53196f));
-            body.Faces.Add("lb", lb);
+            body.children.Add("lb", lb);
 
-            Face lbl = new Face();
+            GraphicsElement lbl = new();
             lbl.Tris.Add(0, new Tri(-0.10f, 0.000f,  0.000f, 0.1816f, 0.4718f, 0.57196f,
                                     -0.05f, 0.000f, -0.087f, 0.1816f, 0.4718f, 0.57196f,
                                     -0.10f, 0.173f, -0.173f, 0.1816f, 0.4718f, 0.57196f));
             lbl.Tris.Add(1, new Tri(-0.10f, 0.000f,  0.000f, 0.1816f, 0.4718f, 0.57196f,
                                     -0.20f, 0.173f,  0.000f, 0.1816f, 0.4718f, 0.57196f,
                                     -0.10f, 0.173f, -0.173f, 0.1816f, 0.4718f, 0.57196f));
-            body.Faces.Add("lbl", lbl);
+            body.children.Add("lbl", lbl);
 
-            Face lbr = new Face();
+            GraphicsElement lbr = new();
             lbr.Tris.Add(0, new Tri( 0.10f, 0.000f,  0.000f, 0.1816f, 0.4718f, 0.57196f,
                                      0.05f, 0.000f, -0.087f, 0.1816f, 0.4718f, 0.57196f,
                                      0.10f, 0.173f, -0.173f, 0.1816f, 0.4718f, 0.57196f));
             lbr.Tris.Add(1, new Tri( 0.10f, 0.000f,  0.000f, 0.1816f, 0.4718f, 0.57196f,
                                      0.20f, 0.173f,  0.000f, 0.1816f, 0.4718f, 0.57196f,
                                      0.10f, 0.173f, -0.173f, 0.1816f, 0.4718f, 0.57196f));
-            body.Faces.Add("lbr", lbr);
+            body.children.Add("lbr", lbr);
 
-            Face uf = new Face();
+            GraphicsElement uf = new();
             uf.Tris.Add(0, new Tri(-0.05f, 0.346f, 0.087f, 0.2716f, 0.5618f, 0.66196f,
                                     0.05f, 0.346f, 0.087f, 0.2716f, 0.5618f, 0.66196f,
                                     0.10f, 0.173f, 0.173f, 0.2716f, 0.5618f, 0.66196f));
             uf.Tris.Add(1, new Tri(-0.05f, 0.346f, 0.087f, 0.2716f, 0.5618f, 0.66196f,
                                     0.10f, 0.173f, 0.173f, 0.2716f, 0.5618f, 0.66196f,
                                    -0.10f, 0.173f, 0.173f, 0.2716f, 0.5618f, 0.66196f));
-            body.Faces.Add("uf", uf);
+            body.children.Add("uf", uf);
 
-            Face ufl = new Face();
+            GraphicsElement ufl = new();
             ufl.Tris.Add(0, new Tri(-0.10f, 0.346f, 0.000f, 0.2416f, 0.5318f, 0.63196f,
                                     -0.05f, 0.346f, 0.087f, 0.2416f, 0.5318f, 0.63196f,
                                     -0.10f, 0.173f, 0.173f, 0.2416f, 0.5318f, 0.63196f));
             ufl.Tris.Add(1, new Tri(-0.10f, 0.346f, 0.000f, 0.2416f, 0.5318f, 0.63196f,
                                     -0.20f, 0.173f, 0.000f, 0.2416f, 0.5318f, 0.63196f,
                                     -0.10f, 0.173f, 0.173f, 0.2416f, 0.5318f, 0.63196f));
-            body.Faces.Add("ufl", ufl);
+            body.children.Add("ufl", ufl);
 
-            Face ufr = new Face();
+            GraphicsElement ufr = new();
             ufr.Tris.Add(0, new Tri( 0.10f, 0.346f, 0.000f, 0.2416f, 0.5318f, 0.63196f,
                                      0.05f, 0.346f, 0.087f, 0.2416f, 0.5318f, 0.63196f,
                                      0.10f, 0.173f, 0.173f, 0.2416f, 0.5318f, 0.63196f));
             ufr.Tris.Add(1, new Tri( 0.10f, 0.346f, 0.000f, 0.2416f, 0.5318f, 0.63196f,
                                      0.20f, 0.173f, 0.000f, 0.2416f, 0.5318f, 0.63196f,
                                      0.10f, 0.173f, 0.173f, 0.2416f, 0.5318f, 0.63196f));
-            body.Faces.Add("ufr", ufr);
+            body.children.Add("ufr", ufr);
 
-            Face ub = new Face();
+            GraphicsElement ub = new();
             ub.Tris.Add(0, new Tri(-0.05f, 0.346f, -0.087f, 0.1816f, 0.4718f, 0.57196f,
                                     0.05f, 0.346f, -0.087f, 0.1816f, 0.4718f, 0.57196f,
                                     0.10f, 0.173f, -0.173f, 0.1816f, 0.4718f, 0.57196f));
             ub.Tris.Add(1, new Tri(-0.05f, 0.346f, -0.087f, 0.1816f, 0.4718f, 0.57196f,
                                     0.10f, 0.173f, -0.173f, 0.1816f, 0.4718f, 0.57196f,
                                    -0.10f, 0.173f, -0.173f, 0.1816f, 0.4718f, 0.57196f));
-            body.Faces.Add("ub", ub);
+            body.children.Add("ub", ub);
 
-            Face ubl = new Face();
+            GraphicsElement ubl = new();
             ubl.Tris.Add(0, new Tri(-0.10f, 0.346f,  0.000f, 0.2116f, 0.5018f, 0.60196f,
                                     -0.05f, 0.346f, -0.087f, 0.2116f, 0.5018f, 0.60196f,
                                     -0.10f, 0.173f, -0.173f, 0.2116f, 0.5018f, 0.60196f));
             ubl.Tris.Add(1, new Tri(-0.10f, 0.346f,  0.000f, 0.2116f, 0.5018f, 0.60196f,
                                     -0.20f, 0.173f,  0.000f, 0.2116f, 0.5018f, 0.60196f,
                                     -0.10f, 0.173f, -0.173f, 0.2116f, 0.5018f, 0.60196f));
-            body.Faces.Add("ubl", ubl);
+            body.children.Add("ubl", ubl);
 
-            Face ubr = new Face();
+            GraphicsElement ubr = new();
             ubr.Tris.Add(0, new Tri( 0.10f, 0.346f,  0.000f, 0.2116f, 0.5018f, 0.60196f,
                                      0.05f, 0.346f, -0.087f, 0.2116f, 0.5018f, 0.60196f,
                                      0.10f, 0.173f, -0.173f, 0.2116f, 0.5018f, 0.60196f));
             ubr.Tris.Add(1, new Tri( 0.10f, 0.346f,  0.000f, 0.2116f, 0.5018f, 0.60196f,
                                      0.20f, 0.173f,  0.000f, 0.2116f, 0.5018f, 0.60196f,
                                      0.10f, 0.173f, -0.173f, 0.2116f, 0.5018f, 0.60196f));
-            body.Faces.Add("ubr", ubr);
+            body.children.Add("ubr", ubr);
 
-            pot.Pieces.Add("body", body);
+            pot.children.Add("body", body);
 
             return pot;
         }
