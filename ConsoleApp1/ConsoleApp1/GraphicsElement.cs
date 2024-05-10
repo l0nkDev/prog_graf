@@ -5,13 +5,15 @@ namespace JuegoProgramacionGrafica
 {
     public class GraphicsElement
     {
-        public Dictionary<string, Object> children = new();
-
+        public byte level = 255;
         public float[] _position = { 0.0f, 0.0f, 0.0f };
         public float[] _rotation = { 0.0f, 0.0f, 0.0f };
         public float[] _scale    = { 1.0f, 1.0f, 1.0f };
         private Matrix4 pitch, roll, yaw, position, scale;
         public bool visible = true;
+        
+        public Dictionary<string, GraphicsElement> children = new();
+        public Dictionary<int, Tri> tris = new();
 
         public GraphicsElement(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
         {
@@ -29,6 +31,10 @@ namespace JuegoProgramacionGrafica
                 foreach (GraphicsElement elem in children.Values)
                 {
                     elem.Draw(shader, scale * roll * pitch * yaw * position * model, view, projection, time);
+                }
+                foreach (Tri tri in tris.Values)
+                {
+                    tri.Draw(shader, scale * roll * pitch * yaw * position * model, view, projection, time);
                 }
             }
         }
@@ -82,5 +88,7 @@ namespace JuegoProgramacionGrafica
             scale *= Matrix4.CreateScale(x, y, z);
             _scale = new float[] { _scale[0] + x, _scale[1] + y, _scale[2] + z };
         }
+
+        
     }
 }

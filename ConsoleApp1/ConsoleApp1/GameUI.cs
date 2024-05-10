@@ -9,15 +9,15 @@ namespace JuegoProgramacionGrafica
     {
         Game game;
         GraphicsElement current;
-        int current_depth = -1;
-        string current_name = "";
+        string current_name;
         System.Numerics.Vector3 _pos = new();
         System.Numerics.Vector3 _rot = new();
         System.Numerics.Vector3 _scl = new();
         bool _vis = false;
-        bool open = false;
         bool collapsed = false;
+        bool showfaces = false;
         OpenFileDialog openFileDialog;
+        SaveFileDialog saveFileDialog;
 
         public GameUI(Game game)
 		{
@@ -42,19 +42,19 @@ namespace JuegoProgramacionGrafica
                 {
                     if (ImGui.BeginMenu("File"))
                     {
-                        if (ImGui.MenuItem("New scene")) game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", "New Scene", 0, 0), new());
+                        if (ImGui.MenuItem("New scene")) game.elem.Add(Interaction.InputBox("Name of the new scene", "New Scene", "New Scene", 0, 0), new());
                         if (ImGui.MenuItem("Load scene"))
                         {
                             if (openFileDialog.ShowDialog() == DialogResult.OK)
                             {
-                                game.scenes.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<Scene>(openFileDialog.FileName));
+                                game.elem.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), FileUtils.Deserialize(openFileDialog.FileName));
                             }
                         }
-                        if (ImGui.MenuItem("Load object", current_depth == 0))
+                        if (ImGui.MenuItem("Load object", current != null && current.level == 0))
                         {
                             if (openFileDialog.ShowDialog() == DialogResult.OK)
                             {
-                                current.children.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), ObjectCreation.Deserialize<GraphicsElement>(openFileDialog.FileName));
+                                current.children.Add(Interaction.InputBox("Name of the new scene", "New Scene", openFileDialog.SafeFileName[..^5], 0, 0), FileUtils.Deserialize(openFileDialog.FileName));
                             }
                         }
                         ImGui.EndMenu();
@@ -68,10 +68,7 @@ namespace JuegoProgramacionGrafica
 
                 if (ImGui.BeginChild("node_tree", new System.Numerics.Vector2(250f, 250f), true, ImGuiWindowFlags.AlwaysVerticalScrollbar))
                 {
-                    foreach (GraphicsElement elem in game.elem.Values)
-                    {
-                        GenTree(elem, 0);
-                    }
+                    GenTree(game.elem);
                     ImGui.EndChild();
                 }
 
@@ -81,9 +78,6 @@ namespace JuegoProgramacionGrafica
                     _rot = new(current._rotation[0], current._rotation[1], current._rotation[2]);
                     _scl = new(current._scale[0], current._scale[1], current._scale[2]);
                     _vis = current.visible;
-      
-
-                    ImGui.Separator();
 
                     ImGui.Text(current_name);
                     ImGui.Checkbox("Visible", ref _vis);
@@ -109,19 +103,20 @@ namespace JuegoProgramacionGrafica
             GL.Enable(EnableCap.DepthTest);
         }
 
-        private void GenTree(GraphicsElement elem, int depth)
+        private void GenTree(Dictionary<string, GraphicsElement> elem)
         {
-            foreach (string key in elem.children.Keys)
+            if (!showfaces && elem.Values.First().level == 2) return;
+            foreach (string key in elem.Keys)
             {
-                if (ImGui.TreeNodeEx(key, ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.DefaultOpen))
+                ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.DefaultOpen;
+                if (ImGui.TreeNodeEx(key, flags))
                 {
                     if (ImGui.IsItemClicked()) 
                     { 
-                        current = elem.children[key]; 
-                        current_name = key; 
-                        current_depth = depth; 
+                        current = elem[key]; 
+                        current_name = key;
                     }
-                    GenTree(elem.children[key], depth++);
+                    GenTree(elem[key].children);
                     ImGui.TreePop();
                 }
             }
