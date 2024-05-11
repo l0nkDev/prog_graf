@@ -9,7 +9,7 @@ namespace JuegoProgramacionGrafica
         public float[] _position = { 0.0f, 0.0f, 0.0f };
         public float[] _rotation = { 0.0f, 0.0f, 0.0f };
         public float[] _scale    = { 1.0f, 1.0f, 1.0f };
-        private Matrix4 pitch, roll, yaw, position, scale;
+        public Matrix4 pitch, roll, yaw, position, scale;
         public bool visible = true;
         
         public Dictionary<string, GraphicsElement> children = new();
@@ -48,11 +48,9 @@ namespace JuegoProgramacionGrafica
         [OnDeserialized]
         private void GenMatrixes(StreamingContext context)
         {
-            position = Matrix4.CreateTranslation(_position[0], _position[1], _position[2]);
-            pitch = Matrix4.CreateRotationX(_rotation[0]);
-            yaw = Matrix4.CreateRotationY(_rotation[1]);
-            roll = Matrix4.CreateRotationZ(_rotation[2]);
-            scale = Matrix4.CreateScale(_scale[0], _scale[1], _scale[2]);
+            SetPosition(_position[0], _position[1], _position[2]);
+            SetRotation(_rotation[0], _rotation[1], _rotation[2]);
+            SetScale(_scale[0], _scale[1], _scale[2]);
         }
 
         public void SetRotation(float pitch, float yaw, float roll)
@@ -95,6 +93,18 @@ namespace JuegoProgramacionGrafica
             _scale = new float[] { _scale[0] + x, _scale[1] + y, _scale[2] + z };
         }
 
-        
+        public void RotateOverTime(float x, float y, float z, float start_time, float end_time, float time, float delta)
+        {
+            float duration = end_time - start_time;
+            if (time > end_time || start_time > time) return;
+            Rotate(x*(delta/duration), y*(delta/duration), z*(delta/duration));
+        }
+
+        public void MoveOverTime(float x, float y, float z, float start_time, float end_time, float time, float delta)
+        {
+            float duration = end_time - start_time;
+            if (time > end_time || start_time > time) return;
+            Move(x * (delta / duration), y * (delta / duration), z * (delta / duration));
+        }
     }
 }

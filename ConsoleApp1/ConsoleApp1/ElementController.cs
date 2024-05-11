@@ -1,10 +1,11 @@
 ﻿using System;
 namespace juegoProgramacionGrafica
 {
-    public class Controller
+    public class ElementController
     {
-        public Controller()
+        public ElementController()
         {
+
         }
     }
 }

@@ -34,12 +34,13 @@ namespace JuegoProgramacionGrafica
 
             shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
 
+
+            //FileUtils.SerializeExamples("../../../assets/objects/");
+            elem.Add("main scene", FileUtils.Deserialize("../../../assets/objects/main scene.json"));
+
             gui = new(this);
             ui_handler = new(this);
             movement = new(this);
-
-            FileUtils.SerializeExamples("../../../assets/objects/");
-            elem.Add("main scene", FileUtils.Deserialize("../../../assets/objects/main scene.json"));
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -61,7 +62,7 @@ namespace JuegoProgramacionGrafica
                 elm.Draw(shader, Matrix4.Identity, movement.View, movement.Projection, args.Time);
             }
 
-            ui_handler.Render();
+            ui_handler.Render((float)args.Time);
             SwapBuffers();
         }
 

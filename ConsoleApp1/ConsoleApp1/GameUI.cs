@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using Microsoft.VisualBasic;
 using ImGuiNET;
+using OpenTK.Mathematics;
 
 namespace JuegoProgramacionGrafica
 {
@@ -9,6 +10,11 @@ namespace JuegoProgramacionGrafica
     {
         Game game;
         GraphicsElement current;
+        GraphicsElement animation_target;
+        float[] target_pos;
+        float[] target_rot;
+        float[] target_scl;
+
         string current_name;
         System.Numerics.Vector3 _pos = new();
         System.Numerics.Vector3 _rot = new();
@@ -16,6 +22,7 @@ namespace JuegoProgramacionGrafica
         bool _vis = false;
         bool collapsed = false;
         bool showfaces = false;
+        float anim = 0;
         OpenFileDialog openFileDialog;
         SaveFileDialog saveFileDialog;
 
@@ -25,8 +32,20 @@ namespace JuegoProgramacionGrafica
             openFileDialog = new();
 		}
 
-        public void Render()
+        public void Render(float delta)
         {
+            if (animation_target != null)
+            {
+                current.RotateOverTime(0, 0, 180, 0, 0.5f, anim, delta);
+                current.MoveOverTime(0, 0.30f, 0, 0, 0.25f, anim, delta);
+                current.MoveOverTime(0, -0.25f, 0, 0.25f, 0.5f, anim, delta);
+                current.RotateOverTime(0, 0, -180, 0.5f, 0.515f, anim, delta);
+                current.MoveOverTime(-0.325f, 0, 0, 0.5f, 0.515f, anim, delta);
+                current.RotateOverTime(0, 0, 180, 0.5f, 1, anim, delta);
+                current.MoveOverTime(0, 0.30f, 0, 0.5f, 0.75f, anim, delta);
+                current.MoveOverTime(0, -0.25f, 0, 0.75f, 1, anim, delta);
+                anim += delta;
+            }
             ImGui.NewFrame();
             ImGui.Begin("sub", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar);
             ImGui.SetWindowSize(new System.Numerics.Vector2(40f, game.ClientSize.Y));
@@ -84,6 +103,14 @@ namespace JuegoProgramacionGrafica
                     ImGui.DragFloat3("Position", ref _pos, 0.01f);
                     ImGui.DragFloat3("Rotation", ref _rot, 1.0f);
                     ImGui.DragFloat3("Scale", ref _scl, 0.01f);
+                    if (ImGui.Button("Exec Anim."))
+                    {
+                        target_pos = current._position;
+                        target_rot = current._rotation;
+                        target_scl = current._scale;
+                        animation_target = current;
+                        anim = 0;
+                    }
 
                     if (_rot.X > 360f) _rot.X -= 360f;
                     if (_rot.Y > 360f) _rot.Y -= 360f;
@@ -112,7 +139,14 @@ namespace JuegoProgramacionGrafica
                 if (ImGui.TreeNodeEx(key, flags))
                 {
                     if (ImGui.IsItemClicked()) 
-                    { 
+                    {
+                        if (animation_target != null)
+                        {
+                            current.SetPosition(target_pos[0], target_pos[1], target_pos[2]);
+                            current.SetRotation(target_rot[0], target_rot[1], target_rot[2]);
+                            current.SetScale(target_scl[0], target_scl[1], target_scl[2]);
+                            animation_target = null;
+                        }
                         current = elem[key]; 
                         current_name = key;
                     }
