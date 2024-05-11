@@ -391,69 +391,69 @@ namespace JuegoProgramacionGrafica
 
         public static GraphicsElement Desk(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
         {
-            GraphicsElement desk = new(offset_x, offset_y, offset_z) { level = 1 };
+            GraphicsElement desk = new(1, true, offset_x, offset_y, offset_z);
 
-            GraphicsElement desktop = new(0.0f, 0.72f, 0.0f) { level = 1 };
+            GraphicsElement desktop = new(1, true, 0.0f, 0.72f, 0.0f);
 
-            GraphicsElement top = new(0.0f, 0.03f, 0.0f) { level = 2 };
+            GraphicsElement top = new(2, true, 0.0f, 0.03f, 0.0f);
             top.tris.Add(0, new Tri(-0.75f, 0.00f, -0.375f, 0.4f, 0.2745f, 0.1804f,
                                      0.75f, 0.00f, -0.375f, 0.4f, 0.2745f, 0.1804f,
-                                    -0.75f, 0.00f, 0.375f, 0.4f, 0.2745f, 0.1804f));
-            top.tris.Add(1, new Tri(0.75f, 0.00f, -0.375f, 0.4f, 0.2745f, 0.1804f,
-                                    -0.75f, 0.00f, 0.375f, 0.4f, 0.2745f, 0.1804f,
-                                     0.75f, 0.00f, 0.375f, 0.4f, 0.2745f, 0.1804f));
+                                    -0.75f, 0.00f,  0.375f, 0.4f, 0.2745f, 0.1804f));
+            top.tris.Add(1, new Tri( 0.75f, 0.00f, -0.375f, 0.4f, 0.2745f, 0.1804f,
+                                    -0.75f, 0.00f,  0.375f, 0.4f, 0.2745f, 0.1804f,
+                                     0.75f, 0.00f,  0.375f, 0.4f, 0.2745f, 0.1804f));
             desktop.children.Add("top", top);
 
-            GraphicsElement bottom = new() { level = 2 };
+            GraphicsElement bottom = new(2);
             bottom.tris.Add(0, new Tri(-0.75f, -0.03f, -0.375f, 0.28f, 0.1545f, 0.0604f,
                                         0.75f, -0.03f, -0.375f, 0.28f, 0.1545f, 0.0604f,
-                                       -0.75f, -0.03f, 0.375f, 0.28f, 0.1545f, 0.0604f));
-            bottom.tris.Add(1, new Tri(0.75f, -0.03f, -0.375f, 0.28f, 0.1545f, 0.0604f,
-                                       -0.75f, -0.03f, 0.375f, 0.28f, 0.1545f, 0.0604f,
-                                        0.75f, -0.03f, 0.375f, 0.28f, 0.1545f, 0.0604f));
+                                       -0.75f, -0.03f,  0.375f, 0.28f, 0.1545f, 0.0604f));
+            bottom.tris.Add(1, new Tri( 0.75f, -0.03f, -0.375f, 0.28f, 0.1545f, 0.0604f,
+                                       -0.75f, -0.03f,  0.375f, 0.28f, 0.1545f, 0.0604f,
+                                        0.75f, -0.03f,  0.375f, 0.28f, 0.1545f, 0.0604f));
             desktop.children.Add("bottom", bottom);
 
-            GraphicsElement left = new(-0.75f, 0.0f, 0.0f) { level = 2 };
-            left.tris.Add(0, new Tri(0.0f, 0.03f, -0.375f, 0.34f, 0.2145f, 0.1204f,
-                                     0.0f, 0.03f, 0.375f, 0.34f, 0.2145f, 0.1204f,
+            GraphicsElement left = new(2, true, -0.75f, 0.0f, 0.0f);
+            left.tris.Add(0, new Tri(0.0f,  0.03f, -0.375f, 0.34f, 0.2145f, 0.1204f,
+                                     0.0f,  0.03f,  0.375f, 0.34f, 0.2145f, 0.1204f,
                                      0.0f, -0.03f, -0.375f, 0.34f, 0.2145f, 0.1204f));
-            left.tris.Add(1, new Tri(0.0f, 0.03f, 0.375f, 0.34f, 0.2145f, 0.1204f,
+            left.tris.Add(1, new Tri(0.0f,  0.03f,  0.375f, 0.34f, 0.2145f, 0.1204f,
                                      0.0f, -0.03f, -0.375f, 0.34f, 0.2145f, 0.1204f,
-                                     0.0f, -0.03f, 0.375f, 0.34f, 0.2145f, 0.1204f));
+                                     0.0f, -0.03f,  0.375f, 0.34f, 0.2145f, 0.1204f));
             desktop.children.Add("left", left);
 
-            GraphicsElement right = new(0.75f, 0.0f, 0.0f) { level = 2 };
-            right.tris.Add(0, new Tri(0.0f, 0.03f, -0.375f, 0.34f, 0.2145f, 0.1204f,
-                                      0.0f, 0.03f, 0.375f, 0.34f, 0.2145f, 0.1204f,
+            GraphicsElement right = new(2, true, 0.75f, 0.0f, 0.0f);
+            right.tris.Add(0, new Tri(0.0f,  0.03f, -0.375f, 0.34f, 0.2145f, 0.1204f,
+                                      0.0f,  0.03f,  0.375f, 0.34f, 0.2145f, 0.1204f,
                                       0.0f, -0.03f, -0.375f, 0.34f, 0.2145f, 0.1204f));
-            right.tris.Add(1, new Tri(0.0f, 0.03f, 0.375f, 0.34f, 0.2145f, 0.1204f,
+            right.tris.Add(1, new Tri(0.0f,  0.03f,  0.375f, 0.34f, 0.2145f, 0.1204f,
                                       0.0f, -0.03f, -0.375f, 0.34f, 0.2145f, 0.1204f,
-                                      0.0f, -0.03f, 0.375f, 0.34f, 0.2145f, 0.1204f));
+                                      0.0f, -0.03f,  0.375f, 0.34f, 0.2145f, 0.1204f));
             desktop.children.Add("right", right);
 
-            GraphicsElement front = new(0.0f, 0.0f, 0.375f) { level = 2 };
-            front.tris.Add(0, new Tri(-0.75f, 0.03f, 0.0f, 0.37f, 0.2445f, 0.1504f,
-                                       0.75f, 0.03f, 0.0f, 0.37f, 0.2445f, 0.1504f,
+            GraphicsElement front = new(2, true, 0.0f, 0.0f, 0.375f);
+            front.tris.Add(0, new Tri(-0.75f,  0.03f, 0.0f, 0.37f, 0.2445f, 0.1504f,
+                                       0.75f,  0.03f, 0.0f, 0.37f, 0.2445f, 0.1504f,
                                       -0.75f, -0.03f, 0.0f, 0.37f, 0.2445f, 0.1504f));
-            front.tris.Add(1, new Tri(0.75f, 0.03f, 0.0f, 0.37f, 0.2445f, 0.1504f,
+            front.tris.Add(1, new Tri( 0.75f,  0.03f, 0.0f, 0.37f, 0.2445f, 0.1504f,
                                       -0.75f, -0.03f, 0.0f, 0.37f, 0.2445f, 0.1504f,
                                        0.75f, -0.03f, 0.0f, 0.37f, 0.2445f, 0.1504f));
             desktop.children.Add("front", front);
 
-            GraphicsElement back = new(0.0f, 0.0f, -0.375f) { level = 2 };
-            back.tris.Add(0, new Tri(-0.75f, 0.03f, 0.0f, 0.31f, 0.1845f, 0.0904f,
-                                      0.75f, 0.03f, 0.0f, 0.31f, 0.1845f, 0.0904f,
+            GraphicsElement back = new(2, true, 0.0f, 0.0f, -0.375f);
+            back.tris.Add(0, new Tri(-0.75f,  0.03f, 0.0f, 0.31f, 0.1845f, 0.0904f,
+                                      0.75f,  0.03f, 0.0f, 0.31f, 0.1845f, 0.0904f,
                                      -0.75f, -0.03f, 0.0f, 0.31f, 0.1845f, 0.0904f));
-            back.tris.Add(1, new Tri(0.75f, 0.03f, 0.0f, 0.31f, 0.1845f, 0.0904f,
+            back.tris.Add(1, new Tri( 0.75f,  0.03f, 0.0f, 0.31f, 0.1845f, 0.0904f,
                                      -0.75f, -0.03f, 0.0f, 0.31f, 0.1845f, 0.0904f,
                                       0.75f, -0.03f, 0.0f, 0.31f, 0.1845f, 0.0904f));
             desktop.children.Add("back", back);
 
             desk.children.Add("desktop", desktop);
 
-            GraphicsElement leftFoot = new(-0.67f) { level = 1 };
+            GraphicsElement leftFoot = new(1, true, -0.67f);
 
-            GraphicsElement lin = new(0.03f) { level = 2 };
+            GraphicsElement lin = new(2, true, 0.03f);
             lin.tris.Add(0, new Tri(0.0f, 0.69f, -0.315f, 0.25f, 0.1245f, 0.0304f,
                                     0.0f, 0.69f, 0.315f, 0.25f, 0.1245f, 0.0304f,
                                     0.0f, 0.00f, -0.315f, 0.25f, 0.1245f, 0.0304f));
@@ -462,7 +462,7 @@ namespace JuegoProgramacionGrafica
                                     0.0f, 0.00f, 0.315f, 0.25f, 0.1245f, 0.0304f));
             leftFoot.children.Add("in", lin);
 
-            GraphicsElement lout = new(-0.03f) { level = 2 };
+            GraphicsElement lout = new(2, true, -0.03f);
             lout.tris.Add(0, new Tri(0.0f, 0.69f, -0.315f, 0.31f, 0.1845f, 0.0904f,
                                      0.0f, 0.69f, 0.315f, 0.31f, 0.1845f, 0.0904f,
                                      0.0f, 0.00f, -0.315f, 0.31f, 0.1845f, 0.0904f));
@@ -471,13 +471,13 @@ namespace JuegoProgramacionGrafica
                                      0.0f, 0.00f, 0.315f, 0.31f, 0.1845f, 0.0904f));
             leftFoot.children.Add("out", lout);
 
-            GraphicsElement lfront = new(0.0f, 0.0f, 0.315f) { level = 2 };
+            GraphicsElement lfront = new(2, true, 0.0f, 0.0f, 0.315f);
             lfront.tris.Add(0, new Tri(-0.03f, 0.69f, 0.0f, 0.28f, 0.1545f, 0.0604f,
                                         0.03f, 0.69f, 0.0f, 0.28f, 0.1545f, 0.0604f,
                                        -0.03f, 0.00f, 0.0f, 0.28f, 0.1545f, 0.0604f));
-            lfront.tris.Add(1, new Tri(0.03f, 0.69f, 0.0f, 0.28f, 0.1545f, 0.0604f,
-                                      -0.03f, 0.00f, 0.0f, 0.28f, 0.1545f, 0.0604f,
-                                       0.03f, 0.00f, 0.0f, 0.28f, 0.1545f, 0.0604f));
+            lfront.tris.Add(1, new Tri( 0.03f, 0.69f, 0.0f, 0.28f, 0.1545f, 0.0604f,
+                                       -0.03f, 0.00f, 0.0f, 0.28f, 0.1545f, 0.0604f,
+                                        0.03f, 0.00f, 0.0f, 0.28f, 0.1545f, 0.0604f));
             leftFoot.children.Add("front", lfront);
 
             GraphicsElement lback = new(0.0f, 0.0f, -0.315f) { level = 2 };
@@ -555,8 +555,7 @@ namespace JuegoProgramacionGrafica
         public static GraphicsElement Ball(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
         {
             GraphicsElement ball = new(offset_x, offset_y, offset_z) { level = 1 };
-            GraphicsElement body = new();
-            body.level = 1;
+            GraphicsElement body = new() { level = 1 };
 
             GraphicsElement _base = new();
             _base.level = 2;
@@ -722,10 +721,15 @@ namespace JuegoProgramacionGrafica
         public static void SerializeExamples(string path)
         {
             GraphicsElement tmp = new() { level = 0 };
+            GraphicsElement aux = new() { level = 1 };
             tmp.children.Add("monitor", Monitor(0.25f, 0.75f));
             tmp.children.Add("pot", Pot(-0.50f, 0.75f));
             tmp.children.Add("desk", Desk());
-            tmp.children.Add("ball", Ball());
+            aux.children.Add("aux", Ball(1.5f));
+            aux.children["aux"].children["body"].SetPosition(1.0f, 0.0f, 0.0f);
+            tmp.children.Add("ball", aux);
+            tmp.SetPosition(0.0f, 1.36f, 0.2f);
+            tmp.SetRotation(0.0f, 337f, 0.0f);
             Serialize(Pot(),     path + "pot.json");
             Serialize(Desk(),    path + "desk.json");
             Serialize(Ball(),    path + "ball.json");

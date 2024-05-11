@@ -15,9 +15,15 @@ namespace JuegoProgramacionGrafica
         public Dictionary<string, GraphicsElement> children = new();
         public Dictionary<int, Tri> tris = new();
 
-        public GraphicsElement(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
+        public GraphicsElement(byte level, bool visible = true,
+                               float posX = 0.0f, float posY = 0.0f, float posZ = 0.0f,
+                               float rotX = 0.0f, float rotY = 0.0f, float rotZ = 0.0f,
+                               float sclX = 1.0f, float sclY = 1.0f, float sclZ = 1.0f)
         {
-            _position = new float[] { offset_x, offset_y, offset_z };
+            this.level = level; this.visible = visible;
+            _position = new float[] { posX, posY, posZ };
+            _rotation = new float[] { rotX, rotY, rotZ };
+            _scale    = new float[] { sclX, sclY, sclZ };
 
             GenMatrixes(new StreamingContext());
         }
