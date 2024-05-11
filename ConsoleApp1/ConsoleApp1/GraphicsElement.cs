@@ -95,6 +95,7 @@ namespace JuegoProgramacionGrafica
 
         public void RotateOverTime(float x, float y, float z, float start_time, float end_time, float time, float delta)
         {
+            Console.WriteLine("rotatotest");
             float duration = end_time - start_time;
             if (time > end_time || start_time > time) return;
             Rotate(x*(delta/duration), y*(delta/duration), z*(delta/duration));

@@ -10,7 +10,7 @@ namespace JuegoProgramacionGrafica
     {
         Game game;
         GraphicsElement current;
-        GraphicsElement animation_target;
+        public GraphicsElement animation_target;
         float[] target_pos;
         float[] target_rot;
         float[] target_scl;
@@ -34,18 +34,6 @@ namespace JuegoProgramacionGrafica
 
         public void Render(float delta)
         {
-            if (animation_target != null)
-            {
-                current.RotateOverTime(0, 0, 180, 0, 0.5f, anim, delta);
-                current.MoveOverTime(0, 0.30f, 0, 0, 0.25f, anim, delta);
-                current.MoveOverTime(0, -0.25f, 0, 0.25f, 0.5f, anim, delta);
-                current.RotateOverTime(0, 0, -180, 0.5f, 0.515f, anim, delta);
-                current.MoveOverTime(-0.325f, 0, 0, 0.5f, 0.515f, anim, delta);
-                current.RotateOverTime(0, 0, 180, 0.5f, 1, anim, delta);
-                current.MoveOverTime(0, 0.30f, 0, 0.5f, 0.75f, anim, delta);
-                current.MoveOverTime(0, -0.25f, 0, 0.75f, 1, anim, delta);
-                anim += delta;
-            }
             ImGui.NewFrame();
             ImGui.Begin("sub", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar);
             ImGui.SetWindowSize(new System.Numerics.Vector2(40f, game.ClientSize.Y));
@@ -109,7 +97,7 @@ namespace JuegoProgramacionGrafica
                         target_rot = current._rotation;
                         target_scl = current._scale;
                         animation_target = current;
-                        anim = 0;
+                        game.animation.anim = 0;
                     }
 
                     if (_rot.X > 360f) _rot.X -= 360f;

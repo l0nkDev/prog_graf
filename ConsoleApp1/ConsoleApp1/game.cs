@@ -4,16 +4,18 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
 using Zenseless.OpenTK.GUI;
-using Microsoft.VisualBasic;
+using juegoProgramacionGrafica;
 
 namespace JuegoProgramacionGrafica
 {
     public class Game : GameWindow
     {
         public ImGuiFacade gui;
-        private GameUI ui_handler;
+        public GameUI ui_handler;
         private MovementController movement;
+        public ElementController animation;
         public event InputEventHandler KeyboardInputEvent;
+        public event CloseEventHandler CloseEvent;
 
         public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = (width, height), Title = title }) { }
 
@@ -22,6 +24,7 @@ namespace JuegoProgramacionGrafica
         private double elapsed_second = 0;
         private int current_second_frames = 0;
         public int fps = 0;
+        public float delta = 0.015f;
 
         public Dictionary<string, GraphicsElement> elem = new();
 
@@ -41,10 +44,13 @@ namespace JuegoProgramacionGrafica
             gui = new(this);
             ui_handler = new(this);
             movement = new(this);
+            animation = new(this);
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
         {
+            delta = (float)args.Time;
+
             base.OnRenderFrame(args);
             current_second_frames += 1;
             elapsed_second += args.Time;
@@ -75,8 +81,14 @@ namespace JuegoProgramacionGrafica
 
         protected override void OnUpdateFrame(FrameEventArgs args) { base.OnUpdateFrame(args); if (KeyboardState.IsAnyKeyDown) KeyboardInputEvent?.Invoke(args); }
 
-        protected override void OnUnload() { shader.Dispose(); }
+        protected override void OnUnload() { shader.Dispose(); CloseEvent.Invoke(); }
+
+        public override void Close()
+        {
+            base.Close();
+        }
 
         public delegate void InputEventHandler(FrameEventArgs e);
+        public delegate void CloseEventHandler();
     }
 }
