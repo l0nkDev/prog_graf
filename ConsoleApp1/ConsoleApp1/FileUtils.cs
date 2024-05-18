@@ -531,10 +531,9 @@ namespace JuegoProgramacionGrafica
         public static GraphicsElement Ball(float offset_x = 0.0f, float offset_y = 0.0f, float offset_z = 0.0f)
         {
             GraphicsElement ball = new(1, true, offset_x, offset_y, offset_z);
-            GraphicsElement body = new(1);
+            GraphicsElement body = new(1, true, 0.0f, -0.173f);
 
-            GraphicsElement _base = new();
-            _base.level = 2;
+            GraphicsElement _base = new(2, true, 0.0f, -0.173f);
             _base.tris.Add(0, new Tri(0.000f, 0.000f,  0.000f, 0.50196f, 0.50196f, 0.50196f,
                                      -0.100f, 0.000f,  0.000f, 0.50196f, 0.50196f, 0.50196f,
                                      -0.050f, 0.000f, -0.087f, 0.50196f, 0.50196f, 0.50196f));
@@ -555,7 +554,7 @@ namespace JuegoProgramacionGrafica
                                       0.100f, 0.000f,  0.000f, 0.50196f, 0.50196f, 0.50196f));
             body.children.Add("base", _base);
 
-            GraphicsElement _top = new(2, true, 0.0f, 0.346f, 0.0f);
+            GraphicsElement _top = new(2, true, 0.0f, 0.173f, 0.0f);
             _top.tris.Add(0, new Tri(0.000f, 0.000f,  0.000f, 0.69196f, 0.69196f, 0.69196f,
                                     -0.100f, 0.000f,  0.000f, 0.69196f, 0.69196f, 0.69196f,
                                     -0.050f, 0.000f, -0.087f, 0.69196f, 0.69196f, 0.69196f));
@@ -576,8 +575,7 @@ namespace JuegoProgramacionGrafica
                                      0.100f, 0.000f, 0.000f, 0.69196f, 0.69196f, 0.69196f));
             body.children.Add("top", _top);
 
-            GraphicsElement lf = new();
-            lf.level = 2;
+            GraphicsElement lf = new(2, true, 0.0f, -0.173f);
             lf.tris.Add(0, new Tri(-0.05f, 0.000f, 0.087f, 0.63196f, 0.63196f, 0.63196f,
                                     0.05f, 0.000f, 0.087f, 0.63196f, 0.63196f, 0.63196f,
                                     0.10f, 0.173f, 0.173f, 0.63196f, 0.63196f, 0.63196f));
@@ -586,8 +584,7 @@ namespace JuegoProgramacionGrafica
                                    -0.10f, 0.173f, 0.173f, 0.63196f, 0.63196f, 0.63196f));
             body.children.Add("lf", lf);
 
-            GraphicsElement lfl = new();
-            lfl.level = 2;
+            GraphicsElement lfl = new(2, true, 0.0f, -0.173f);
             lfl.tris.Add(0, new Tri(-0.10f, 0.000f, 0.000f, 0.60196f, 0.60196f, 0.60196f,
                                     -0.05f, 0.000f, 0.087f, 0.60196f, 0.60196f, 0.60196f,
                                     -0.10f, 0.173f, 0.173f, 0.60196f, 0.60196f, 0.60196f));
@@ -596,8 +593,7 @@ namespace JuegoProgramacionGrafica
                                     -0.10f, 0.173f, 0.173f, 0.60196f, 0.60196f, 0.60196f));
             body.children.Add("lfl", lfl);
 
-            GraphicsElement lfr = new();
-            lfr.level = 2;
+            GraphicsElement lfr = new(2, true, 0.0f, -0.173f);
             lfr.tris.Add(0, new Tri(0.10f, 0.000f, 0.000f, 0.60196f, 0.60196f, 0.60196f,
                                      0.05f, 0.000f, 0.087f, 0.60196f, 0.60196f, 0.60196f,
                                      0.10f, 0.173f, 0.173f, 0.60196f, 0.60196f, 0.60196f));
@@ -606,7 +602,7 @@ namespace JuegoProgramacionGrafica
                                      0.10f, 0.173f, 0.173f, 0.60196f, 0.60196f, 0.60196f));
             body.children.Add("lfr", lfr);
 
-            GraphicsElement lb = new() { level = 2 };
+            GraphicsElement lb = new(2, true, 0.0f, -0.173f);
             lb.tris.Add(0, new Tri(-0.05f, 0.000f, -0.087f, 0.53196f, 0.53196f, 0.53196f,
                                     0.05f, 0.000f, -0.087f, 0.53196f, 0.53196f, 0.53196f,
                                     0.10f, 0.173f, -0.173f, 0.53196f, 0.53196f, 0.53196f));
@@ -615,7 +611,7 @@ namespace JuegoProgramacionGrafica
                                    -0.10f, 0.173f, -0.173f, 0.53196f, 0.53196f, 0.53196f));
             body.children.Add("lb", lb);
 
-            GraphicsElement lbl = new() { level = 2 };
+            GraphicsElement lbl = new(2, true, 0.0f, -0.173f);
             lbl.tris.Add(0, new Tri(-0.10f, 0.000f, 0.000f, 0.57196f, 0.57196f, 0.57196f,
                                     -0.05f, 0.000f, -0.087f, 0.57196f, 0.57196f, 0.57196f,
                                     -0.10f, 0.173f, -0.173f, 0.57196f, 0.57196f, 0.57196f));
@@ -624,7 +620,7 @@ namespace JuegoProgramacionGrafica
                                     -0.10f, 0.173f, -0.173f, 0.57196f, 0.57196f, 0.57196f));
             body.children.Add("lbl", lbl);
 
-            GraphicsElement lbr = new() { level = 2 };
+            GraphicsElement lbr = new(2, true, 0.0f, -0.173f);
             lbr.tris.Add(0, new Tri(0.10f, 0.000f, 0.000f, 0.57196f, 0.57196f, 0.57196f,
                                      0.05f, 0.000f, -0.087f, 0.57196f, 0.57196f, 0.57196f,
                                      0.10f, 0.173f, -0.173f, 0.57196f, 0.57196f, 0.57196f));
@@ -633,7 +629,7 @@ namespace JuegoProgramacionGrafica
                                      0.10f, 0.173f, -0.173f, 0.57196f, 0.57196f, 0.57196f));
             body.children.Add("lbr", lbr);
 
-            GraphicsElement uf = new() { level = 2 };
+            GraphicsElement uf = new(2, true, 0.0f, -0.173f);
             uf.tris.Add(0, new Tri(-0.05f, 0.346f, 0.087f, 0.66196f, 0.66196f, 0.66196f,
                                     0.05f, 0.346f, 0.087f, 0.66196f, 0.66196f, 0.66196f,
                                     0.10f, 0.173f, 0.173f, 0.66196f, 0.66196f, 0.66196f));
@@ -642,7 +638,7 @@ namespace JuegoProgramacionGrafica
                                    -0.10f, 0.173f, 0.173f, 0.66196f, 0.66196f, 0.66196f));
             body.children.Add("uf", uf);
 
-            GraphicsElement ufl = new() { level = 2 };
+            GraphicsElement ufl = new(2, true, 0.0f, -0.173f);
             ufl.tris.Add(0, new Tri(-0.10f, 0.346f, 0.000f, 0.63196f, 0.63196f, 0.63196f,
                                     -0.05f, 0.346f, 0.087f, 0.63196f, 0.63196f, 0.63196f,
                                     -0.10f, 0.173f, 0.173f, 0.63196f, 0.63196f, 0.63196f));
@@ -651,7 +647,7 @@ namespace JuegoProgramacionGrafica
                                     -0.10f, 0.173f, 0.173f, 0.63196f, 0.63196f, 0.63196f));
             body.children.Add("ufl", ufl);
 
-            GraphicsElement ufr = new() { level = 2 };
+            GraphicsElement ufr = new(2, true, 0.0f, -0.173f);
             ufr.tris.Add(0, new Tri(0.10f, 0.346f, 0.000f, 0.63196f, 0.63196f, 0.63196f,
                                      0.05f, 0.346f, 0.087f, 0.63196f, 0.63196f, 0.63196f,
                                      0.10f, 0.173f, 0.173f, 0.63196f, 0.63196f, 0.63196f));
@@ -660,7 +656,7 @@ namespace JuegoProgramacionGrafica
                                      0.10f, 0.173f, 0.173f, 0.63196f, 0.63196f, 0.63196f));
             body.children.Add("ufr", ufr);
 
-            GraphicsElement ub = new() { level = 2 };
+            GraphicsElement ub = new(2, true, 0.0f, -0.173f);
             ub.tris.Add(0, new Tri(-0.05f, 0.346f, -0.087f, 0.57196f, 0.57196f, 0.57196f,
                                     0.05f, 0.346f, -0.087f, 0.57196f, 0.57196f, 0.57196f,
                                     0.10f, 0.173f, -0.173f, 0.57196f, 0.57196f, 0.57196f));
@@ -669,7 +665,7 @@ namespace JuegoProgramacionGrafica
                                    -0.10f, 0.173f, -0.173f, 0.57196f, 0.57196f, 0.57196f));
             body.children.Add("ub", ub);
 
-            GraphicsElement ubl = new() { level = 2 };
+            GraphicsElement ubl = new(2, true, 0.0f, -0.173f);
             ubl.tris.Add(0, new Tri(-0.10f, 0.346f, 0.000f, 0.60196f, 0.60196f, 0.60196f,
                                     -0.05f, 0.346f, -0.087f, 0.60196f, 0.60196f, 0.60196f,
                                     -0.10f, 0.173f, -0.173f, 0.60196f, 0.60196f, 0.60196f));
@@ -678,7 +674,7 @@ namespace JuegoProgramacionGrafica
                                     -0.10f, 0.173f, -0.173f, 0.60196f, 0.60196f, 0.60196f));
             body.children.Add("ubl", ubl);
 
-            GraphicsElement ubr = new() { level = 2 };
+            GraphicsElement ubr = new(2, true, 0.0f, -0.173f);
             ubr.tris.Add(0, new Tri(0.10f, 0.346f, 0.000f, 0.60196f, 0.60196f, 0.60196f,
                                      0.05f, 0.346f, -0.087f, 0.60196f, 0.60196f, 0.60196f,
                                      0.10f, 0.173f, -0.173f, 0.60196f, 0.60196f, 0.60196f));
@@ -686,10 +682,9 @@ namespace JuegoProgramacionGrafica
                                      0.20f, 0.173f, 0.000f, 0.60196f, 0.60196f, 0.60196f,
                                      0.10f, 0.173f, -0.173f, 0.60196f, 0.60196f, 0.60196f));
             body.children.Add("ubr", ubr);
-
+            body.SetScale(0.25f, 0.25f, 0.25f);
             ball.children.Add("body", body);
 
-            ball.SetScale(0.25f, 0.25f, 0.25f);
             return ball;
         }
 
@@ -700,8 +695,8 @@ namespace JuegoProgramacionGrafica
             tmp.children.Add("monitor", Monitor(0.25f, 0.75f));
             tmp.children.Add("pot", Pot(-0.50f, 0.75f));
             tmp.children.Add("desk", Desk());
-            line.children.Add("aux", Ball(1.5f));
-            line.children["aux"].children["body"].SetPosition(1.0f, 0.0f, 0.0f);
+            line.children.Add("aux", Ball(0.125f, -0.570f));
+            line.children["aux"].children["body"].SetPosition(0.135f, 0.0f, 0.0f);
             tmp.children.Add("ball", line);
             line.SetPosition(0.0f, 1.36f, 0.2f);
             line.SetRotation(0.0f, 337f, 0.0f);

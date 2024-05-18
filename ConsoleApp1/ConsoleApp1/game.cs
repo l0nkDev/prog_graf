@@ -15,7 +15,6 @@ namespace JuegoProgramacionGrafica
         private MovementController movement;
         public ElementController animation;
         public event InputEventHandler KeyboardInputEvent;
-        public event CloseEventHandler CloseEvent;
 
         public Game(int width, int height, string title) : base(GameWindowSettings.Default, new NativeWindowSettings() { Size = (width, height), Title = title }) { }
 
@@ -38,7 +37,7 @@ namespace JuegoProgramacionGrafica
             shader = new Shader("../../../shaders/shader.vert", "../../../shaders/shader.frag");
 
 
-            //FileUtils.SerializeExamples("../../../assets/objects/");
+            FileUtils.SerializeExamples("../../../assets/objects/");
             elem.Add("main scene", FileUtils.Deserialize("../../../assets/objects/main scene.json"));
 
             gui = new(this);
@@ -81,14 +80,8 @@ namespace JuegoProgramacionGrafica
 
         protected override void OnUpdateFrame(FrameEventArgs args) { base.OnUpdateFrame(args); if (KeyboardState.IsAnyKeyDown) KeyboardInputEvent?.Invoke(args); }
 
-        protected override void OnUnload() { shader.Dispose(); CloseEvent.Invoke(); }
-
-        public override void Close()
-        {
-            base.Close();
-        }
+        protected override void OnUnload() { shader.Dispose(); }
 
         public delegate void InputEventHandler(FrameEventArgs e);
-        public delegate void CloseEventHandler();
     }
 }

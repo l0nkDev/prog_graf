@@ -9,7 +9,7 @@ namespace JuegoProgramacionGrafica
         public float[] _position = { 0.0f, 0.0f, 0.0f };
         public float[] _rotation = { 0.0f, 0.0f, 0.0f };
         public float[] _scale    = { 1.0f, 1.0f, 1.0f };
-        public Matrix4 pitch, roll, yaw, position, scale;
+        private Matrix4 pitch, roll, yaw, position, scale;
         public bool visible = true;
         
         public Dictionary<string, GraphicsElement> children = new();

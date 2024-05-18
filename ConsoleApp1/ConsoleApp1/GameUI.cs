@@ -2,6 +2,7 @@
 using Microsoft.VisualBasic;
 using ImGuiNET;
 using OpenTK.Mathematics;
+using juegoProgramacionGrafica;
 
 namespace JuegoProgramacionGrafica
 {
@@ -10,10 +11,6 @@ namespace JuegoProgramacionGrafica
     {
         Game game;
         GraphicsElement current;
-        public GraphicsElement animation_target;
-        float[] target_pos;
-        float[] target_rot;
-        float[] target_scl;
 
         string current_name;
         System.Numerics.Vector3 _pos = new();
@@ -22,7 +19,6 @@ namespace JuegoProgramacionGrafica
         bool _vis = false;
         bool collapsed = false;
         bool showfaces = false;
-        float anim = 0;
         OpenFileDialog openFileDialog;
         SaveFileDialog saveFileDialog;
 
@@ -91,14 +87,6 @@ namespace JuegoProgramacionGrafica
                     ImGui.DragFloat3("Position", ref _pos, 0.01f);
                     ImGui.DragFloat3("Rotation", ref _rot, 1.0f);
                     ImGui.DragFloat3("Scale", ref _scl, 0.01f);
-                    if (ImGui.Button("Exec Anim."))
-                    {
-                        target_pos = current._position;
-                        target_rot = current._rotation;
-                        target_scl = current._scale;
-                        animation_target = current;
-                        game.animation.anim = 0;
-                    }
 
                     if (_rot.X > 360f) _rot.X -= 360f;
                     if (_rot.Y > 360f) _rot.Y -= 360f;
@@ -112,6 +100,8 @@ namespace JuegoProgramacionGrafica
                     current.SetScale(_scl.X, _scl.Y, _scl.Z);
                     current.visible = _vis;
                 }
+                if (ImGui.Button("anim")) game.animation.StartAnim();
+                if (ImGui.Button("reset")) game.animation.ResetAnim();
                 ImGui.End();
             }
             game.gui.Render(game.ClientSize);
@@ -128,13 +118,6 @@ namespace JuegoProgramacionGrafica
                 {
                     if (ImGui.IsItemClicked()) 
                     {
-                        if (animation_target != null)
-                        {
-                            current.SetPosition(target_pos[0], target_pos[1], target_pos[2]);
-                            current.SetRotation(target_rot[0], target_rot[1], target_rot[2]);
-                            current.SetScale(target_scl[0], target_scl[1], target_scl[2]);
-                            animation_target = null;
-                        }
                         current = elem[key]; 
                         current_name = key;
                     }
