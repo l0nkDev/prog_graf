@@ -14,8 +14,8 @@ namespace juegoProgramacionGrafica
     {
         private ElementController parent;
         AnimationType type;
-        public bool started = false, stopped = false;
-        private float x, y, z, ix, iy, iz, begin, end;
+        public bool started = false, stopped = false, custom = false;
+        private float x, y, z, ix, iy, iz, ex, ey, ez, begin, end;
 
         public Animation (AnimationType type, float x, float y, float z, float beginTimestamp, float endTimestamp, ElementController parent)
         {
@@ -27,7 +27,7 @@ namespace juegoProgramacionGrafica
             begin = beginTimestamp;
             end = endTimestamp;
         }
-        public Animation(AnimationType type, float x, float y, float z, float beginTimestamp, ElementController parent)
+        public Animation(AnimationType type, float x, float y, float z, float beginTimestamp, float endTimeStamp, float ex, float ey, float ez, ElementController parent)
         {
             this.parent = parent;
             this.type = type;
@@ -35,7 +35,11 @@ namespace juegoProgramacionGrafica
             this.y = y;
             this.z = z;
             begin = beginTimestamp;
-            end = begin;
+            end = endTimeStamp;
+            this.ex = ex;
+            this.ey = ey;
+            this.ez = ez;
+            custom = true;
         }
 
         public void execute()
@@ -47,17 +51,32 @@ namespace juegoProgramacionGrafica
                 {
                     case AnimationType.Translation:
                         parent.target.Move(x * (parent.delta / duration), y * (parent.delta / duration), z * (parent.delta / duration));
-                        if (parent.anim > end) { parent.target.SetPosition(ix + x, iy + y, iz + z); stopped = true; }
+                        if (parent.anim > end)
+                        {
+                            if (custom) parent.target.SetPosition(x + ix + ex, y + iy + ey, z + iz + ez);
+                            else parent.target.SetPosition(ix + x, iy + y, iz + z);
+                            stopped = true; 
+                        }
                         break;
 
                     case AnimationType.Rotation:
                         parent.target.Rotate(x * (parent.delta / duration), y * (parent.delta / duration), z * (parent.delta / duration));
-                        if (parent.anim > end) { parent.target.SetRotation(ix + x, iy + y, iz + z); stopped = true; }
+                        if (parent.anim > end) 
+                        { 
+                            if (custom) parent.target.SetRotation(x + ix + ex, y + iy + ey, z + iz + ez);
+                            else parent.target.SetRotation(ix + x, iy + y, iz + z);
+                            stopped = true; 
+                        }
                         break;
 
                     case AnimationType.Scale:
                         parent.target.Scale(x * (parent.delta / duration), y * (parent.delta / duration), z * (parent.delta / duration));
-                        if (parent.anim > end) { parent.target.SetScale(ix + x, iy + y, iz + z); stopped = true; }
+                        if (parent.anim > end)
+                        {
+                            if (custom) parent.target.SetScale(x + ix + ex, y + iy + ey, z + iz + ez);
+                            else parent.target.SetScale(ix + x, iy + y, iz + z);
+                            stopped = true; 
+                        }
                         break;
                 }
             }
@@ -105,17 +124,15 @@ namespace juegoProgramacionGrafica
 
             game.Unload += OnUnload;
 
-            animations.Add(new(AnimationType.Rotation,     0,        0.00f, 180, 000, 0500, this));
-            animations.Add(new(AnimationType.Rotation,     0,        0.00f, 0,   500, this));
-            animations.Add(new(AnimationType.Translation,  -0.270f,  0,     0,   500, this));
-            animations.Add(new(AnimationType.Rotation,     0,        0.00f, 180, 500, 1000, this));
-            animations.Add(new(AnimationType.Translation,  0,        0.15f, 000, 510, 750,  this));
-            animations.Add(new(AnimationType.Translation,  0,       -0.15f, 000, 750, 1000, this));
-            animations.Add(new(AnimationType.Rotation,     0,        0.00f, 0, 1000,  this));
-            animations.Add(new(AnimationType.Translation, -0.270f,   0,     0, 1000,  this));
-            animations.Add(new(AnimationType.Rotation,     0,        0.00f, 180, 1000, 1500, this));
-            animations.Add(new(AnimationType.Translation,  0,        0.35f, 000, 1010, 1250, this));
-            animations.Add(new(AnimationType.Translation,  0,       -0.35f, 000, 1250, 1500, this));
+            animations.Add(new(AnimationType.Rotation,     0,        0.00f, 180, 000, 1000, 0, 0, -180, this));
+            animations.Add(new(AnimationType.Translation,  0,  0.70f,     0,   000, 500, this));
+            animations.Add(new(AnimationType.Translation, 0,  -0.70f,     0,   500, 1000, -0.270f, 0, 0, this));
+            animations.Add(new(AnimationType.Rotation,     0,        0.00f, 180, 1000, 2000, 0, 0, -180, this));
+            animations.Add(new(AnimationType.Translation,  0,        0.525f, 000, 1010, 1500,  this));
+            animations.Add(new(AnimationType.Translation,  0,       -0.525f, 000, 1500, 2000, -0.270f, 0, 0, this));
+            animations.Add(new(AnimationType.Rotation,     0,        0.00f, 180, 2000, 3000, this));
+            animations.Add(new(AnimationType.Translation,  0,        0.35f, 000, 2010, 2500, this));
+            animations.Add(new(AnimationType.Translation,  0,       -0.35f, 000, 2500, 3000, this));
 
             thread = new(new ThreadStart(AnimationLoop));
             stopwatch.Start();
